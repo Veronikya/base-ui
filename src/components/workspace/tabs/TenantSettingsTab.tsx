@@ -3,6 +3,7 @@
 // Websites: https://www.aptlogica.com | https://www.serenibase.com
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useGetOrganization, useUpdateOrganization } from '../../../hooks/useApi';
 import { useToast } from '../../common/Toast';
 import { MultiLineText } from '../../common/Fields';
@@ -13,6 +14,7 @@ interface TenantSettingsTabProps {
 }
 
 export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceId: _workspaceId }) => {
+  const { t } = useTranslation(['common', 'organization']);
   const { data: organizationData, isLoading: isLoadingOrganization } = useGetOrganization();
   const updateOrganizationMutation = useUpdateOrganization(organizationData?.id || '');
   const toast = useToast();
@@ -44,17 +46,17 @@ export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceI
 
   const handleSave = async () => {
     if (!organizationName || organizationName.trim() === '') {
-      toast.error('Company name is required');
+      toast.error(t('common:errors.companyNameRequired'));
       return;
     }
 
     if (!organizationDescription || organizationDescription.trim() === '') {
-      toast.error('Description is required');
+      toast.error(t('common:errors.descriptionRequired'));
       return;
     }
 
     if (!hasChanges) {
-      toast.info('No changes to save');
+      toast.info(t('common:messages.noChangesToSave'));
       return;
     }
 
@@ -72,9 +74,9 @@ export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceI
       await updateOrganizationMutation.mutateAsync(updateData);
       setOriginalOrganizationName(organizationName);
       setOriginalOrganizationDescription(organizationDescription);
-      toast.success('Organization updated successfully');
+      toast.success(t('common:toast.organizationUpdated'));
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to update organization');
+      toast.error(t('organization:errors.failedToUpdateOrganization'));
     }
   };
 
@@ -82,7 +84,7 @@ export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceI
     if (hasChanges) {
       setOrganizationName(originalOrganizationName);
       setOrganizationDescription(originalOrganizationDescription);
-      toast.info('Changes discarded');
+      toast.info(t('common:messages.changesDiscarded'));
     }
   };
 
@@ -93,7 +95,7 @@ export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceI
       id: organizationData.id || '',
       name: organizationData.name || 'Organization',
       email: organizationData.email || '',
-      joinedDate: organizationData.created_time ? new Date(organizationData.created_time).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently',
+      joinedDate: organizationData.created_time ? new Date(organizationData.created_time).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : t('organization:recently'),
       logo: organizationData.logo || null,
       initials: ((organizationData.name || 'O')[0] || 'O').toUpperCase()
     };
@@ -102,7 +104,7 @@ export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceI
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader size={6} text='Loading Information' textPosition='bottom' />
+        <Loader size={6} text={t('organization:messages.loading')} textPosition='bottom' />
       </div>
     );
   }
@@ -111,11 +113,11 @@ export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceI
     <div className="space-y-6">
       {/* Card 1: Organization Information */}
       <div className="bg-card rounded-xl border p-6">
-        <h2 className="text-lg font-semibold text-primary mb-4">Organization Information</h2>
+        <h2 className="text-lg font-semibold text-primary mb-4">{t('organization:organizationInfo')}</h2>
         <div className="space-y-4">
           <div>
             <label htmlFor='company-name' className="block text-sm font-medium text-primary mb-2">
-              Company Name <span className="field-component-required">*</span>
+              {t('organization:companyName')} <span className="field-component-required">*</span>
             </label>
             <input
               id='company-name'
@@ -123,15 +125,15 @@ export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceI
               value={organizationName}
               onChange={(e) => setOrganizationName(e.target.value)}
               className="w-full px-3 py-2 field-component field-component-border field-component-focus"
-              placeholder="Enter company name"
+              placeholder={t('organization:companyNamePlaceholder')}
             />
           </div>
           <div>
             <label htmlFor='organization-description' className="block text-sm font-medium text-primary mb-2">
-              Description <span className="field-component-required">*</span>
+              {t('organization:description')} <span className="field-component-required">*</span>
             </label>
             <MultiLineText
-              placeholder="Enter organization description..."
+              placeholder={t('organization:descriptionPlaceholder')}
               value={organizationDescription}
               onChange={setOrganizationDescription}
               rows={4}
@@ -145,14 +147,14 @@ export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceI
             disabled={updateOrganizationMutation.isPending || !hasChanges}
             className="px-6 py-2.5 border text-gray-700 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
-            Cancel
+            {t('common:buttons.cancel')}
           </button>
           <button
             onClick={handleSave}
             disabled={updateOrganizationMutation.isPending || !hasChanges || !organizationName.trim() || !organizationDescription.trim()}
             className="px-6 py-2.5 bg-[var(--color-brand-600)] text-black rounded-xl hover:bg-[var(--color-brand-700)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
-            {updateOrganizationMutation.isPending ? 'Saving...' : 'Save changes'}
+            {updateOrganizationMutation.isPending ? t('organization:saving') : t('organization:saveChanges')}
           </button>
         </div>
       </div>
@@ -162,8 +164,8 @@ export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceI
         <div className="bg-card rounded-xl border overflow-hidden">
           {/* Header Section */}
           <div className="px-6 py-4 border-b">
-            <h2 className="text-lg font-semibold text-primary">Owner Details</h2>
-            <p className="text-sm text-secondary mt-1">Owner profile and contact information.</p>
+            <h2 className="text-lg font-semibold text-primary">{t('organization:ownerDetails')}</h2>
+            <p className="text-sm text-secondary mt-1">{t('organization:ownerProfile')}</p>
           </div>
 
           {/* Owner Information Section */}
@@ -184,12 +186,12 @@ export const TenantSettingsTab: React.FC<TenantSettingsTabProps> = ({ workspaceI
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-sm font-medium text-primary">{owner.name}</span>
                   <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 border border-green-200 whitespace-nowrap">
-                    Owner
+                    {t('organization:owner')}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <p className="text-sm text-secondary">{owner.email} .</p>
-                  <p className="text-xs text-secondary">Joined {owner.joinedDate}</p>
+                  <p className="text-xs text-secondary">{t('organization:joined')} {owner.joinedDate}</p>
                 </div>
               </div>
             </div>

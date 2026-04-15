@@ -5,14 +5,18 @@
 import React from "react";
 import { useCurrentUser, getUserInitials } from "../../../auth/useCurrentUser";
 import { useUserProfile } from "../../../hooks/useApi";
+import { useTranslation } from "react-i18next";
 
 interface AuditUserProps {
     placeholder?: string;
 }
 
 export const AuditUser: React.FC<AuditUserProps> = ({
-    placeholder = "User...",
+    placeholder,
 }) => {
+    const { t } = useTranslation(['fields']);
+    const defaultPlaceholder = t('fields:placeholders.user');
+    const resolvedPlaceholder = placeholder ?? defaultPlaceholder;
     const currentUser = useCurrentUser();
 
     // Get user profile data for avatar
@@ -21,7 +25,7 @@ export const AuditUser: React.FC<AuditUserProps> = ({
     const userProfile = response?.data;
 
     if (!currentUser) {
-        return <div className="w-full px-2 py-1 text-sm text-gray-500">{placeholder}</div>;
+        return <div className="w-full px-2 py-1 text-sm text-gray-500">{resolvedPlaceholder}</div>;
     }
 
     return (

@@ -13,6 +13,7 @@ support@serenibase.com
 
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useTable, useBaseTables, useWorkspaces } from './hooks/useApi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DefaultAuthProvider } from './auth/AuthContext';
@@ -37,6 +38,7 @@ import { useClientHeaders } from './hooks/useClientHeaders';
 import { RouteContextProvider } from './contexts/RouteContext';
 import { NavigationResolver } from './components/NavigationResolver';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { LanguageSwitcher } from './components/common/LanguageSwitcher';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -132,6 +134,7 @@ const Layout = () => {
           </div>
           <div className="flex items-center gap-2">
             <ExtensionPoint id="layout:header" />
+            <LanguageSwitcher />
           </div>
         </header>
 
@@ -240,6 +243,7 @@ const buildRouteView = (
 
 // Wrapper for /workspace/:workspaceId/base/:baseId/table/:tableId/:viewId to provide table/view context to plugins
 const TableViewRouteWrapper: React.FC = () => {
+  const { t } = useTranslation('common');
   const { baseId, tableId, viewId } = useParams();
 
   // Centralized table fetch so only one plugin renders and we can determine view type
@@ -263,9 +267,9 @@ const TableViewRouteWrapper: React.FC = () => {
     return (
       <div className="h-full flex items-center justify-center">
         <div className="text-center">
-          <div className="text-red-500 text-lg mb-2">Something went wrong</div>
+          <div className="text-red-500 text-lg mb-2">{t('messages.error')}</div>
           <p className="text-muted-foreground mb-4">{String(error)}</p>
-          <button onClick={() => refetch()} className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90">Retry</button>
+          <button onClick={() => refetch()} className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90">{t('buttons.retry')}</button>
         </div>
       </div>
     );
@@ -308,8 +312,8 @@ const TableViewRouteWrapper: React.FC = () => {
     return (
       <div className="h-full flex items-center justify-center">
         <div className="text-center">
-          <div className="text-red-500 text-lg mb-2">Something went wrong</div>
-          <p className="text-muted-foreground">Please try again later.</p>
+          <div className="text-red-500 text-lg mb-2">{t('messages.error')}</div>
+          <p className="text-muted-foreground">{t('messages.pleaseTryAgainLater')}</p>
         </div>
       </div>
     );
@@ -433,12 +437,13 @@ function AuthProviderChooser({ children }: Readonly<{ children: React.ReactNode 
 }
 
 const App: React.FC = () => {
+  const { t } = useTranslation('common');
   const [announcement, setAnnouncement] = useState<AnnouncementBarProps | null>({
-    message: "Your free trial ends in 3 days.",
+    message: t('announcement.freeTrialEnds'),
     type: "warning",
     buttons: [
-      { label: "Upgrade", onClick: () => globalThis.location.href = '/billing', style: "primary" },
-      { label: "Remind me later", onClick: () => setAnnouncement(null) }
+      { label: t('buttons.upgrade'), onClick: () => globalThis.location.href = '/billing', style: "primary" },
+      { label: t('buttons.remindMeLater'), onClick: () => setAnnouncement(null) }
     ]
   });
   const [plugins, setPlugins] = useState<unknown[]>([]);
@@ -468,7 +473,7 @@ const App: React.FC = () => {
         <h2>Plugin Initialization Error</h2>
         <p>{initError}</p>
         <button onClick={() => globalThis.location.reload()}>
-          Reload Application
+          {t('buttons.reload')}
         </button>
       </div>
     );
@@ -499,6 +504,7 @@ export default App;
 
 // Guard that ensures workspaces are fetched once before rendering private routes
 const WorkspacesGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { t } = useTranslation('common');
   const location = useLocation();
 
   // Public routes that don't need workspace data
@@ -538,7 +544,7 @@ const WorkspacesGuard: React.FC<{ children: React.ReactNode }> = ({ children }) 
       <div className="w-full h-screen flex items-center justify-center">
         <div className="flex flex-col items-center space-y-3">
           <Loader size={10} />
-          <div className="text-sm text-gray-600 dark:text-gray-300">Preparing your workspace…</div>
+          <div className="text-sm text-gray-600 dark:text-gray-300">{t('messages.preparingWorkspace')}</div>
         </div>
       </div>
     );

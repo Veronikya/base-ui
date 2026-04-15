@@ -3,6 +3,7 @@
 // Websites: https://www.aptlogica.com | https://www.serenibase.com
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useMemo, useRef, useEffect, Suspense, lazy } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Plus, Import, Search, Zap, Database, ChevronDown } from 'lucide-react';
 import { useWorkspaceBases, useCreateBase, useUpdateBase, useDeleteBase, useBaseTables, useCreateTable } from '../hooks/useApi';
 import { useNavigationStore } from '../stores/navigationStore';
@@ -69,15 +70,15 @@ const BaseMenuWrapper: React.FC<{
   );
 };
 
-// Helper function to get sort option display label
-const getSortOptionLabel = (option: 'recent' | 'a-z' | 'z-a'): string => {
-  if (option === 'recent') return 'Recents';
-  if (option === 'a-z') return 'A-Z';
-  return 'Z-A';
-};
-
 const HomePage: React.FC = () => {
+  const { t } = useTranslation(['common', 'home']);
   const queryClient = useQueryClient();
+
+  const sortLabels = useMemo(() => ({
+    recent: t('home:sort.recent'),
+    'a-z': t('home:sort.aToZ'),
+    'z-a': t('home:sort.zToA'),
+  }), [t]);
   const { selectedWorkspaceId, navigateToTable } = useNavigationStore();
   const { data: workspaceBasesData, isLoading: basesLoading } = useWorkspaceBases(selectedWorkspaceId || '');
   const toast = useToast();
@@ -202,13 +203,13 @@ const HomePage: React.FC = () => {
 
       if (tables.length === 0) {
         // No tables - show toast and open create table modal
-        toast.info('This base has no tables yet. Create your first table to get started!');
+        toast.info(t('home:toast.noTablesYet'));
         setShowCreateTableBaseId(checkingBaseId);
       } else {
         // Has tables - navigate to first view
         navigateToFirstView(checkingBaseId).catch((error: any) => {
           console.error('Failed to navigate to base:', error);
-          toast.error(error?.message || 'Failed to navigate to base. Please try again.');
+          toast.error(t('home:toast.navigationFailed'));
         });
       }
 
@@ -257,13 +258,13 @@ const HomePage: React.FC = () => {
 
       // Check if there are any changes to save
       if (Object.keys(updates).length === 0) {
-        toast.info('No changes to save');
+        toast.info(t('common:messages.noChangesToSave'));
         setEditingBase(null);
         return;
       }
 
       await updateBaseMutation.mutateAsync({ baseId: editingBase.id, updates });
-      toast.success('Base updated successfully');
+      toast.success(t('common:toast.baseUpdated'));
       setEditingBase(null);
 
       // Invalidate queries to refresh the list
@@ -272,7 +273,7 @@ const HomePage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['allBases'] });
     } catch (err: any) {
       console.error('Failed to update base:', err);
-      toast.error(err?.message || 'Failed to update base. Please try again.');
+      toast.error(t('home:toast.updateFailed'));
     }
   };
 
@@ -292,10 +293,10 @@ const HomePage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['workspaces'] });
       queryClient.invalidateQueries({ queryKey: ['allBases'] });
 
-      toast.success('Base deleted successfully');
+      toast.success(t('common:toast.baseDeleted'));
     } catch (err: any) {
       console.error('Failed to delete base:', err);
-      toast.error(err?.message || 'Failed to delete base. Please try again.');
+      toast.error(t('home:toast.deleteFailed'));
       throw err; // Re-throw so modal can handle it
     }
   };
@@ -307,7 +308,7 @@ const HomePage: React.FC = () => {
 
   const handleCreateBase = async ({ name, description, image }: { name: string; description: string; image?: File | null }) => {
     if (!selectedWorkspaceId) {
-      toast.error('Please select a workspace first');
+      toast.error(t('common:messages.selectWorkspace'));
       return;
     }
 
@@ -324,7 +325,7 @@ const HomePage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['workspaces'] });
       queryClient.invalidateQueries({ queryKey: ['allBases'] });
 
-      toast.success('Base created successfully');
+      toast.success(t('common:toast.baseCreated'));
       setShowCreateBase(false);
       // COMMENTED OUT: Navigation to table on base creation
       // try {
@@ -344,7 +345,7 @@ const HomePage: React.FC = () => {
     } catch (err: unknown) {
       const errorMessage = err && typeof err === 'object' && 'message' in err
         ? String(err.message)
-        : 'Failed to create base. Please try again.';
+        : t('home:toast.createFailed');
       toast.error(errorMessage);
     }
   };
@@ -354,7 +355,7 @@ const HomePage: React.FC = () => {
       setSelectedImportType('csv');
       setShowImportModal(true);
     } else {
-      toast.info(`${importType.toUpperCase()} import will be available soon`);
+      toast.info(t('common:toast.importAvailableSoon', { type: importType.toUpperCase() }));
     }
   };
 
@@ -380,10 +381,9 @@ const HomePage: React.FC = () => {
   };
 
   const formatLastModified = (dateString: string | null | undefined) => {
-    if (!dateString) return 'Last modified Unknown';
+    if (!dateString) return t('home:bases.lastModifiedUnknown');
     const relative = formatRelativeDate(dateString);
-    // Return in format "Last modified X ago" where X will be made bold
-    return `Last modified ${relative}`;
+    return `${t('home:bases.lastModified')} ${relative}`;
   };
 
   const currentUser = useCurrentUser();
@@ -404,19 +404,19 @@ const HomePage: React.FC = () => {
         <div className="p-8 md:p-12 lg:p-16">
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl font-semibold text-primary mb-4">
-              Welcome
+              {t('home:noWorkspace.title')}
             </h1>
             <p className="text-lg text-primary max-w-2xl">
-              We've created intuitive interfaces efficiently and effortlessly to help you manage your data.
+              {t('home:noWorkspace.subtitle')}
             </p>
           </div>
           <div className="flex flex-col items-center justify-center py-16 border border-dashed rounded-xl bg-gray-50">
             <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
               <Zap className="w-8 h-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-semibold text-primary mb-2">Please select a workspace</h3>
+            <h3 className="text-lg font-semibold text-primary mb-2">{t('home:noWorkspace.selectPrompt')}</h3>
             <p className="text-sm text-gray-600 text-center max-w-md">
-              Select a workspace from the dropdown in the header to view your bases.
+              {t('home:noWorkspace.selectDescription')}
             </p>
           </div>
         </div>
@@ -444,10 +444,10 @@ const HomePage: React.FC = () => {
           {/* Left Side - Welcome Message */}
           <div className="flex-1 min-w-0">
             <h1 className="text-3xl font-normal text-black mb-3">
-              Welcome back, <span className="text-3xl font-semibold text-black">{userName}</span> 👋
+              {t('common:messages.welcomeBackUser', { name: userName })}
             </h1>
             <p className="text-base md:text-lg text-black max-w-2xl">
-              We've prepared quick actions to help you create interfaces efficiently and effortlessly.
+              {t('home:welcome.subtitle')}
             </p>
           </div>
 
@@ -459,7 +459,7 @@ const HomePage: React.FC = () => {
                 type="button"
                 onClick={() => {
                   if (!selectedWorkspaceId) {
-                    toast.error('Please select a workspace first');
+                    toast.error(t('common:messages.selectWorkspace'));
                     return;
                   }
                   setShowCreateBase(true);
@@ -470,8 +470,8 @@ const HomePage: React.FC = () => {
                   <Plus className="w-6 h-6 text-gray-900" />
                 </div>
                 <div>
-                  <div className="font-semibold text-md text-gray-900">Create New Base</div>
-                  <div className="text-xs text-gray-600">Creates a new base.</div>
+                  <div className="font-semibold text-md text-gray-900">{t('home:actionCards.createBase')}</div>
+                  <div className="text-xs text-gray-600">{t('home:actionCards.createBaseDesc')}</div>
                 </div>
               </button>
             )}
@@ -487,8 +487,8 @@ const HomePage: React.FC = () => {
                   <Import className="w-6 h-6 text-gray-900" />
                 </div>
                 <div>
-                  <div className="font-semibold text-md text-gray-900">Import Data</div>
-                  <div className="text-xs text-gray-600">Bring in external data.</div>
+                  <div className="font-semibold text-md text-gray-900">{t('home:actionCards.importData')}</div>
+                  <div className="text-xs text-gray-600">{t('home:actionCards.importDataDesc')}</div>
                 </div>
               </button>
             )}
@@ -498,7 +498,7 @@ const HomePage: React.FC = () => {
 
       {/* All Bases Section */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center border-b justify-between gap-4 py-5 mb-5">
-        <h2 className="text-2xl font-semibold text-primary">All Bases</h2>
+        <h2 className="text-2xl font-semibold text-primary">{t('home:bases.title')}</h2>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           {/* Search Input */}
           <div className="relative flex-1 sm:flex-none w-72">
@@ -506,7 +506,7 @@ const HomePage: React.FC = () => {
               <Search className="w-4 h-4 text-gray-400 mr-2 flex-shrink-0" />
               <input
                 type="text"
-                placeholder="Search bases"
+                placeholder={t('home:search.placeholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="flex-1 bg-transparent border-none outline-none text-sm text-primary placeholder-gray-400"
@@ -525,7 +525,7 @@ const HomePage: React.FC = () => {
                 }`}
             >
               <span className="font-medium text-primary">
-                {getSortOptionLabel(sortOption)}
+                {sortLabels[sortOption]}
               </span>
               <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${isSortDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
@@ -542,7 +542,7 @@ const HomePage: React.FC = () => {
                     className="w-full rounded-xl text-left p-2 hover:bg-gray-200 text-sm transition-all duration-200 cursor-pointer"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-primary">Recent</span>
+                      <span className="text-primary">{t('home:sort.recent')}</span>
                       {sortOption === 'recent' && (
                         <div className="w-2 h-2 bg-green-500 rounded-full ring ring-green-100 flex-shrink-0"></div>
                       )}
@@ -556,7 +556,7 @@ const HomePage: React.FC = () => {
                     className="w-full rounded-xl text-left p-2 hover:bg-gray-200 text-sm transition-all duration-200 cursor-pointer"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-primary">A-Z</span>
+                      <span className="text-primary">{t('home:sort.aToZ')}</span>
                       {sortOption === 'a-z' && (
                         <div className="w-2 h-2 bg-green-500 rounded-full ring ring-green-100 flex-shrink-0"></div>
                       )}
@@ -570,7 +570,7 @@ const HomePage: React.FC = () => {
                     className="w-full rounded-xl text-left p-2 hover:bg-gray-200 text-sm transition-all duration-200 cursor-pointer"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-primary">Z-A</span>
+                      <span className="text-primary">{t('home:sort.zToA')}</span>
                       {sortOption === 'z-a' && (
                         <div className="w-2 h-2 bg-green-500 rounded-full ring ring-green-100 flex-shrink-0"></div>
                       )}
@@ -589,9 +589,9 @@ const HomePage: React.FC = () => {
           <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
             <Zap className="w-8 h-8 text-gray-400" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No bases found</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{searchTerm ? t('home:bases.noBasesMatchSearch') : t('home:bases.noBasesYet')}</h3>
           <p className="text-sm text-gray-600 text-center max-w-md">
-            {searchTerm ? 'No bases match your search. Try a different term.' : 'You don\'t have any bases yet. Create your first base to get started.'}
+            {searchTerm ? '' : t('home:bases.createFirst')}
           </p>
         </div>
       ) : (
@@ -639,7 +639,7 @@ const HomePage: React.FC = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <h3 className="font-semibold text-base text-gray-900 leading-tight truncate flex-1 min-w-0" title={base.title || base.name}>
-                        {base.title || base.name || 'Untitled Base'}
+                        {base.title || base.name || t('home:bases.untitled')}
                       </h3>
                       {/* Show badge in place of menu for read-only access, otherwise show menu */}
                       {base.access_level && (base.access_level === 'workspace-read' || base.access_level === 'base-read') ? (
@@ -656,7 +656,7 @@ const HomePage: React.FC = () => {
                       )}
                     </div>
                     <p className="text-sm text-gray-600 line-clamp-1 leading-relaxed" title={base.description}>
-                      {base.description || 'Base for general purpose work.'}
+                      {base.description || t('home:bases.noDescription')}
                     </p>
                   </div>
                 </div>
@@ -667,7 +667,7 @@ const HomePage: React.FC = () => {
                 >
                   {timePart ? (
                     <>
-                      <span className="text-gray-600">Last modified </span>
+                      <span className="text-gray-600">{t('home:bases.lastModified')} </span>
                       <span className="font-semibold text-gray-700">{timePart}</span>
                     </>
                   ) : (
@@ -720,8 +720,8 @@ const HomePage: React.FC = () => {
           isOpen={!!editingBase}
           onClose={() => setEditingBase(null)}
           onSave={handleSaveBase}
-          title="Edit Base"
-          subtitle="Update base name and description"
+          title={t('home:editBase.title')}
+          subtitle={t('home:editBase.subtitle')}
           icon={<Database size={20} className="icon-primary" />}
           initialName={editingBase.title || editingBase.name || ''}
           initialDescription={editingBase.description || ''}
@@ -794,10 +794,10 @@ const HomePage: React.FC = () => {
                 }
 
                 setShowCreateTableBaseId(null);
-                toast.success('Table created successfully');
+                toast.success(t('common:toast.tableCreated'));
               } catch (err) {
                 console.error('Failed to create table:', err);
-                toast.error('Failed to create table. Please try again.');
+                toast.error(t('common:errors.createTableFailed'));
               }
             }}
           />

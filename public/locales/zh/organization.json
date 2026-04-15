@@ -1,0 +1,28 @@
+{
+  "title": "组织设置",
+  "subtitle": "管理您的组织详情",
+  "organizationInfo": "组织信息",
+  "ownerDetails": "所有者详情",
+  "ownerProfile": "所有者资料和联系信息。",
+  "companyName": "公司名称",
+  "companyNamePlaceholder": "请输入公司名称",
+  "description": "描述",
+  "descriptionPlaceholder": "请输入组织描述...",
+  "joined": "加入时间",
+  "owner": "所有者",
+  "recently": "最近",
+  "saveChanges": "保存更改",
+  "saving": "保存中...",
+  "cancel": "取消",
+  "messages": {
+    "loading": "正在加载信息",
+    "noChangesToSave": "没有需要保存的更改",
+    "changesDiscarded": "已放弃更改",
+    "organizationUpdated": "组织更新成功"
+  },
+  "errors": {
+    "companyNameRequired": "公司名称为必填项",
+    "descriptionRequired": "描述为必填项",
+    "failedToUpdateOrganization": "更新组织失败"
+  }
+}

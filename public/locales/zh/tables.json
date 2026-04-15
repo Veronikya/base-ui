@@ -1,0 +1,27 @@
+{
+  "createTable": {
+    "title": "创建表格",
+    "subtitle": "在工作区中添加新表格",
+    "form": {
+      "tableName": "表格名称",
+      "description": "描述",
+      "tableNamePlaceholder": "请输入表格名称",
+      "descriptionPlaceholder": "请输入表格描述",
+      "tableNameRequired": "表格名称为必填项",
+      "invalidTableName": "无效的表格名称",
+      "minChars": "最少 3 个字符",
+      "requirements": "表格名称要求：",
+      "charCount": "{{count}}/50 个字符"
+    },
+    "buttons": {
+      "cancel": "取消",
+      "create": "创建表格",
+      "creating": "正在创建..."
+    },
+    "errors": {
+      "nameRequired": "表格名称为必填项",
+      "invalidName": "无效的表格名称",
+      "createFailed": "创建表格失败，请重试。"
+    }
+  }
+}

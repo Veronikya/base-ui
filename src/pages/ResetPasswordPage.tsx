@@ -5,10 +5,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams, Link } from "react-router-dom";
 import { ArrowLeft, Eye, EyeOff, CheckCircle, Info, HelpCircle } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 import { resetPassword } from "../service/clientService";
 import { validatePasswordStrength } from "../utils/validation";
 
 const ResetPasswordPage: React.FC = () => {
+  const { t } = useTranslation(['auth', 'common', 'fields']);
   const { token: tokenParam } = useParams<{ token: string }>();
   const [searchParams] = useSearchParams();
   const tokenFromQuery = searchParams.get('token');
@@ -41,30 +43,30 @@ const ResetPasswordPage: React.FC = () => {
 
     const trimmedPassword = formData.password.trim();
     if (trimmedPassword.length === 0) {
-      setPasswordError("This field is required");
+      setPasswordError(t('auth:validation.passwordRequiredField'));
       return;
     }
 
     const trimmedConfirmPassword = formData.confirmPassword.trim();
     if (trimmedConfirmPassword.length === 0) {
-      setConfirmPasswordError("This field is required");
+      setConfirmPasswordError(t('auth:validation.passwordRequiredField'));
       return;
     }
 
     // Use validatePasswordStrength (no user data available for reset password)
     const passwordValidation = validatePasswordStrength(formData.password, '', '', '');
     if (passwordValidation.isValid === false) {
-      setPasswordError(passwordValidation.errorMessage || "Password doesn't meet requirements");
+      setPasswordError(passwordValidation.errorMessage || t('common:errors.passwordRequirements'));
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setConfirmPasswordError("Passwords do not match");
+      setConfirmPasswordError(t('common:errors.passwordMismatch'));
       return;
     }
 
     if (!token) {
-      setError("Invalid reset token");
+      setError(t('common:errors.invalidResetToken'));
       return;
     }
 
@@ -76,9 +78,9 @@ const ResetPasswordPage: React.FC = () => {
       });
       setIsSuccess(true);
     } catch (err: unknown) {
-      const errorMessage = err && typeof err === 'object' && 'message' in err 
-        ? String(err.message) 
-        : 'Failed to reset password';
+      const errorMessage = err && typeof err === 'object' && 'message' in err
+        ? String(err.message)
+        : t('common:errors.failedToResetPassword');
       setError(errorMessage);
     } finally {
       setIsLoading(false);
@@ -92,15 +94,15 @@ const ResetPasswordPage: React.FC = () => {
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Password Reset Successful!</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('auth:resetPassword.successTitle')}</h1>
           <p className="text-gray-600 mb-6">
-            Your password has been successfully reset. You can now sign in with your new password.
+            {t('common:toast.passwordResetSuccess')}
           </p>
-          <Link 
-            to="/login" 
+          <Link
+            to="/login"
             className="w-full btn-primary py-2 rounded-md transition inline-block text-center"
           >
-            Sign In
+            {t('common:buttons.signIn')}
           </Link>
         </div>
       </div>
@@ -111,23 +113,23 @@ const ResetPasswordPage: React.FC = () => {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="max-w-lg border w-full bg-card rounded-2xl shadow-md p-8">
         <div className="mb-6">
-          <Link 
-            to="/login" 
+          <Link
+            to="/login"
             className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800 transition mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Login
+            {t('auth:resetPassword.backToLogin')}
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Reset Your Password</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('auth:resetPassword.title')}</h1>
           <p className="text-gray-600">
-            Enter your new password below. Make sure it's secure and easy to remember.
+            {t('auth:resetPassword.subtitle')}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
             <label htmlFor="reset-password-new" className="field-component-label">
-              New Password{' '}
+              {t('fields:password.new')}{' '}
               <span className="field-component-required">*</span>
             </label>
             <div className="relative">
@@ -143,17 +145,17 @@ const ResetPasswordPage: React.FC = () => {
                 onBlur={() => {
                   const trimmedPassword = formData.password.trim();
                   if (trimmedPassword.length === 0) {
-                    setPasswordError("This field is required");
+                    setPasswordError(t('auth:validation.passwordRequiredField'));
                   } else {
                     const validation = validatePasswordStrength(formData.password, '', '', '');
                     if (validation.isValid === false) {
-                      setPasswordError(validation.errorMessage || "Password doesn't meet requirements");
+                      setPasswordError(validation.errorMessage || t('common:errors.passwordRequirements'));
                     } else {
                       setPasswordError(null);
                     }
                   }
                 }}
-                placeholder="Enter your new password"
+                placeholder={t('auth:resetPassword.newPasswordPlaceholder')}
                 className={`field-component field-component-border field-component-focus placeholder-[var(--color-text-placeholder)] ${passwordError ? "border-destructive bg-red-50" : ""} shadow-[var(--shadow-xs)]`}
                 style={{ boxShadow: "var(--shadow-xs)" }}
               />
@@ -173,7 +175,7 @@ const ResetPasswordPage: React.FC = () => {
                 <div className="relative group">
                   <HelpCircle className={`w-4 h-4 ${passwordError ? "text-red-400" : "text-gray-400"} cursor-help`} />
                   <div className="invisible group-hover:visible group-focus-within:visible absolute left-0 mt-1 w-72 bg-card border rounded-xl shadow-lg p-4 text-sm z-50">
-                    <h4 className="font-medium mb-2 text-primary">Password Requirements:</h4>
+                    <h4 className="font-medium mb-2 text-primary">{t('auth:resetPassword.passwordRequirementsTitle')}</h4>
                     <ul className="space-y-1">
                       {(() => {
                         const validation = validatePasswordStrength(formData.password, '', '', '');
@@ -181,25 +183,25 @@ const ResetPasswordPage: React.FC = () => {
                         return (
                           <>
                             <li className={`flex items-center ${validation.hasLength ? 'text-green-600' : 'text-red-500'}`}>
-                              • Minimum 8 characters
+                              • {t('auth:resetPassword.minLength')}
                             </li>
                             <li className={`flex items-center ${validation.hasUpper ? 'text-green-600' : 'text-red-500'}`}>
-                              • At least one uppercase letter
+                              • {t('auth:resetPassword.hasUpper')}
                             </li>
                             <li className={`flex items-center ${validation.hasLower ? 'text-green-600' : 'text-red-500'}`}>
-                              • At least one lowercase letter
+                              • {t('auth:resetPassword.hasLower')}
                             </li>
                             <li className={`flex items-center ${validation.hasNumber ? 'text-green-600' : 'text-red-500'}`}>
-                              • At least one number
+                              • {t('auth:resetPassword.hasNumber')}
                             </li>
                             <li className={`flex items-center ${validation.hasSymbol ? 'text-green-600' : 'text-red-500'}`}>
-                              • At least one symbol
+                              • {t('auth:resetPassword.hasSymbol')}
                             </li>
                             <li className={`flex items-center ${hasPassword && validation.containsNameAndEmail ? 'text-green-600' : 'text-red-500'}`}>
-                              • Should not contain your name or email
+                              • {t('auth:resetPassword.noNameEmail')}
                             </li>
                             <li className={`flex items-center ${hasPassword && validation.containsCommon ? 'text-green-600' : 'text-red-500'}`}>
-                              • Password Should not contain common words
+                              • {t('auth:resetPassword.noCommonWords')}
                             </li>
                           </>
                         );
@@ -225,7 +227,7 @@ const ResetPasswordPage: React.FC = () => {
 
           <div className="relative">
             <label htmlFor="reset-password-confirm" className="field-component-label">
-              Confirm New Password{' '}
+              {t('fields:password.confirm')}{' '}
               <span className="field-component-required">*</span>
             </label>
             <div className="relative">
@@ -241,17 +243,17 @@ const ResetPasswordPage: React.FC = () => {
                 onBlur={() => {
                   const trimmedConfirm = formData.confirmPassword.trim();
                   if (trimmedConfirm.length === 0) {
-                    setConfirmPasswordError("This field is required");
+                    setConfirmPasswordError(t('auth:validation.passwordRequiredField'));
                   } else {
                     const passwordsMatch = formData.password === formData.confirmPassword;
                     if (passwordsMatch === false) {
-                      setConfirmPasswordError("Passwords do not match");
+                      setConfirmPasswordError(t('common:errors.passwordMismatch'));
                     } else {
                       setConfirmPasswordError(null);
                     }
                   }
                 }}
-                placeholder="Confirm your new password"
+                placeholder={t('auth:resetPassword.confirmPasswordPlaceholder')}
                 className={`field-component field-component-border field-component-focus placeholder-[var(--color-text-placeholder)] ${confirmPasswordError ? "border-destructive bg-red-50" : ""} shadow-[var(--shadow-xs)]`}
                 style={{ boxShadow: "var(--shadow-xs)" }}
               />
@@ -298,15 +300,15 @@ const ResetPasswordPage: React.FC = () => {
             })()}
             className="w-full btn-primary py-2 px-4 rounded-xl font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Resetting..." : "Reset Password"}
+            {isLoading ? t('common:messages.resetting') : t('auth:resetPassword.resetButton')}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Remember your password?{" "}
+            {t('auth:resetPassword.rememberPassword')}{" "}
             <Link to="/login" className="text-primary hover:underline">
-              Sign in
+              {t('auth:resetPassword.signInLink')}
             </Link>
           </p>
         </div>

@@ -4,13 +4,16 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React from "react";
 import { AuditUser } from './AuditUser';
+import { useTranslation } from "react-i18next";
 
 interface AuditLastModifiedByProps {
   placeholder?: string;
 }
 
 export const AuditLastModifiedBy: React.FC<AuditLastModifiedByProps> = ({
-  placeholder = "Last Modified by...",
+  placeholder,
 }) => {
-  return <AuditUser placeholder={placeholder} />;
+  const { t } = useTranslation(['fields']);
+  const defaultPlaceholder = t('fields:placeholders.lastModifiedBy');
+  return <AuditUser placeholder={placeholder ?? defaultPlaceholder} />;
 };

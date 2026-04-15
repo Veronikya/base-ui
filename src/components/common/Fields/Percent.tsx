@@ -5,6 +5,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Percent as PercentageIcon } from 'lucide-react';
 import { useClickHandler } from '../../../utils/helpers';
+import { useTranslation } from 'react-i18next';
 
 interface PercentConfig {
   displayAsProgress?: boolean;
@@ -80,13 +81,13 @@ const getProgressColorClass = (color: string): string => {
   return colorMap[color] || 'bg-[var(--color-utility-brand-500)]';
 };
 
-const validatePercent = (val: string, required: boolean): string | null => {
-  if (required) return 'This field is required';
+const validatePercent = (val: string, required: boolean, t?: (key: string) => string): string | null => {
+  if (required) return t ? t('fields:validation.fieldRequired') : 'This field is required';
   if (!val) return null;
 
   const numValue = Number.parseFloat(val);
-  if (Number.isNaN(numValue)) return 'Please enter a valid percentage';
-  if (numValue < 0 || numValue > 100) return 'Percentage must be between 0 and 100';
+  if (Number.isNaN(numValue)) return t ? t('fields:validation.invalidPercentage') : 'Please enter a valid percentage';
+  if (numValue < 0 || numValue > 100) return t ? t('fields:validation.percentageRange') : 'Percentage must be between 0 and 100';
 
   return null;
 };
@@ -176,7 +177,7 @@ const usePercentState = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replaceAll(/[^0-9.-]/g, '');
     setLocalValue(newValue);
-    const validationError = validatePercent(newValue, required);
+    const validationError = validatePercent(newValue, required, t);
     setShowError(!!validationError);
   };
 
@@ -214,7 +215,7 @@ const usePercentState = ({
     }
   };
 
-  const error = validatePercent(localValue, required);
+  const error = validatePercent(localValue, required, t);
 
   return {
     localValue,
@@ -243,6 +244,7 @@ export const Percent: React.FC<PercentProps> = ({
   helperText,
   className = '',
 }) => {
+  const { t } = useTranslation(['fields']);
   const { displayAsProgress = false, defaultValue, progressColor = 'blue' } = config;
 
   const {

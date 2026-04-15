@@ -5,6 +5,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Info } from "lucide-react";
 import { useClickHandler } from "../../../utils/helpers";
+import { useTranslation } from "react-i18next";
 
 interface SingleLineTextProps {
   label?: string;
@@ -68,6 +69,7 @@ export const SingleLineText: React.FC<SingleLineTextProps> = ({
     maxLength: configMaxLength = maxLength,
     placeholder: configPlaceholder = placeholder,
   } = config;
+  const { t } = useTranslation(['fields']);
 
   const [localValue, setLocalValue] = useState<string>(value ?? defaultValue ?? "");
   const [error, setError] = useState<string | null>(null);
@@ -90,8 +92,8 @@ export const SingleLineText: React.FC<SingleLineTextProps> = ({
   }, [readOnly, isEditing]);
 
   const validate = (val: string) => {
-    if (required && !val.trim()) return "This field is required";
-    if (val.length > configMaxLength) return `Max ${configMaxLength} characters allowed`;
+    if (required && !val.trim()) return t('fields:validation.fieldRequired');
+    if (val.length > configMaxLength) return t('fields:validation.maxChars', { max: configMaxLength });
     return null;
   };
 

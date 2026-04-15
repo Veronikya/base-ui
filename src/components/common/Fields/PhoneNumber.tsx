@@ -5,6 +5,7 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import React, { useState, useEffect, useRef } from "react";
 import { useClickHandler } from "../../../utils/helpers";
+import { useTranslation } from "react-i18next";
 
 interface PhoneNumberProps {
   label?: string;
@@ -43,6 +44,7 @@ export const PhoneNumber: React.FC<PhoneNumberProps> = ({
   icon = "",
   config = {},
 }) => {
+  const { t } = useTranslation(['fields']);
   const {
     phoneValid = true,
     defaultValue = "",
@@ -82,9 +84,9 @@ export const PhoneNumber: React.FC<PhoneNumberProps> = ({
   const sanitizeInput = (val: string) => val.replaceAll(/\D/g, "");
 
   const validate = (val: string) => {
-    if (required && !val.trim()) return "This field is required";
+    if (required && !val.trim()) return t('fields:validation.fieldRequired');
     if (val.trim() === "") return null;
-    if (phoneValid && !validatePhone(val)) return "Please enter a valid phone number";
+    if (phoneValid && !validatePhone(val)) return t('fields:validation.invalidPhone');
     return null;
   };
 

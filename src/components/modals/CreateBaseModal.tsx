@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect } from 'react';
 import { Plus, X, HelpCircle, CloudUpload } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { MultiLineText } from '../common/Fields/MultiLineText';
 import { validateBaseName } from '../../utils/nameValidation';
 
@@ -18,19 +19,23 @@ interface CreateBaseModalProps {
   initialImage?: string | null;
 }
 
+interface RenderUploadButtonProps {
+  className: string;
+  onDragOver: (e: React.DragEvent) => void;
+  onDrop: (e: React.DragEvent) => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  t: (key: string, options?: Record<string, unknown>) => string;
+}
+
 const renderUploadButton = ({
   className,
   onDragOver,
   onDrop,
   onClick,
   onChange,
-}: {
-  className: string;
-  onDragOver: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) => (
+  t,
+}: RenderUploadButtonProps) => (
   <button
     type="button"
     onDragOver={onDragOver}
@@ -47,10 +52,10 @@ const renderUploadButton = ({
     />
     <CloudUpload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
     <p className="text-sm text-gray-600 mb-1">
-      <span className="text-green-500 font-medium">Click to upload</span> or drag and drop
+      <span className="text-green-500 font-medium">{t('common:upload.clickToUpload')}</span> {t('common:upload.orDragAndDrop')}
     </p>
     <p className="text-xs text-gray-500">
-      SVG, PNG, JPG or GIF (max. 800 x 400px)
+      {t('common:upload.imageConstraints')}
     </p>
   </button>
 );
@@ -97,6 +102,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
   isUpdate = false,
   initialImage = null,
 }) => {
+  const { t } = useTranslation(['common', 'workspace', 'fields']);
   const [name, setName] = useState(defaultName);
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<File | null>(null);
@@ -148,7 +154,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
       // Validate file type
       const validTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
       if (!validTypes.includes(file.type)) {
-        setImageError('Please upload a valid image file (SVG, PNG, JPG, or GIF)');
+        setImageError(t('common:errors.invalidFileType'));
         return;
       }
 
@@ -156,7 +162,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
       const img = new Image();
       img.onload = () => {
         if (img.width > 800 || img.height > 400) {
-          setImageError('Image dimensions must be max 800 x 400px');
+          setImageError(t('common:errors.imageDimensionsMax'));
         } else {
           setImageError('');
         }
@@ -164,7 +170,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
         setImagePreview(getSafeImageSrc(URL.createObjectURL(file)));
       };
       img.onerror = () => {
-        setImageError('Failed to load image. Please try again.');
+        setImageError(t('common:errors.imageLoadFailed'));
         setImage(file);
         setImagePreview(getSafeImageSrc(URL.createObjectURL(file)));
       };
@@ -188,7 +194,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
         const img = new Image();
         img.onload = () => {
           if (img.width > 800 || img.height > 400) {
-            setImageError('Image dimensions must be max 800 x 400px');
+            setImageError(t('common:errors.imageDimensionsMax'));
           } else {
             setImageError('');
           }
@@ -196,13 +202,13 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
           setImagePreview(getSafeImageSrc(URL.createObjectURL(file)));
         };
         img.onerror = () => {
-          setImageError('Failed to load image. Please try again.');
+          setImageError(t('common:errors.imageLoadFailed'));
           setImage(file);
           setImagePreview(getSafeImageSrc(URL.createObjectURL(file)));
         };
         img.src = URL.createObjectURL(file);
       } else {
-        setImageError('Please upload a valid image file (SVG, PNG, JPG, or GIF)');
+        setImageError(t('common:errors.invalidFileType'));
       }
     }
   };
@@ -221,14 +227,14 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
     e?.preventDefault();
 
     if (!name.trim()) {
-      setError('Base name is required');
+      setError(t('workspace:general.workspaceNameRequired'));
       return;
     }
 
     // Check validation
     const validation = validateBaseName(name, existingBases);
     if (!validation.isValid) {
-      setError(validation.error || 'Invalid base name');
+      setError(validation.error || t('workspace:errors.invalidBaseName'));
       return;
     }
 
@@ -244,7 +250,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
       // Close the modal on successful creation
       onClose();
     } catch (err) {
-      setError('Failed to create base. Please try again.' + (err instanceof Error ? err.message : ''));
+      setError(t('workspace:errors.createBaseFailed') + (err instanceof Error ? err.message : ''));
     } finally {
       setIsSubmitting(false);
     }
@@ -270,17 +276,17 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
   // Helper function to get button text based on state
   const getButtonText = (): string => {
     if (isUpdate) {
-      return 'Update';
+      return t('common:buttons.update');
     }
-    return 'Create Base';
+    return t('workspace:general.createBase');
   };
 
   // Helper function to get loading button text based on state
   const getLoadingButtonText = (): string => {
     if (isUpdate) {
-      return 'Updating...';
+      return t('common:buttons.updating');
     }
-    return 'Creating...';
+    return t('common:buttons.creating');
   };
 
   if (!isOpen) return null;
@@ -312,8 +318,8 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
               <Plus className="text-green-600 h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-xl font-semibold text-primary truncate">{isUpdate ? 'Update Base' : 'Create Base'}</h2>
-              <p className="text-sm text-secondary truncate">{isUpdate ? 'Update base details' : 'Add a new base to your workspace'}</p>
+              <h2 className="text-xl font-semibold text-primary truncate">{isUpdate ? t('workspace:general.editBase') : t('workspace:general.createBase')}</h2>
+              <p className="text-sm text-secondary truncate">{isUpdate ? t('workspace:general.editBaseDescription') : t('workspace:general.createBaseDescription')}</p>
             </div>
           </div>
           <button
@@ -330,7 +336,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
           <div className="p-4 space-y-4">
             <div className="space-y-1">
               <label htmlFor="baseName" className="block text-sm font-medium text-primary mb-1">
-                Base Name <span className="field-component-required">*</span>
+                {t('workspace:general.baseName')} <span className="field-component-required">*</span>
               </label>
               <div className="relative">
                 <input
@@ -338,7 +344,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
                   id="baseName"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter base name"
+                  placeholder={t('workspace:general.baseNamePlaceholder')}
                   className={`field-component field-component-border field-component-focus ${error || validationError ? 'border-red-500' : 'border'}`}
                   required
                   minLength={3}
@@ -349,10 +355,10 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
                   <span className="relative inline-block group">
                     <HelpCircle className={`w-4 h-4 ${getHelpIconColor()} cursor-help`} />
                     <div className="invisible group-hover:visible absolute right-0 mt-1 mr-2 w-64 bg-card border rounded-xl shadow-lg p-3 text-sm z-50">
-                      <h4 className="font-medium text-primary mb-2">Base name requirements:</h4>
+                      <h4 className="font-medium text-primary mb-2">{t('workspace:general.baseNameRequirements')}</h4>
                       <ul className="space-y-1">
                         <li className={`flex items-center ${name.trim().length >= 3 ? 'text-green-600' : 'text-gray-500'}`}>
-                          • Minimum 3 characters
+                          • {t('workspace:general.minChars')}
                         </li>
                       </ul>
                     </div>
@@ -366,15 +372,15 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
                 </div>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                {name.length}/50 characters
+                {name.length}/50 {t('workspace:general.characters')}
               </p>
             </div>
 
             <MultiLineText
-              label="Description"
+              label={t('workspace:general.description')}
               value={description}
               onChange={value => setDescription(value)}
-              placeholder="Enter base description"
+              placeholder={t('workspace:general.descriptionPlaceholder')}
               rows={5}
               isBorder={true}
             />
@@ -382,7 +388,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
             {/* Image Upload Section */}
             <div className="space-y-1">
               <label htmlFor="image-upload" className="block text-sm font-medium text-primary mb-1">
-                Image
+                {t('workspace:general.image')}
               </label>
               {imagePreview ? (
                 <div className="flex gap-4">
@@ -409,6 +415,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
                       document.getElementById('image-upload')?.click();
                     },
                     onChange: handleImageChange,
+                    t,
                   })}
                 </div>
               ) : (
@@ -421,6 +428,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
                     document.getElementById('image-upload')?.click();
                   },
                   onChange: handleImageChange,
+                  t,
                 })
               )}
               {/* Image Error - Display here, not under Base Name */}
@@ -442,7 +450,7 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
             disabled={isSubmitting}
             className="px-16 py-2 rounded-xl border bg-card hover:bg-gray-50 focus:ring-1 focus:ring-gray-500 transition-all disabled:opacity-50 text-gray-700"
           >
-            Cancel
+            {t('common:buttons.cancel')}
           </button>
           <button
             type="button"
@@ -466,4 +474,4 @@ export const CreateBaseModal: React.FC<CreateBaseModalProps> = ({
       </div>
     </div>
   );
-}; 
+};

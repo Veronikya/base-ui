@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useEffect, useState } from "react";
 import { useClickHandler } from "../../../utils/helpers";
+import { useTranslation } from "react-i18next";
 
 interface EmailProps {
   label?: string;
@@ -38,6 +39,7 @@ export const Email: React.FC<EmailProps> = ({
   helperText,
   config = {},
 }) => {
+  const { t } = useTranslation(['fields']);
   const { emailValid = true, defaultValue = "" } = config;
 
   const [localValue, setLocalValue] = useState(value || defaultValue || "");
@@ -107,10 +109,10 @@ export const Email: React.FC<EmailProps> = ({
   };
 
   const validate = (val: string) => {
-    if (required && !val.trim()) return "This field is required";
+    if (required && !val.trim()) return t('fields:validation.fieldRequired');
     if (val.trim() === "") return null;
     if (emailValid && !validateEmail(val))
-      return "Please enter a valid email address";
+      return t('fields:validation.invalidEmail');
     return null;
   };
 
@@ -121,7 +123,7 @@ export const Email: React.FC<EmailProps> = ({
     if (validationError) {
       // If value is invalid, clear it without saving
       // Only clear if it's not a required field error (empty required field)
-      if (validationError !== "This field is required") {
+      if (validationError !== t('fields:validation.fieldRequired')) {
         setLocalValue("");
         setCommittedValue("");
         // Don't call onChange - this prevents saving invalid values

@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState } from 'react';
 import { Paperclip, Maximize2, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAddAttachment, useRemoveAttachments } from '../../../hooks/useApi';
 import { AttachmentModal } from '../../../plugins/GalleryViewPlugin/components/shared/Modals/AttachmentModal';
 import { AttachmentPreviewModal } from '../../../plugins/GalleryViewPlugin/components/shared/Modals/AttachmentPreviewModal';
@@ -47,6 +48,7 @@ export const Attachment: React.FC<AttachmentProps> = ({
   persistImmediately = true // Default: upload immediately (backward compatible)
 }) => {
   const { maxFiles = 5, maxFileSize = 5 * 1024 * 1024 } = config;
+  const { t } = useTranslation(['fields']);
 
   // API hooks for attachment operations
   const addAttachmentMutation = useAddAttachment();
@@ -68,7 +70,7 @@ export const Attachment: React.FC<AttachmentProps> = ({
   const validate = (files: any[]) => {
     if (!files || !Array.isArray(files) || files.length === 0) {
       if (required) {
-        return 'Please attach at least one file';
+        return t('fields:validation.attachmentRequired');
       }
       return null; // No error if not required and empty
     }

@@ -7,6 +7,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { AlignLeft, Maximize2, X, Bold, Italic, Underline, Strikethrough, List, ListOrdered, Quote, Link2, ExternalLink, Trash2, Edit } from 'lucide-react';
 import { sanitizeExternalUrl } from '../../../utils/urlSecurity';
+import { useTranslation } from 'react-i18next';
 
 interface LongTextProps {
   label?: string;
@@ -50,6 +51,7 @@ export const LongText: React.FC<LongTextProps> = ({
   onModalClose,
   config = {}
 }) => {
+  const { t } = useTranslation(['fields']);
   const { defaultValue = '', maxLength: configMaxLength = maxLength, placeholder: configPlaceholder = placeholder, richText = false, hideMaximizeButton = false } = config;
   const [localValue, setLocalValue] = useState(value || '');
   const [error, setError] = useState<string | null>(null);
@@ -196,11 +198,11 @@ export const LongText: React.FC<LongTextProps> = ({
     const textContent = richText ? stripHTML(val) : val;
 
     if (required && !textContent.trim()) {
-      return 'This field is required';
+      return t('fields:validation.fieldRequired');
     }
 
     if (textContent.length > maxLength) {
-      return `Text must be ${maxLength} characters or less`;
+      return t('fields:validation.invalidText', { max: maxLength });
     }
     return null;
   };
@@ -775,7 +777,7 @@ export const LongText: React.FC<LongTextProps> = ({
             className="mx-2 w-8 h-7 text-gray-400 flex items-center justify-center rounded-lg border shadow-xs hover:bg-gray-200 transition-colors z-0"
             tabIndex={-1}
             disabled={false}
-            title="View full content"
+            title={t('fields:common.view')}
           >
             <Maximize2 className="w-4 h-4" />
           </button>
@@ -804,7 +806,7 @@ export const LongText: React.FC<LongTextProps> = ({
           <div ref={modalRef} className="relative bg-[var(--color-card)] border rounded-xl shadow-xl w-full max-w-5xl h-[85vh] p-6 flex flex-col z-10 overflow-hidden">
             <div className="flex items-center mb-4 flex-shrink-0">
               <AlignLeft className="w-8 h-8 rounded icon-primary p-1 mr-2" />
-              <span className="text-lg font-medium text-muted-foreground">Long Text</span>
+              <span className="text-lg font-medium text-muted-foreground">{t('fields:fieldTypes.longText.label')}</span>
               {richText && !readOnly && (
                 <div className="flex items-center gap-1 ml-4 px-2 py-1 bg-gray-100 rounded-xl">
                   <button
@@ -932,7 +934,7 @@ export const LongText: React.FC<LongTextProps> = ({
                   style={{
                     outline: 'none'
                   }}
-                  data-placeholder={placeholder || 'Start typing...'}
+                  data-placeholder={placeholder || t('fields:placeholders.startTyping')}
                 />
                 <style>{`
                   [contenteditable][data-placeholder]:empty:before {
@@ -995,7 +997,7 @@ export const LongText: React.FC<LongTextProps> = ({
                 onClick={closeModal}
                 className="px-16 py-2 rounded-xl border bg-card hover:bg-gray-50 focus:ring-1 focus:ring-gray-500 transition-all disabled:opacity-50 text-gray-700"
               >
-                Close
+                {t('fields:common.close')}
               </button>
               {!readOnly && (
                 <button
@@ -1003,7 +1005,7 @@ export const LongText: React.FC<LongTextProps> = ({
                   onClick={handleSave}
                   className="px-16 py-2 text-sm font-medium btn-primary transition-colors"
                 >
-                  Save
+                  {t('fields:common.save')}
                 </button>
               )}
             </div>
@@ -1040,7 +1042,7 @@ export const LongText: React.FC<LongTextProps> = ({
                     value={linkEditData.text}
                     onChange={(e) => setLinkEditData({ ...linkEditData, text: e.target.value })}
                     className="w-full bg-[--color-alpha-white] text-[var(--color-text-primary)] px-2 py-1.5 border rounded-xl text-sm focus:outline-none focus:border-[var(--color-brand-600)]"
-                    placeholder="Link text"
+                    placeholder={t('fields:placeholders.linkText')}
                     autoFocus
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {

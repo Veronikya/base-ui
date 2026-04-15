@@ -3,6 +3,7 @@
 // Websites: https://www.aptlogica.com | https://www.serenibase.com
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Plus, Loader2, Edit2, ChevronsUpDown } from 'lucide-react';
 import { useUpdateWorkspace, useWorkspaces, useWorkspaceMembers, useRemoveUserFromWorkspace } from '../../../hooks/useApi';
 import { useToast } from '../../common/Toast';
@@ -22,6 +23,7 @@ interface WorkspaceTabProps {
 }
 
 export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
+  const { t } = useTranslation(['common', 'workspace']);
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string>('');
   const [editWorkspaceName, setEditWorkspaceName] = useState('');
   const [editDescription, setEditDescription] = useState('');
@@ -75,7 +77,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
     }
 
     if (Object.keys(payload).length === 0) {
-      toast.info('No changes to save');
+      toast.info(t('common:messages.noChangesToSave'));
       setIsEditModalOpen(false);
       return;
     }
@@ -85,11 +87,11 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
         workspaceId: selectedWorkspaceId,
         updates: payload
       });
-      toast.success('Workspace updated successfully');
+      toast.success(t('common:toast.workspaceUpdated'));
       setIsEditModalOpen(false);
       workspacesQuery.refetch();
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to update workspace');
+      toast.error(t('common:errors.failedToUpdateWorkspace'));
       throw error; // Re-throw so modal can handle it
     }
   };
@@ -130,14 +132,14 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
 
   const handleRemoveMember = async (memberId: string) => {
     if (!selectedWorkspaceId) {
-      toast.error('No workspace selected');
+      toast.error(t('common:messages.selectWorkspace'));
       return;
     }
 
     // Find the member to get user_id
     const member = members.find(m => m.id === memberId);
     if (!member) {
-      toast.error('Member not found');
+      toast.error(t('common:errors.memberNotFound'));
       return;
     }
 
@@ -147,9 +149,9 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
         workspaceId: selectedWorkspaceId,
         user_id: member.userId
       });
-      toast.success('Member removed successfully');
+      toast.success(t('common:toast.memberRemoved'));
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to remove member');
+      toast.error(t('common:errors.failedToRemoveMember'));
     }
   };
 
@@ -157,7 +159,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
     // Find the member to get user_id
     const member = members.find(m => m.id === memberId);
     if (!member) {
-      toast.error('Member not found');
+      toast.error(t('common:errors.memberNotFound'));
       return;
     }
     setEditingMemberId(member.userId);
@@ -180,7 +182,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
     if (workspaceMembersQuery.error instanceof Error) {
       return workspaceMembersQuery.error.message;
     }
-    return 'An error occurred';
+    return t('common:messages.error');
   };
 
   // Helper function to render members table content
@@ -190,7 +192,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
         <div className="bg-card rounded-xl border p-12">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-3" />
-            <p className="text-primary font-medium">Loading members...</p>
+            <p className="text-primary font-medium">{t('workspace:members.loadingMembers')}</p>
           </div>
         </div>
       );
@@ -199,7 +201,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
       return (
         <div className="bg-card rounded-xl border p-12">
           <div className="text-center border border-dashed border-red-200 rounded-xl bg-red-50 py-8">
-            <p className="text-red-600 font-medium">Failed to load members</p>
+            <p className="text-red-600 font-medium">{t('workspace:errors.failedToLoadMembers')}</p>
             <p className="text-sm text-red-500 mt-1">
               {getErrorMessage()}
             </p>
@@ -221,7 +223,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
               className="flex items-center gap-2 px-4 py-2 btn-primary text-sm"
             >
               <Plus className='h-5 w-5' />
-              Add Member
+              {t('workspace:members.addMember')}
             </button>
           ) : undefined
         }
@@ -264,7 +266,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
                   </span>
                 </div>
                 <span className="text-sm font-medium text-primary">
-                  {selectedWorkspace.title || selectedWorkspace.name || 'Untitled Workspace'}
+                  {selectedWorkspace.title || selectedWorkspace.name || t('workspace:general.untitledWorkspace')}
                 </span>
               </>
             ) : (
@@ -272,7 +274,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
                 <div className="w-8 h-8 bg-gray-400 border justify-center flex-shrink-0">
                   <span className="text-white text-sm">W</span>
                 </div>
-                <span className="text-sm font-medium text-gray-500">Select Workspace</span>
+                <span className="text-sm font-medium text-gray-500">{t('workspace:general.selectWorkspace')}</span>
               </>
             )}
             <ChevronsUpDown className="w-4 h-4 text-gray-400 transition-transform flex-shrink-0" />
@@ -284,7 +286,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
               <div className="p-2 space-y-1">
                 {workspaces.length === 0 ? (
                   <div className="px-4 py-8 text-center text-gray-500 text-sm">
-                    No workspaces found
+                    {t('workspace:general.noWorkspacesFound')}
                   </div>
                 ) : (
                   workspaces.map((ws: any) => {
@@ -350,7 +352,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
               className="flex items-center gap-2 px-4 py-2 text-sm border text-gray-600 rounded-xl hover:bg-gray-100 transition-colors"
             >
               <Edit2 className='h-5 w-5 text-gray-500' />
-              Edit Details
+              {t('workspace:general.editDetails')}
             </button>
           )}
           {canCreateWorkspace() && !isWorkspaceReadOnly() && (
@@ -359,7 +361,7 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
               className="flex items-center gap-2 px-4 py-2 btn-primary text-sm"
             >
               <Plus className='h-5 w-5' />
-              Create Workspace
+              {t('workspace:general.createWorkspace')}
             </button>
           )}
         </div>
@@ -391,8 +393,8 @@ export const WorkspaceTab: React.FC<WorkspaceTabProps> = () => {
             workspacesQuery.refetch();
             setIsEditModalOpen(false);
           }}
-          title="Edit Workspace"
-          submitButtonText="Save Changes"
+          title={t('workspace:general.editWorkspace')}
+          submitButtonText={t('workspace:general.saveChanges')}
           name={editWorkspaceName}
           setName={setEditWorkspaceName}
           description={editDescription}

@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect, useRef } from "react";
 import { useClickHandler } from "../../../utils/helpers";
+import { useTranslation } from "react-i18next";
 import { pad2 } from "../../../utils/timeFormatUtils";
 
 interface DurationConfig {
@@ -173,6 +174,7 @@ export const Duration: React.FC<DurationProps> = ({
   helperText,
 }) => {
   const { durationFormat = "h:mm", defaultValue } = config;
+  const { t } = useTranslation(['fields']);
 
   const getInitialValue = () => {
     // If value is explicitly null/undefined, check for default
@@ -210,9 +212,9 @@ export const Duration: React.FC<DurationProps> = ({
   }, [readOnly, isEditing]);
 
   const validate = (val: string) => {
-    if (required && !val.trim()) return "This field is required";
+    if (required && !val.trim()) return t('fields:validation.fieldRequired');
     if (val.trim() && parseDuration(val, durationFormat) === 0 && val.trim() !== "0") {
-      return "Please enter a valid duration";
+      return t('fields:validation.invalidDuration');
     }
     return null;
   };

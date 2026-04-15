@@ -1,0 +1,28 @@
+{
+  "title": "Organization Settings",
+  "subtitle": "Manage your organization details",
+  "organizationInfo": "Organization Information",
+  "ownerDetails": "Owner Details",
+  "ownerProfile": "Owner profile and contact information.",
+  "companyName": "Company Name",
+  "companyNamePlaceholder": "Enter company name",
+  "description": "Description",
+  "descriptionPlaceholder": "Enter organization description...",
+  "joined": "Joined",
+  "owner": "Owner",
+  "recently": "Recently",
+  "saveChanges": "Save changes",
+  "saving": "Saving...",
+  "cancel": "Cancel",
+  "messages": {
+    "loading": "Loading Information",
+    "noChangesToSave": "No changes to save",
+    "changesDiscarded": "Changes discarded",
+    "organizationUpdated": "Organization updated successfully"
+  },
+  "errors": {
+    "companyNameRequired": "Company name is required",
+    "descriptionRequired": "Description is required",
+    "failedToUpdateOrganization": "Failed to update organization"
+  }
+}

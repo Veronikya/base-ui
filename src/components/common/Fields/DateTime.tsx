@@ -10,6 +10,7 @@ import { zonedToUtcISO } from '../../../utils/dateUtils';
 import { calculateDropdownPosition } from '../../../utils/dropdownPosition';
 import { pad2, getTodayISO } from '../../../utils/timeFormatUtils';
 import { buildCalendarWeeks, MONTH_LABELS } from '../../../utils/calendarUtils';
+import { useTranslation } from 'react-i18next';
 
 export interface DateTimeProps {
   label?: string;
@@ -234,6 +235,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
   icon = "",
   config = {}
 }) => {
+  const { t } = useTranslation(['fields']);
   const {
     dateFormat = 'YYYY-MM-DD',
     timeFormat = 'HH:mm',
@@ -541,9 +543,9 @@ export const DateTime: React.FC<DateTimeProps> = ({
     }
   }, [value, dateFormat, timeFormat, hourFormat, config?.timeZone]);
 
-  const validate = (d: string, t: string) => {
-    if (required && (!d || !t)) {
-      return 'This field is required';
+  const validate = (d: string, timeVal: string) => {
+    if (required && (!d || !timeVal)) {
+      return t('fields:validation.fieldRequired');
     }
     return null;
   };
@@ -965,7 +967,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
             onClick={() => !readOnly && handleDateSelect(todayISO)}
             disabled={readOnly}
           >
-            Today
+            {t('fields:common.today')}
           </button>
         </div>
       </div>
@@ -1124,7 +1126,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
                     onClick={() =>
                       handleNowUtc()
                     }
-                  >Now</button>
+                  >{t('fields:common.now')}</button>
                 </div>
               </div>
             </div>,

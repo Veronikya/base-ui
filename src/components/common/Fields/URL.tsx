@@ -5,6 +5,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useClickHandler } from '../../../utils/helpers';
 import { sanitizeExternalUrl } from '../../../utils/urlSecurity';
+import { useTranslation } from 'react-i18next';
 
 // Safe URL validation helpers (no ReDoS vulnerabilities)
 const removeProtocol = (url: string): string => {
@@ -126,6 +127,7 @@ export const URL: React.FC<URLProps> = ({
   config = {}
 }) => {
   const { urlValid = false, defaultValue = '', openInNewTab = true } = config;
+  const { t } = useTranslation(['fields']);
 
   const [localValue, setLocalValue] = useState(value || defaultValue || '');
   const [error, setError] = useState<string | null>(null);
@@ -152,9 +154,9 @@ export const URL: React.FC<URLProps> = ({
   };
 
   const validate = (val: string) => {
-    if (required && !val.trim()) return 'This field is required';
+    if (required && !val.trim()) return t('fields:validation.fieldRequired');
     if (val.trim() === '') return null;
-    if (urlValid && !validateURL(val)) return 'Please enter a valid URL';
+    if (urlValid && !validateURL(val)) return t('fields:validation.invalidURL');
     return null;
   };
 

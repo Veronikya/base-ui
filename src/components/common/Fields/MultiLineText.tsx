@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect, useRef } from "react";
 import { Info } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface MultiLineTextProps {
   label?: string;
@@ -34,6 +35,7 @@ export const MultiLineText: React.FC<MultiLineTextProps> = ({
   helperText,
   rows = 3, // default
 }) => {
+  const { t } = useTranslation(['fields']);
   const [localValue, setLocalValue] = useState<string>(value ?? "");
   const [error, setError] = useState<string | null>(null);
   const prevValueRef = useRef<string>(localValue);
@@ -47,8 +49,8 @@ export const MultiLineText: React.FC<MultiLineTextProps> = ({
   }, [value]);
 
   const validate = (val: string) => {
-    if (required && !val.trim()) return "This field is required";
-    if (val.length > maxLength) return `Max ${maxLength} characters allowed`;
+    if (required && !val.trim()) return t('fields:validation.fieldRequired');
+    if (val.length > maxLength) return t('fields:validation.maxChars', { max: maxLength });
     return null;
   };
 

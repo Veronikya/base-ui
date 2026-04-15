@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect } from "react";
 import { useClickHandler } from "../../../utils/helpers";
+import { useTranslation } from "react-i18next";
 
 interface CurrencyConfig {
   currencyType?: string;
@@ -33,10 +34,10 @@ const getInitialValue = (value: number | null, defaultValue: string): string => 
   return "";
 };
 
-const validateValue = (val: string, required: boolean): string | null => {
-  if (required && !val.trim()) return "This field is required";
+const validateValue = (val: string, required: boolean, t?: (key: string) => string): string | null => {
+  if (required && !val.trim()) return t ? t('fields:validation.fieldRequired') : "This field is required";
   if (val.trim() === "") return null;
-  if (Number.isNaN(Number.parseFloat(val))) return "Please enter a valid amount";
+  if (Number.isNaN(Number.parseFloat(val))) return t ? t('fields:validation.invalidAmount') : "Please enter a valid amount";
   return null;
 };
 
@@ -45,7 +46,8 @@ const useCurrencyState = (
   defaultValue: string,
   onChange: (value: number | null) => void,
   required: boolean,
-  readOnly: boolean
+  readOnly: boolean,
+  t?: (key: string) => string
 ) => {
   const initialValue = getInitialValue(value, defaultValue);
   const [localValue, setLocalValue] = useState(initialValue);
@@ -86,7 +88,7 @@ const useCurrencyState = (
   };
 
   const handleBlur = () => {
-    const validationError = validateValue(localValue, required);
+    const validationError = validateValue(localValue, required, t);
     const hasChanged = localValue !== committedValue;
 
     if (!validationError && hasChanged) {
@@ -188,6 +190,7 @@ export const Currency: React.FC<CurrencyProps> = ({
   readOnly = false,
   helperText,
 }) => {
+  const { t } = useTranslation(['fields']);
   const { currencyType = "USD", currencyLocale = "en-US", precision = 2, defaultValue = "" } = config;
 
   const {
@@ -197,7 +200,7 @@ export const Currency: React.FC<CurrencyProps> = ({
     setIsEditing,
     handleBlur,
     cancelEdit,
-  } = useCurrencyState(value, defaultValue, onChange, required, readOnly);
+  } = useCurrencyState(value, defaultValue, onChange, required, readOnly, t);
 
   const canEdit = !readOnly && !disabled;
   const handleSingleClick = () => canEdit && allowEdit && setIsEditing(true);

@@ -133,7 +133,7 @@ export function renderDateTimeConfigStep(props: any) {
               <div className="text-sm font-medium text-[var(--color-text-tertiary)] mb-2">Time Display</div>
               <div className="grid grid-cols-2 gap-4 mb-2">
                 <label className={`flex items-center px-3 py-2 border rounded-xl text-sm text-[var(--color-text-tertiary)] cursor-pointer transition-colors ${hourFormat === '12' ?
-                  'border-[var(--color-focus-ring)] bg-[var(--color-gray-100)] text-[var(--color-gray-100)]' : 'border-[var(--color-gray-300)] hover:border-[var(--color-gray-400)]'}`}>
+                  'border-[var(--color-focus-ring)] bg-[var(--color-gray-100)]' : 'border-[var(--color-gray-300)] hover:border-[var(--color-gray-400)]'}`}>
                   <input
                     type="radio"
                     className="hidden"
@@ -141,7 +141,7 @@ export function renderDateTimeConfigStep(props: any) {
                     onChange={() => setHourFormat('12')}
                   />12 Hrs</label>
                 <label className={`flex items-center px-3 py-2 border rounded-xl text-sm text-[var(--color-text-tertiary)] cursor-pointer transition-colors ${hourFormat === '24' ?
-                  'border-[var(--color-focus-ring)] bg-[var(--color-gray-100)] text-[var(--color-gray-100)]' : 'border-[var(--color-gray-300)] hover:border-[var(--color-gray-400)]'}`}>
+                  'border-[var(--color-focus-ring)] bg-[var(--color-gray-100)]' : 'border-[var(--color-gray-300)] hover:border-[var(--color-gray-400)]'}`}>
                   <input
                     type="radio"
                     className="hidden"

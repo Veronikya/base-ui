@@ -1,0 +1,67 @@
+{
+  "changePassword": {
+    "title": "Change Password",
+    "subtitle": "Update your account password",
+    "currentPassword": "Current Password",
+    "currentPasswordPlaceholder": "Enter your current password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter a new password",
+    "confirmPassword": "Confirm New Password",
+    "confirmPasswordPlaceholder": "Re-enter your new password",
+    "updateButton": "Update Password",
+    "updating": "Updating...",
+    "success": "Password updated successfully",
+    "currentPasswordRequired": "Current password is required",
+    "newPasswordRequired": "New password is required",
+    "confirmRequired": "Please confirm your new password",
+    "passwordMismatch": "Passwords do not match",
+    "incorrectPassword": "Current password is incorrect",
+    "requirementsNotMet": "Password doesn't meet requirements"
+  },
+  "loginActivity": {
+    "title": "Recent Login Activity",
+    "subtitle": "Review your recent login sessions",
+    "currentSession": "Current Session",
+    "device": "Device",
+    "location": "Location",
+    "lastActive": "Last Active",
+    "noSessions": "No previous login sessions found",
+    "logout": "Logout",
+    "logoutAll": "Logout all other sessions",
+    "logoutSuccess": "Session ended successfully",
+    "logoutAllSuccess": "All other sessions have been ended"
+  },
+  "twoFactor": {
+    "title": "Two-Factor Authentication",
+    "subtitle": "Add an extra layer of security to your account",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "enable": "Enable 2FA",
+    "disable": "Disable 2FA",
+    "scanQrCode": "Scan this QR code with your authenticator app",
+    "verifyCode": "Enter the 6-digit code from your app",
+    "backupCodes": "Backup Codes",
+    "saveBackupCodes": "Save your backup codes in a safe place",
+    "downloadBackupCodes": "Download Backup Codes"
+  },
+  "sessions": {
+    "browser": "Browser",
+    "desktop": "Desktop",
+    "mobile": "Mobile",
+    "unknownDevice": "Unknown Device",
+    "justNow": "Just now",
+    "minutesAgo": "{{count}} minute ago",
+    "minutesAgo_other": "{{count}} minutes ago",
+    "hoursAgo": "{{count}} hour ago",
+    "hoursAgo_other": "{{count}} hours ago",
+    "daysAgo": "{{count}} day ago",
+    "daysAgo_other": "{{count}} days ago"
+  },
+  "errors": {
+    "failedToLoadActivity": "Failed to load login activity",
+    "failedToUpdatePassword": "Failed to update password. Please try again.",
+    "failedToEnable2FA": "Failed to enable two-factor authentication",
+    "failedToDisable2FA": "Failed to disable two-factor authentication",
+    "failedToEndSession": "Failed to end session"
+  }
+}

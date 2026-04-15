@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Search, X, Info, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import { FIELD_TYPES } from '../../types/fieldTypes';
 import {
@@ -67,6 +68,7 @@ const isFieldTypeLocked = (
 ) => isFieldUsedInViews || isLinksFieldEditing || (selectedTypeKey === 'lookup' && !!selectedRelationId);
 
 export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields = [], isAddNewColumn = false, isAddNewField = false, useBackdrop, excludeRefs = [], currentTableId }: Readonly<NewColumnModalProps>) {
+  const { t } = useTranslation(['fields']);
   const [step, setStep] = useState<number | null>(initialValues ? 2 : 1);
   const [fieldName, setFieldName] = useState(initialValues?.title || '');
   const [search, setSearch] = useState('');
@@ -855,7 +857,7 @@ export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields 
         currentId
       });
       if (fieldName.trim() && isDuplicate) {
-        setNameError('Field name already exists');
+        setNameError(t('fields:columnModal.fieldNameExists'));
       } else {
         setNameError(null);
       }
@@ -906,8 +908,8 @@ export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields 
       if (criticalFieldUsage.isUsedInViews) {
         const viewNames = criticalFieldUsage.usedInViews.map(v => `${v.viewName} (${v.usageType})`).join(', ');
         toast.error(
-          `Cannot change field type. This field is used as a critical field in: ${viewNames}. Please change the view configuration first.`,
-          { title: 'Field in Use' }
+          t('fields:columnModal.fieldTypeChangeBlocked', { viewNames }),
+          { title: t('fields:columnModal.fieldInUse') }
         );
         return;
       }
@@ -991,7 +993,7 @@ export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields 
       currentId
     });
     if (isDuplicate) {
-      setNameError('Field name already exists');
+      setNameError(t('fields:columnModal.fieldNameExists'));
       setIsSaving(false);
       return;
     }
@@ -1270,7 +1272,7 @@ export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields 
       <div className={`relative bg-[var(--color-alpha-white)] min-h-[400px] max-h-[max(70vh,400px)] ${modalWidthClass}  shadow-lg shadow-gray-300 border rounded-xl p-3.5 flex flex-col overflow-hidden`} >
         <div className="flex items-center mb-4">
           <span className="text-lg font-semibold text-gray-900 flex-1">
-            {initialValues ? 'Edit Field' : 'New Field'}
+            {initialValues ? t('fields:columnModal.editField') : t('fields:columnModal.newField')}
           </span>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
             <X className="w-5 h-5" />
@@ -1283,7 +1285,7 @@ export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields 
               <input
                 ref={fieldNameInputRef}
                 className={`w-full px-3 py-2 bg-[var(--color-alpha-white)] border border-[var(--color-border-primary)] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-focus-ring)] text-[var(--text-color-primary)] placeholder:text-[var(--color-text-placeholder)] ${nameError ? "" : "mb-2"}`}
-                placeholder="Enter Field name"
+                placeholder={t('fields:columnModal.enterFieldName')}
                 value={fieldName}
                 onChange={e => {
                   const value = e?.target?.value;
@@ -1301,7 +1303,7 @@ export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields 
                   </span>
                   <input
                     className="w-full pl-10 pr-3 py-2 text-sm text-[var(--text-color-primary)] border rounded-tl-lg rounded-tr-lg focus:outline-none bg-[var(--color-alpha-white)]"
-                    placeholder="Search field type"
+                    placeholder={t('fields:columnModal.searchFieldType')}
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                   />
@@ -1334,7 +1336,7 @@ export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields 
               <input
                 ref={fieldNameInputRef}
                 className={`w-full px-3 py-2 bg-[var(--color-alpha-white)] border border-[var(--color-border-primary)] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-focus-ring)] text-[var(--text-color-primary)] placeholder:text-[var(--color-text-placeholder)] ${nameError ? "" : "mb-2"}`}
-                placeholder="Enter Field name"
+                placeholder={t('fields:columnModal.enterFieldName')}
                 value={fieldName}
                 onChange={e => {
                   const value = e?.target?.value;
@@ -1359,7 +1361,7 @@ export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields 
                   <div className="flex item-start gap-2 justify-between">
                     <span className="text-amber-600 mt-1"><Info className="w-4 h-4" /></span>
                     <p className="text-xs text-amber-600 flex items-center">
-                      Field type cannot be changed because this field is used in one or more views. You can still update other properties like name, description, and configuration.
+                      {t('fields:columnModal.fieldTypeLocked')}
                     </p>
                   </div>
                 )}
@@ -1377,7 +1379,7 @@ export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields 
             className="flex-1 px-16 py-2 rounded-xl border text-[var(--color-text-tertiary)] bg-[var(--color-alpha-white)] hover:bg-gray-100"
             onClick={onClose}
           >
-            Cancel
+            {t('fields:columnModal.cancel')}
           </button>
           <button
             className={`flex-1 px-16 py-2 btn-primary !rounded-xl flex items-center justify-center gap-2 ${isSaving ? 'opacity-75 cursor-not-allowed' : ''}`}
@@ -1387,10 +1389,10 @@ export function NewColumnModal({ isOpen, onClose, onSave, initialValues, fields 
             {isSaving ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Saving...</span>
+                <span>{t('fields:columnModal.saving')}</span>
               </>
             ) : (
-              'Save Field'
+              t('fields:columnModal.saveField')
             )}
           </button>
         </div>

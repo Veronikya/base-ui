@@ -5,6 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { MultiLineText } from '../common/Fields/MultiLineText';
 import { X, HelpCircle, PencilLine, CloudUpload } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { validateTableName, validateViewName, validateBaseName, ExistingItem } from '../../utils/nameValidation';
 
 interface EditItemModalProps {
@@ -36,6 +37,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
   currentItemId,
   initialImage = null,
 }) => {
+  const { t } = useTranslation(['common', 'workspace', 'fields']);
   // Ensure local state is always a string so calls to `trim()` are safe
   const [name, setName] = useState(initialName ?? '');
   const [description, setDescription] = useState(initialDescription ?? '');
@@ -113,27 +115,27 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
       // Validate file type
       const validTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
       if (!validTypes.includes(file.type)) {
-        setImageError('Please upload a valid image file (SVG, PNG, JPG, or GIF)');
+        setImageError(t('common:errors.invalidFileType'));
         return;
       }
-      
+
       // Set image and preview immediately (so it's available for submission)
       const previewUrl = URL.createObjectURL(file);
       setImage(file);
       setImagePreview(getSafeImageSrc(previewUrl));
       setImageError('');
-      
+
       // Validate dimensions asynchronously (show error if invalid, but keep the image)
       const img = new Image();
       img.onload = () => {
         if (img.width > 800 || img.height > 400) {
           // Keep the image but show error - user can remove it manually
-          setImageError('Image dimensions must be max 800 x 400px');
+          setImageError(t('common:errors.imageDimensionsMax'));
         }
       };
       img.onerror = () => {
         // Keep the image but show error - user can remove it manually
-        setImageError('Failed to load image. Please try again.');
+        setImageError(t('common:errors.imageLoadFailed'));
       };
       img.src = previewUrl;
     }
@@ -147,7 +149,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const file = e.dataTransfer.files?.[0];
     if (file?.type.startsWith('image/')) {
       const validTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
@@ -157,20 +159,20 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
         setImage(file);
         setImagePreview(getSafeImageSrc(previewUrl));
         setImageError('');
-        
+
         // Validate dimensions asynchronously (show error if invalid, but keep the image)
         const img = new Image();
         img.onload = () => {
           if (img.width > 800 || img.height > 400) {
-            setImageError('Image dimensions must be max 800 x 400px');
+            setImageError(t('common:errors.imageDimensionsMax'));
           }
         };
         img.onerror = () => {
-          setImageError('Failed to load image. Please try again.');
+          setImageError(t('common:errors.imageLoadFailed'));
         };
         img.src = previewUrl;
       } else {
-        setImageError('Please upload a valid image file (SVG, PNG, JPG, or GIF)');
+        setImageError(t('common:errors.invalidFileType'));
       }
     }
   };
@@ -186,11 +188,15 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
     return 'text-gray-400';
   };
 
+  const getItemTypeLabel = (): string => {
+    return itemType.charAt(0).toUpperCase() + itemType.slice(1);
+  };
+
   const handleSubmit = async (e?:React.SyntheticEvent) => {
     e?.preventDefault();
 
     if (!name.trim()) {
-      setError(`${itemType.charAt(0).toUpperCase() + itemType.slice(1)} name is required`);
+      setError(t('workspace:errors.nameRequired', { itemType: getItemTypeLabel() }));
       return;
     }
 
@@ -211,7 +217,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
     }
 
     if (!validation.isValid) {
-      setError(validation.error || 'Invalid name');
+      setError(validation.error || t('workspace:errors.invalidName'));
       return;
     }
 
@@ -225,7 +231,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
         name: name.trim(),
         description: description.trim(),
       };
-      
+
       // Include image for base type (File for new upload, null for removal)
       if (itemType === 'base') {
         // If image is a File, include it for upload
@@ -237,13 +243,13 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
           saveData.removeImage = true;
         }
       }
-      
+
       onSave(saveData);
       // Close the modal on successful save
       onClose();
     } catch (err) {
       console.error(`Failed to save ${itemType}:`, err);
-      setError(`Failed to update ${itemType}. Please try again.`);
+      setError(t('workspace:errors.updateFailed', { itemType: getItemTypeLabel() }));
     } finally {
       setIsSubmitting(false);
     }
@@ -296,7 +302,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
           <div className="p-4 space-y-4">
           <div className="space-y-1">
             <label htmlFor="itemName" className="block text-sm font-medium text-primary mb-1">
-              {itemType.charAt(0).toUpperCase() + itemType.slice(1)} Name <span className="field-component-required">*</span>
+              {getItemTypeLabel()} {t('workspace:editItem.nameLabel')} <span className="field-component-required">*</span>
             </label>
             <div className="relative">
               <input
@@ -304,7 +310,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
                 id="itemName"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder={`Enter ${itemType} name`}
+                placeholder={t('workspace:editItem.enterName', { itemType: getItemTypeLabel() })}
                 className={`field-component field-component-border field-component-focus ${error || validationError ? 'border-red-500' : 'border'}`}
                 required
                 minLength={3}
@@ -315,10 +321,10 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
                 <span className="relative inline-block group">
                   <HelpCircle className={`w-4 h-4 ${getHelpIconColorClass()} cursor-help`} />
                   <div className="invisible group-hover:visible absolute right-0 mt-1 mr-2 w-64 bg-card border rounded-xl shadow-lg p-3 text-sm z-50">
-                    <h4 className="font-medium text-primary mb-2">{itemType.charAt(0).toUpperCase() + itemType.slice(1)} name requirements:</h4>
+                    <h4 className="font-medium text-primary mb-2">{t('workspace:editItem.nameRequirements', { itemType: getItemTypeLabel() })}</h4>
                     <ul className="space-y-1">
                       <li className={`flex items-center ${name.trim().length >= 3 ? 'text-green-600' : 'text-gray-500'}`}>
-                        • Minimum 3 characters
+                        • {t('workspace:editItem.minChars')}
                       </li>
                     </ul>
                   </div>
@@ -332,12 +338,12 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
               </div>
             )}
             <p className="mt-1 text-xs text-gray-500">
-              {name.length}/50 characters
+              {name.length}/50 {t('workspace:general.characters')}
             </p>
           </div>
           <MultiLineText
-            label="Description"
-            placeholder={`Enter ${itemType} description`}
+            label={t('workspace:general.description')}
+            placeholder={t('workspace:editItem.enterDescription', { itemType: getItemTypeLabel() })}
             value={description}
             onChange={value => setDescription(value)}
             rows={5}
@@ -348,7 +354,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
           {itemType === 'base' && (
             <div className="space-y-1">
               <label htmlFor="edit-image-upload" className="block text-sm font-medium text-primary mb-1">
-                Image
+                {t('workspace:general.image')}
               </label>
               <input
                 type="file"
@@ -384,7 +390,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
                       <X size={12} />
                     </button>
                   </div>
-                  
+
                   {/* Upload Area - Right Side */}
                   <div //NOSONAR
                     onDragOver={handleDragOver}
@@ -395,10 +401,10 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
                   >
                     <CloudUpload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                     <p className="text-sm text-gray-600 mb-1">
-                      <span className="text-green-500 font-medium">Click to upload</span> or drag and drop
+                      <span className="text-green-500 font-medium">{t('common:upload.clickToUpload')}</span> {t('common:upload.orDragAndDrop')}
                     </p>
                     <p className="text-xs text-gray-500">
-                      SVG, PNG, JPG or GIF (max. 800 x 400px)
+                      {t('common:upload.imageConstraints')}
                     </p>
                   </div>
                 </div>
@@ -412,10 +418,10 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
                 >
                   <CloudUpload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                   <p className="text-sm text-gray-600 mb-1">
-                    <span className="text-green-500 font-medium">Click to upload</span> or drag and drop
+                    <span className="text-green-500 font-medium">{t('common:upload.clickToUpload')}</span> {t('common:upload.orDragAndDrop')}
                   </p>
                   <p className="text-xs text-gray-500">
-                    SVG, PNG, JPG or GIF (max. 800 x 400px)
+                    {t('common:upload.imageConstraints')}
                   </p>
                 </div>
               )}
@@ -440,7 +446,7 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
             disabled={isSubmitting}
             className="px-16 py-2 rounded-xl border bg-card hover:bg-gray-50 focus:ring-1 focus:ring-gray-500 transition-all disabled:opacity-50 text-gray-700"
           >
-            Cancel
+            {t('common:buttons.cancel')}
           </button>
           <button
             type="button"
@@ -454,14 +460,14 @@ export const EditItemModal: React.FC<EditItemModalProps> = ({
             {isSubmitting ? (
               <>
                 <div className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin"></div>
-                Updating...
+                {t('common:buttons.updating')}
               </>
             ) : (
-              'Update'
+              t('common:buttons.update')
             )}
           </button>
         </div>
       </div>
     </div>
   );
-}; 
+};

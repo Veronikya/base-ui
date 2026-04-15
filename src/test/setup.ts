@@ -6,6 +6,15 @@ import { afterEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
+// Mock i18next react-i18next
+vi.mock('react-i18next', () => {
+  const useTranslation = () => ({
+    t: (key: string) => key,
+    i18n: { language: 'en' },
+  });
+  return { useTranslation, initReactI18next: vi.fn() };
+});
+
 // Mock SDK imports to prevent vitest from trying to transform built SDK code
 vi.mock('../../sdk/index.esm.js', () => {
   // Create a mock EventEmitter for the http client
@@ -83,7 +92,7 @@ vi.mock('../../sdk/index.esm.js', () => {
     insertRowData: vi.fn().mockResolvedValue({ data: { success: true } }),
   };
 
-  const SereniBaseClient = vi.fn().mockImplementation((config) => ({
+  const SereniBaseClient = vi.fn().mockImplementation((_config) => ({
     // HTTP client (accessed as client.http in clientService.ts)
     http: mockHttpClient,
 

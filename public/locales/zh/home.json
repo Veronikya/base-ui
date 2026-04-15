@@ -1,0 +1,61 @@
+{
+  "welcome": {
+    "title": "欢迎",
+    "subtitle": "我们已高效地创建了直观的界面，助您轻轻松松管理数据。"
+  },
+  "actionCards": {
+    "createBase": "创建新 Base",
+    "createBaseDesc": "创建一个新的 Base。",
+    "importData": "导入数据",
+    "importDataDesc": "从外部导入数据。"
+  },
+  "bases": {
+    "title": "所有 Bases",
+    "untitled": "未命名 Base",
+    "noDescription": "通用工作 Base。",
+    "lastModified": "最后修改",
+    "lastModifiedUnknown": "最后修改时间未知",
+    "noBases": "未找到 Bases",
+    "noBasesMatchSearch": "没有符合条件的 Base，请尝试其他关键词。",
+    "noBasesYet": "您还没有任何 Base。创建您的第一个 Base 开始使用。",
+    "createFirst": "创建您的第一个 Base"
+  },
+  "sort": {
+    "recent": "最近",
+    "aToZ": "A-Z",
+    "zToA": "Z-A"
+  },
+  "search": {
+    "placeholder": "搜索 Bases"
+  },
+  "roles": {
+    "owner": "所有者",
+    "maintainer": "维护者",
+    "baseMember": "Base 成员",
+    "baseRead": "只读"
+  },
+  "toast": {
+    "noTablesYet": "此 Base 还没有表。创建您的第一个表开始使用！",
+    "noWorkspace": "请先选择一个工作区",
+    "noChangesToSave": "没有需要保存的更改",
+    "baseCreated": "Base 创建成功",
+    "baseUpdated": "Base 更新成功",
+    "baseDeleted": "Base 删除成功",
+    "tableCreated": "表创建成功",
+    "navigationFailed": "导航到 Base 失败，请重试。",
+    "updateFailed": "更新 Base 失败，请重试。",
+    "createFailed": "创建 Base 失败，请重试。",
+    "deleteFailed": "删除 Base 失败，请重试。",
+    "importAvailableSoon": "{{type}} 导入功能即将上线"
+  },
+  "noWorkspace": {
+    "title": "欢迎",
+    "subtitle": "我们已高效地创建了直观的界面，助您轻轻松松管理数据。",
+    "selectPrompt": "请选择一个工作区",
+    "selectDescription": "从顶部下拉菜单中选择一个工作区以查看您的 Bases。"
+  },
+  "editBase": {
+    "title": "编辑 Base",
+    "subtitle": "更新 Base 名称和描述"
+  }
+}

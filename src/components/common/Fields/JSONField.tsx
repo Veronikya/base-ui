@@ -5,6 +5,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Maximize2, Info, X, ChevronRight, ChevronDown, FileJson } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface JSONFieldProps {
   value: any;
@@ -285,6 +286,7 @@ export const JSONField: React.FC<JSONFieldProps> = ({
   isBorder = false,
   config = {}
 }) => {
+  const { t } = useTranslation(['fields']);
   // Always use pretty print (no longer configurable)
   const prettyPrint = true;
   const { defaultValue = null, hideMaximizeButton = false } = config;
@@ -350,7 +352,7 @@ export const JSONField: React.FC<JSONFieldProps> = ({
       setError(null);
       setJsonData(parsed);
     } catch {
-      setError('Invalid JSON');
+      setError(t('fields:common.invalidJSON'));
     }
   };
 
@@ -379,7 +381,7 @@ export const JSONField: React.FC<JSONFieldProps> = ({
       }
 
       if (parsed === null || parsed === undefined) {
-        setError('Invalid JSON');
+        setError(t('fields:common.invalidJSON'));
         return;
       }
 
@@ -387,7 +389,7 @@ export const JSONField: React.FC<JSONFieldProps> = ({
       onChange(parsed);
       setIsModalOpen(false);
     } catch {
-      setError('Invalid JSON');
+      setError(t('fields:common.invalidJSON'));
     }
   };
 
@@ -446,7 +448,7 @@ export const JSONField: React.FC<JSONFieldProps> = ({
           <div className="relative bg-[var(--color-card)] border rounded-xl shadow-xl w-full max-w-5xl h-[85vh] p-6 flex flex-col z-10">
             <div className="flex items-center mb-4">
               <FileJson className="w-8 h-8 rounded icon-primary p-1 mr-2" />
-              <span className="text-lg font-medium text-[var(--color-text-primary)]">{readOnly ? 'View JSON' : 'Edit JSON'}</span>
+              <span className="text-lg font-medium text-[var(--color-text-primary)]">{readOnly ? t('fields:common.view') : t('fields:common.edit')} JSON</span>
               {!readOnly && (
                 <div className="flex items-center gap-2 ml-4">
                   <button
@@ -456,7 +458,7 @@ export const JSONField: React.FC<JSONFieldProps> = ({
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                       }`}
                   >
-                    Tree
+                    {t('fields:common.treeView')}
                   </button>
                   <button
                     onClick={() => setViewMode('text')}
@@ -465,7 +467,7 @@ export const JSONField: React.FC<JSONFieldProps> = ({
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                       }`}
                   >
-                    Text
+                    {t('fields:common.textView')}
                   </button>
                 </div>
               )}
@@ -490,7 +492,7 @@ export const JSONField: React.FC<JSONFieldProps> = ({
                       disabled={disabled}
                     />
                   ) : (
-                    <div className="text-gray-400 italic">{placeholder || 'Empty JSON'}</div>
+                    <div className="text-gray-400 italic">{placeholder || t('fields:common.emptyJSON')}</div>
                   )}
                 </div>
               ) : (
@@ -520,14 +522,14 @@ export const JSONField: React.FC<JSONFieldProps> = ({
                   onClick={() => setIsModalOpen(false)}
                   className="px-4 py-2 text-sm font-medium text-[var(--color-text-primary)] border border-gray-300 rounded-xl hover:bg-gray-200 transition-colors"
                 >
-                  Cancel
+                  {t('fields:common.cancel')}
                 </button>
                 <button
                   onClick={handleSave}
                   className="px-4 py-2 text-sm font-medium btn-primary rounded transition-colors"
                   disabled={!!error}
                 >
-                  Save & Close
+                  {t('fields:common.saveAndClose')}
                 </button>
               </div>
             )}

@@ -3,6 +3,7 @@
 // Websites: https://www.aptlogica.com | https://www.serenibase.com
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../auth/AuthContext';
 import { useUserProfile, useChangePassword } from '../../hooks/useApi';
 import { useToast } from '../common/Toast';
@@ -12,22 +13,6 @@ import { validatePasswordStrength } from '../../utils/validation';
 import { useFooterButtons } from './AccountSettings';
 import { Loader } from '../ui/Loader';
 
-// Loading state component - extracted outside to reduce cognitive complexity
-const LoadingState: React.FC = () => (
-  <div className="flex items-center justify-center py-12">
-    <Loader text="Loading security settings..." textColor="text-gray-600" size={10} />
-  </div>
-);
-
-// Error state component - extracted outside to reduce cognitive complexity
-const ErrorState: React.FC = () => (
-  <div className="flex items-center justify-center py-12">
-    <div className="text-center">
-      <div className="text-red-600 mb-2">Failed to load security settings</div>
-    </div>
-  </div>
-);
-
 // Password Requirements Tooltip component - extracted to reduce complexity
 interface PasswordRequirementsTooltipProps {
   password: string;
@@ -35,6 +20,7 @@ interface PasswordRequirementsTooltipProps {
   userLastName: string;
   userEmail: string;
   hasError: boolean;
+  t: (key: string) => string;
 }
 
 const PasswordRequirementsTooltip: React.FC<PasswordRequirementsTooltipProps> = ({
@@ -42,7 +28,8 @@ const PasswordRequirementsTooltip: React.FC<PasswordRequirementsTooltipProps> = 
   userFirstName,
   userLastName,
   userEmail,
-  hasError
+  hasError,
+  t
 }) => {
   const validation = validatePasswordStrength(password, userFirstName, userLastName, userEmail);
   const hasPassword = password && password.trim().length > 0;
@@ -51,28 +38,28 @@ const PasswordRequirementsTooltip: React.FC<PasswordRequirementsTooltipProps> = 
     <div className="relative group">
       <HelpCircle className={`w-4 h-4 ${hasError ? "text-red-400" : "text-gray-400"} cursor-help`} />
       <div className="invisible group-hover:visible group-focus-within:visible absolute left-0 mt-1 w-72 bg-card border rounded-xl shadow-lg p-4 text-sm z-50">
-        <h4 className="font-medium mb-2 text-primary">Password Requirements:</h4>
+        <h4 className="font-medium mb-2 text-primary">{t('common:validation.passwordRequirements')}</h4>
         <ul className="space-y-1">
           <li className={`flex items-center ${validation.hasLength ? 'text-green-600' : 'text-red-500'}`}>
-            • Minimum 8 characters
+            • {t('common:validation.minLength')}
           </li>
           <li className={`flex items-center ${validation.hasUpper ? 'text-green-600' : 'text-red-500'}`}>
-            • At least one uppercase letter
+            • {t('common:validation.hasUpper')}
           </li>
           <li className={`flex items-center ${validation.hasLower ? 'text-green-600' : 'text-red-500'}`}>
-            • At least one lowercase letter
+            • {t('common:validation.hasLower')}
           </li>
           <li className={`flex items-center ${validation.hasNumber ? 'text-green-600' : 'text-red-500'}`}>
-            • At least one number
+            • {t('common:validation.hasNumber')}
           </li>
           <li className={`flex items-center ${validation.hasSymbol ? 'text-green-600' : 'text-red-500'}`}>
-            • At least one symbol
+            • {t('common:validation.hasSymbol')}
           </li>
           <li className={`flex items-center ${hasPassword && validation.containsNameAndEmail ? 'text-green-600' : 'text-red-500'}`}>
-            • Should not contain your name or email
+            • {t('common:validation.noNameEmail')}
           </li>
           <li className={`flex items-center ${hasPassword && validation.containsCommon ? 'text-green-600' : 'text-red-500'}`}>
-            • Password Should not contain common words
+            • {t('common:validation.noCommonWords')}
           </li>
         </ul>
       </div>
@@ -87,6 +74,7 @@ interface LoginSessionsProps {
   currentSession: LoginSession | null;
   pastSessions: LoginSession[];
   formatDate: (dateString: string) => string;
+  t: (key: string) => string;
 }
 
 const LoginSessions: React.FC<LoginSessionsProps> = ({
@@ -94,7 +82,8 @@ const LoginSessions: React.FC<LoginSessionsProps> = ({
   loginSessions,
   currentSession,
   pastSessions,
-  formatDate
+  formatDate,
+  t
 }) => {
   if (sessionsLoading) {
     return (
@@ -106,7 +95,7 @@ const LoginSessions: React.FC<LoginSessionsProps> = ({
 
   if (loginSessions.length === 0) {
     return (
-      <p className="text-sm text-gray-500 text-center py-4">No previous login sessions found</p>
+      <p className="text-sm text-gray-500 text-center py-4">{t('common:messages.noPreviousSessions')}</p>
     );
   }
 
@@ -128,7 +117,7 @@ const LoginSessions: React.FC<LoginSessionsProps> = ({
                 {currentSession.browser}{currentSession.browser_version ? ` ${currentSession.browser_version}` : ''} on {currentSession.os}
               </span>
               <Monitor className="w-4 h-4 text-[var(--color-brand-600)]" />
-              <span className="text-sm text-[var(--color-brand-600)]">Desktop</span>
+              <span className="text-sm text-[var(--color-brand-600)]">{t('common:messages.desktop')}</span>
               <Clock className="w-4 h-4 text-[var(--color-brand-600)]" />
               <span className="text-sm text-[var(--color-brand-600)]">{formatDate(currentSession.login_at)}</span>
               {currentSession.timezone && (
@@ -156,7 +145,7 @@ const LoginSessions: React.FC<LoginSessionsProps> = ({
                 {session.browser}{session.browser_version ? ` ${session.browser_version}` : ''} on {session.os}
               </span>
               <Monitor className="w-4 h-4 text-gray-400" />
-              <span className="text-sm text-gray-600">Desktop</span>
+              <span className="text-sm text-gray-600">{t('common:messages.desktop')}</span>
               <Clock className="w-4 h-4 text-gray-400" />
               <span className="text-sm text-gray-600">{formatDate(session.login_at)}</span>
               {session.timezone && (
@@ -174,6 +163,7 @@ const LoginSessions: React.FC<LoginSessionsProps> = ({
 };
 
 export const SecuritySection: React.FC = () => {
+  const { t } = useTranslation(['common', 'security']);
   const { user: authUser } = useAuth();
   const userId = authUser?.id;
   const toast = useToast();
@@ -237,7 +227,7 @@ export const SecuritySection: React.FC = () => {
     if (validation.isValid) {
       setNewPasswordError(null);
     } else {
-      setNewPasswordError(validation.errorMessage || "Password doesn't meet requirements");
+      setNewPasswordError(validation.errorMessage || t('common:errors.passwordRequirements'));
     }
   };
 
@@ -246,7 +236,7 @@ export const SecuritySection: React.FC = () => {
     if (!value || value === passwordData.newPassword) {
       setConfirmPasswordError(null);
     } else {
-      setConfirmPasswordError("Passwords do not match");
+      setConfirmPasswordError(t('common:errors.passwordMismatch'));
     }
   };
 
@@ -276,13 +266,13 @@ export const SecuritySection: React.FC = () => {
 
     // Validate current password
     if (!passwordData.currentPassword.trim()) {
-      setCurrentPasswordError('Current password is required');
+      setCurrentPasswordError(t('security:changePassword.currentPasswordRequired'));
       return;
     }
 
     // Validate new password
     if (!passwordData.newPassword.trim()) {
-      setNewPasswordError('New password is required');
+      setNewPasswordError(t('security:changePassword.newPasswordRequired'));
       return;
     }
 
@@ -293,18 +283,18 @@ export const SecuritySection: React.FC = () => {
       userEmail
     );
     if (!passwordValidation.isValid) {
-      setNewPasswordError(passwordValidation.errorMessage || "Password doesn't meet requirements");
+      setNewPasswordError(passwordValidation.errorMessage || t('common:errors.passwordRequirements'));
       return;
     }
 
     // Validate confirm password
     if (!passwordData.confirmPassword.trim()) {
-      setConfirmPasswordError('Please confirm your new password');
+      setConfirmPasswordError(t('security:changePassword.confirmRequired'));
       return;
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setConfirmPasswordError('Passwords do not match');
+      setConfirmPasswordError(t('common:errors.passwordMismatch'));
       return;
     }
 
@@ -315,7 +305,7 @@ export const SecuritySection: React.FC = () => {
         new_password: passwordData.newPassword
       });
 
-      toast.success('Password updated successfully', { title: 'Success' });
+      toast.success(t('common:toast.passwordUpdated'), { title: t('common:messages.success') });
       setPasswordData({
         currentPassword: '',
         newPassword: '',
@@ -327,7 +317,7 @@ export const SecuritySection: React.FC = () => {
       setConfirmPasswordError(null);
     } catch (error: any) {
       console.error('Failed to update password:', error);
-      toast.error(error?.message || 'Failed to update password. Please try again.', { title: 'Password Update Failed' });
+      toast.error(error?.message || t('common:errors.passwordUpdateFailed'), { title: t('common:messages.error') });
     } finally {
       setIsUpdatingPassword(false);
     }
@@ -373,10 +363,10 @@ export const SecuritySection: React.FC = () => {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins} ${diffMins === 1 ? 'minute' : 'minutes'} ago`;
-    if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'} ago`;
-    if (diffDays < 7) return `${diffDays} ${diffDays === 1 ? 'day' : 'days'} ago`;
+    if (diffMins < 1) return t('common:messages.justNow');
+    if (diffMins < 60) return t('common:messages.minutesAgo', { count: diffMins });
+    if (diffHours < 24) return t('common:messages.hoursAgo', { count: diffHours });
+    if (diffDays < 7) return t('common:messages.daysAgo', { count: diffDays });
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
@@ -413,7 +403,7 @@ export const SecuritySection: React.FC = () => {
           disabled={isUpdatingPassword || changePasswordMutation.isPending}
           className="flex items-center gap-2 px-16 py-2 text-sm border text-gray-700 rounded-xl hover:bg-gray-50 font-medium disabled:opacity-50 transition-colors"
         >
-          Cancel
+          {t('common:buttons.cancel')}
         </button>
         <button
           onClick={handleUpdatePassword}
@@ -430,7 +420,7 @@ export const SecuritySection: React.FC = () => {
           {(isUpdatingPassword || changePasswordMutation.isPending) && (
             <Loader2 className="w-4 h-4 animate-spin" />
           )}
-          {(isUpdatingPassword || changePasswordMutation.isPending) ? 'Updating Password...' : 'Update Password'}
+          {(isUpdatingPassword || changePasswordMutation.isPending) ? t('security:changePassword.updating') : t('security:changePassword.updateButton')}
         </button>
       </div>
     );
@@ -446,14 +436,24 @@ export const SecuritySection: React.FC = () => {
   }, [isUpdatingPassword, changePasswordMutation.isPending, isPasswordFormValid, currentSection]);
 
   // Early returns for loading and error states
-  if (isLoading) return <LoadingState />;
-  if (error) return <ErrorState />;
+  if (isLoading) return (
+    <div className="flex items-center justify-center py-12">
+      <Loader text={t('common:messages.loadingSecurity')} textColor="text-gray-600" size={10} />
+    </div>
+  );
+  if (error) return (
+    <div className="flex items-center justify-center py-12">
+      <div className="text-center">
+        <div className="text-red-600 mb-2">{t('common:messages.failedToLoadSecurity')}</div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="space-y-4">
       {/* Change Password Section */}
       <div className="border-b pb-6">
-        <h3 className="text-xl font-semibold text-primary mb-6">Change Password</h3>
+        <h3 className="text-xl font-semibold text-primary mb-6">{t('common:messages.changePassword')}</h3>
 
         <div className="space-y-6">
           {/* Current Password */}
@@ -462,7 +462,7 @@ export const SecuritySection: React.FC = () => {
               htmlFor="current-password"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Current Password
+              {t('common:labels.currentPassword')}
             </label>
             <div className={`relative flex items-center ${currentPasswordError ? "border-red-500" : ""}`}>
               <input
@@ -474,11 +474,11 @@ export const SecuritySection: React.FC = () => {
                   if (passwordData.currentPassword.trim()) {
                     setCurrentPasswordError(null);
                   } else {
-                    setCurrentPasswordError('Current password is required');
+                    setCurrentPasswordError(t('security:changePassword.currentPasswordRequired'));
                   }
                 }}
                 className={`w-full px-4 py-3 pr-20 border rounded-xl text-primary focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-600)] focus:border-transparent transition-colors bg-card ${currentPasswordError ? "border-red-500 bg-red-50" : ""}`}
-                placeholder="Enter your current password"
+                placeholder={t('common:placeholders.enterCurrentPassword')}
                 autoComplete="off"
                 data-form-type="other"
               />
@@ -487,6 +487,7 @@ export const SecuritySection: React.FC = () => {
                   type="button"
                   onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                   className="text-gray-400 hover:text-gray-600"
+                  aria-label={showCurrentPassword ? t('common:accessibility.hidePassword') : t('common:accessibility.showPassword')}
                 >
                   {showCurrentPassword ? (
                     <Eye className="h-4 w-4" />
@@ -503,7 +504,7 @@ export const SecuritySection: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="new-password" className="block text-sm font-medium text-gray-700 mb-2">
-                New Password
+                {t('common:labels.newPassword')}
               </label>
               <div className={`relative flex items-center ${newPasswordError ? "border-red-500" : ""}`}>
                 <input
@@ -522,14 +523,14 @@ export const SecuritySection: React.FC = () => {
                       if (validation.isValid) {
                         setNewPasswordError(null);
                       } else {
-                        setNewPasswordError(validation.errorMessage || "Password doesn't meet requirements");
+                        setNewPasswordError(validation.errorMessage || t('common:errors.passwordRequirements'));
                       }
                     } else {
-                      setNewPasswordError('New password is required');
+                      setNewPasswordError(t('security:changePassword.newPasswordRequired'));
                     }
                   }}
                   className={`w-full px-4 py-3 pr-20 border text-primary rounded-xl focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-600)] focus:border-transparent transition-colors bg-card ${newPasswordError ? "border-red-500 bg-red-50" : ""}`}
-                  placeholder="Enter new password"
+                  placeholder={t('common:placeholders.enterNewPassword')}
                   autoComplete="new-password"
                 />
                 <div className="absolute right-3 flex items-center gap-2">
@@ -539,10 +540,11 @@ export const SecuritySection: React.FC = () => {
                     userLastName={userLastName}
                     userEmail={userEmail}
                     hasError={!!newPasswordError}
+                    t={t}
                   />
                   <button
                     type="button"
-                    aria-label={showNewPassword ? 'Hide password' : 'Show password'}
+                    aria-label={showNewPassword ? t('common:accessibility.hidePassword') : t('common:accessibility.showPassword')}
                     onClick={() => setShowNewPassword(prev => !prev)}
                     className="text-gray-400 hover:text-gray-600"
                   >
@@ -559,7 +561,7 @@ export const SecuritySection: React.FC = () => {
 
             <div>
               <label htmlFor='confirm-new-password' className="block text-sm font-medium text-gray-700 mb-2">
-                Confirm New Password
+                {t('common:labels.confirmNewPassword')}
               </label>
               <div className={`relative flex items-center ${confirmPasswordError ? "border-red-500" : ""}`}>
                 <input
@@ -569,15 +571,15 @@ export const SecuritySection: React.FC = () => {
                   onChange={(e) => handlePasswordChange('confirmPassword', e.target.value)}
                   onBlur={() => {
                     if (passwordData.confirmPassword.trim() === '') {
-                      setConfirmPasswordError('Please confirm your new password');
+                      setConfirmPasswordError(t('security:changePassword.confirmRequired'));
                     } else if (passwordData.confirmPassword === passwordData.newPassword) {
                       setConfirmPasswordError(null);
                     } else {
-                      setConfirmPasswordError('Passwords do not match');
+                      setConfirmPasswordError(t('common:errors.passwordMismatch'));
                     }
                   }}
                   className={`w-full px-4 py-3 pr-12 border text-primary rounded-xl focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-600)] focus:border-transparent transition-colors bg-card ${confirmPasswordError ? "border-red-500 bg-red-50" : ""}`}
-                  placeholder="Confirm new password"
+                  placeholder={t('common:placeholders.confirmNewPassword')}
                   autoComplete="new-password"
                 />
                 <div className="absolute right-3">
@@ -585,6 +587,7 @@ export const SecuritySection: React.FC = () => {
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="text-gray-400 hover:text-gray-600"
+                    aria-label={showConfirmPassword ? t('common:accessibility.hidePassword') : t('common:accessibility.showPassword')}
                   >
                     {showConfirmPassword ? (
                       <Eye className="h-4 w-4" />
@@ -602,13 +605,14 @@ export const SecuritySection: React.FC = () => {
 
       {/* Recent Login Activity */}
       <div>
-        <h3 className="text-xl font-semibold text-primary mb-6">Recent Login Activity</h3>
+        <h3 className="text-xl font-semibold text-primary mb-6">{t('common:messages.recentActivity')}</h3>
         <LoginSessions
           sessionsLoading={sessionsLoading}
           loginSessions={loginSessions}
           currentSession={currentSession}
           pastSessions={pastSessions}
           formatDate={formatDate}
+          t={t}
         />
       </div>
     </div>

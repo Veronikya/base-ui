@@ -3,6 +3,7 @@
 // Websites: https://www.aptlogica.com | https://www.serenibase.com
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, UserPlus, CloudUpload, Search, Loader2 } from 'lucide-react';
 import {
   useAddUser,
@@ -38,26 +39,27 @@ const getUserFormErrors = (params: {
   firstName: string;
   lastName: string;
   email: string;
+  t: (key: string) => string;
 }) => {
   const newErrors: Record<string, string> = {};
-  const { firstName, lastName, email } = params;
+  const { firstName, lastName, email, t } = params;
 
   if (!firstName.trim()) {
-    newErrors.firstName = 'First name is required';
+    newErrors.firstName = t('common:errors.firstNameRequired');
   } else if (!/^[a-zA-Z\s]+$/.test(firstName.trim())) {
-    newErrors.firstName = 'First name must contain only letters and spaces';
+    newErrors.firstName = t('common:errors.firstNameLettersOnly');
   }
 
   if (!lastName.trim()) {
-    newErrors.lastName = 'Last name is required';
+    newErrors.lastName = t('common:errors.lastNameRequired');
   } else if (!/^[a-zA-Z\s]+$/.test(lastName.trim())) {
-    newErrors.lastName = 'Last name must contain only letters and spaces';
+    newErrors.lastName = t('common:errors.lastNameLettersOnly');
   }
 
   if (!email.trim()) {
-    newErrors.email = 'Email is required';
+    newErrors.email = t('common:errors.emailRequired');
   } else if (!validateEmailValue(email)) {
-    newErrors.email = 'Please enter a valid email address';
+    newErrors.email = t('common:errors.invalidEmail');
   }
 
   return newErrors;
@@ -113,6 +115,7 @@ const buildMembershipFromAssignments = (
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, editUser = null }) => {
+  const { t } = useTranslation(['common', 'workspace', 'profile']);
   const isEditMode = !!editUser;
 
   const [firstName, setFirstName] = useState('');
@@ -258,7 +261,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
   }, [workspaces, searchTerm]);
 
   const validateForm = () => {
-    const newErrors = getUserFormErrors({ firstName, lastName, email });
+    const newErrors = getUserFormErrors({ firstName, lastName, email, t });
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -269,14 +272,14 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
     if (file) {
       const validTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
       if (!validTypes.includes(file.type)) {
-        setErrors(prev => ({ ...prev, avatar: 'Please upload a valid image file (SVG, PNG, JPG, or GIF)' }));
+        setErrors(prev => ({ ...prev, avatar: t('common:errors.invalidFileType') }));
         return;
       }
 
       const img = new globalThis.Image();
       img.onload = () => {
         if (img.width > 800 || img.height > 400) {
-          setErrors(prev => ({ ...prev, avatar: 'Image dimensions must be max 800 x 400px' }));
+          setErrors(prev => ({ ...prev, avatar: t('common:errors.invalidFileType') }));
           return;
         }
         setAvatar(file);
@@ -317,12 +320,12 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
               return newErrors;
             });
           } else {
-            setErrors(prev => ({ ...prev, avatar: 'Image dimensions must be max 800 x 400px' }));
+            setErrors(prev => ({ ...prev, avatar: t('common:errors.invalidFileType') }));
           }
         };
         img.src = globalThis.URL.createObjectURL(file);
       } else {
-        setErrors(prev => ({ ...prev, avatar: 'Please upload a valid image file (SVG, PNG, JPG, or GIF)' }));
+        setErrors(prev => ({ ...prev, avatar: t('common:errors.invalidFileType') }));
       }
     }
   };
@@ -485,7 +488,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
       onClose();
     } catch (error: any) {
       const errorMsg = error?.response?.data?.message || error?.message ||
-        (isEditMode ? 'Failed to update user' : 'Failed to add user');
+        (isEditMode ? t('common:errors.failedToRemoveUser') : t('common:errors.failedToRemoveUser'));
       toast.error(errorMsg);
     } finally {
       setIsSubmitting(false);
@@ -514,7 +517,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
   } else if (filteredWorkspaces.length === 0) {
     workspacesListContent = (
       <div className="text-center py-8 text-sm text-gray-500">
-        {searchTerm ? 'No workspaces found' : 'No workspaces available'}
+        {searchTerm ? t('workspace:general.noWorkspacesFound') : t('workspace:addUser.noWorkspacesAvailable')}
       </div>
     );
   } else {
@@ -531,8 +534,8 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
   }
 
   const isBusy = isSubmitting || isAddingUser || editUserMutation.isPending;
-  const submitLabel = isEditMode ? 'Update' : 'Add';
-  const submitBusyLabel = isEditMode ? 'Updating...' : 'Adding...';
+  const submitLabel = isEditMode ? t('common:buttons.update') : t('workspace:addUser.add');
+  const submitBusyLabel = isEditMode ? t('common:messages.updating') : t('common:messages.adding');
 
   return (
     <div className="bg-modal-backdrop relative">
@@ -553,12 +556,12 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
             </div>
             <div>
               <h2 className="text-xl font-semibold text-primary">
-                {isEditMode ? 'Edit User' : 'Add Users'}
+                {isEditMode ? t('workspace:addUser.editUser') : t('workspace:addUser.title')}
               </h2>
               <p className="text-sm text-secondary">
                 {isEditMode
-                  ? 'Update user information and access permissions'
-                  : 'Add users to collaborate on this project'
+                  ? t('workspace:addUser.editUserDescription')
+                  : t('workspace:addUser.addUserDescription')
                 }
               </p>
             </div>
@@ -583,7 +586,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
                   {/* First Name */}
                   <div>
                     <label htmlFor="first-name" className="block text-sm font-medium text-gray-700 mb-1">
-                      First Name <span className="field-component-required">*</span>
+                      {t('profile:form.firstName')} <span className="field-component-required">*</span>
                     </label>
                     <input
                       id="first-name"
@@ -599,7 +602,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
                           });
                         }
                       }}
-                      placeholder="Enter first name"
+                      placeholder={t('profile:placeholders.enterFirstName')}
                       className={`w-full text-sm px-3 h-10 border rounded-lg text-primary focus:border-primary placeholder:text-gray-400 bg-card outline-none transition-all ${errors.firstName ? 'border-red-500' : 'border'
                         }`}
                     />
@@ -611,7 +614,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
                   {/* Last Name */}
                   <div>
                     <label htmlFor="last-name" className="block text-sm font-medium text-gray-700 mb-1">
-                      Last Name <span className="field-component-required">*</span>
+                      {t('profile:form.lastName')} <span className="field-component-required">*</span>
                     </label>
                     <input
                       id="last-name"
@@ -627,7 +630,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
                           });
                         }
                       }}
-                      placeholder="Enter last name"
+                      placeholder={t('profile:placeholders.enterLastName')}
                       className={`w-full text-sm px-3 h-10 border rounded-lg text-primary focus:border-primary placeholder:text-gray-400 bg-card outline-none transition-all ${errors.lastName ? 'border-red-500' : 'border'
                         }`}
                     />
@@ -640,7 +643,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
                 {/* Email */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                    Email address <span className="field-component-required">*</span>
+                    {t('profile:form.emailAddress')} <span className="field-component-required">*</span>
                   </label>
                   <input
                     id="email"
@@ -660,11 +663,11 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
                     }}
                     onBlur={() => {
                       if (email.trim() && !validateEmailValue(email)) {
-                        setErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }));
+                        setErrors(prev => ({ ...prev, email: t('common:errors.invalidEmail') }));
                       }
                     }}
                     disabled={isEditMode}
-                    placeholder="Enter email address"
+                    placeholder={t('profile:placeholders.enterEmailAddress') || 'Enter email address'}
                     className={`w-full text-sm px-3 h-10 border rounded-lg text-primary focus:border-primary placeholder:text-gray-400 bg-card outline-none transition-all ${errors.email ? 'border-red-500' : 'border'
                       } ${isEditMode ? 'bg-gray-100 cursor-not-allowed' : ''}`}
                   />
@@ -676,7 +679,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
                 {/* Profile Image */}
                 <div>
                   <label htmlFor="avatar-upload" className="block text-sm font-medium text-gray-700 mb-1">
-                    Profile Image
+                    {t('common:labels.profileImage')}
                   </label>
                   {avatarPreview ? (
                     <div className="flex gap-4">
@@ -721,10 +724,10 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
                         />
                         <CloudUpload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                         <p className="text-sm text-gray-600 mb-1">
-                          <span className="text-green-500 font-medium">Click to upload</span> or drag and drop
+                          <span className="text-green-500 font-medium">{t('profile:upload.clickToUpload')}</span> {t('profile:upload.orDragAndDrop')}
                         </p>
                         <p className="text-xs text-gray-500">
-                          SVG, PNG, JPG or GIF (max. 800 x 400px)
+                          {t('profile:upload.imageConstraints')}
                         </p>
                       </button>
                     </div>
@@ -773,10 +776,10 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
                             }`}
                         />
                       </button>
-                      <span className="block text-sm font-medium text-gray-700">Set as Co-owner</span>
+                      <span className="block text-sm font-medium text-gray-700">{t('workspace:addUser.setAsCoowner')}</span>
                     </div>
                     <p className="text-sm text-gray-500 ml-13">
-                      Co-owners have full administrative access, including the ability to manage users, bases, and workspace settings.
+                      {t('workspace:addUser.coownerDescription')}
                     </p>
                   </div>
                 )}
@@ -785,7 +788,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
               {/* Right Column - Workspace/Base Selection */}
               {showWorkspaceBasePanel && (
                 <div className="flex flex-col h-full min-h-0 bg-gray-50 p-4 lg:p-6">
-                  <h3 className="text-sm font-semibold text-primary flex-shrink-0 mb-4">Select Workspace(s) & Base(s)</h3>
+                  <h3 className="text-sm font-semibold text-primary flex-shrink-0 mb-4">{t('workspace:addUser.selectWorkspaceBases')}</h3>
 
                   {/* Search Bar */}
                   <div className="relative flex-shrink-0 mb-4">
@@ -794,7 +797,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
                       type="text"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder="Search Workspace or Base"
+                      placeholder={t('workspace:addUser.searchPlaceholder')}
                       className="w-full text-sm pl-10 pr-3 h-10 border rounded-lg text-primary focus:border-primary placeholder:text-gray-400 bg-card outline-none transition-all"
                     />
                   </div>
@@ -819,7 +822,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose, edi
             disabled={isBusy}
             className="px-16 py-2 rounded-xl border bg-card hover:bg-gray-50 focus:ring-1 focus:ring-gray-500 transition-all disabled:opacity-50 text-gray-700"
           >
-            Cancel
+            {t('common:buttons.cancel')}
           </button>
           <button
             type="submit"

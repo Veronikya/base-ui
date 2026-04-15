@@ -1,0 +1,27 @@
+{
+  "createTable": {
+    "title": "Create Table",
+    "subtitle": "Add a new table to your base",
+    "form": {
+      "tableName": "Table Name",
+      "description": "Description",
+      "tableNamePlaceholder": "Enter table name",
+      "descriptionPlaceholder": "Enter table description",
+      "tableNameRequired": "Table name is required",
+      "invalidTableName": "Invalid table name",
+      "minChars": "Minimum 3 characters",
+      "requirements": "Table name requirements:",
+      "charCount": "{{count}}/50 characters"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Create Table",
+      "creating": "Creating..."
+    },
+    "errors": {
+      "nameRequired": "Table name is required",
+      "invalidName": "Invalid table name",
+      "createFailed": "Failed to create table. Please try again."
+    }
+  }
+}

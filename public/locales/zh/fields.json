@@ -1,0 +1,399 @@
+{
+  "email": {
+    "label": "邮箱地址",
+    "placeholder": "请输入您的邮箱地址",
+    "required": "邮箱为必填项",
+    "invalid": "请输入有效的邮箱地址"
+  },
+  "password": {
+    "label": "密码",
+    "placeholder": "密码",
+    "required": "密码为必填项",
+    "new": "新密码",
+    "confirm": "确认新密码"
+  },
+  "submit": {
+    "label": "提交"
+  },
+  "pagination": {
+    "previous": "上一页",
+    "next": "下一页"
+  },
+  "validation": {
+    "fieldRequired": "此字段为必填项",
+    "invalidEmail": "请输入有效的邮箱地址",
+    "invalidNumber": "无效的数字",
+    "invalidAmount": "请输入有效的金额",
+    "invalidDuration": "请输入有效的时长",
+    "invalidPhone": "请输入有效的电话号码",
+    "invalidURL": "请输入有效的网址",
+    "invalidDate": "请输入有效的日期",
+    "numberTooLarge": "数字过大（最多 {{max}} 位）",
+    "dateMustBeAfter": "日期必须在 {{date}} 之后",
+    "dateMustBeBefore": "日期必须在 {{date}} 之前",
+    "maxChars": "最多允许 {{max}} 个字符",
+    "selectValidOption": "请选择有效的选项",
+    "invalidPercentage": "请输入有效的百分比",
+    "percentageRange": "百分比必须在 0 到 100 之间",
+    "invalidRating": "请提供评分",
+    "ratingRange": "评分必须在 0 到 {{max}} 之间",
+    "invalidText": "文本不能超过 {{max}} 个字符",
+    "attachmentRequired": "请至少附上一个文件"
+  },
+  "placeholders": {
+    "selectOption": "选择选项...",
+    "noOptionsAvailable": "没有可用选项",
+    "enterValue": "输入值...",
+    "createdBy": "创建者...",
+    "lastModifiedBy": "最后修改者...",
+    "user": "用户...",
+    "selectUser": "选择用户...",
+    "clickToUpload": "点击上传",
+    "orDragAndDrop": "或拖拽文件到此处",
+    "imageConstraints": "SVG、PNG、JPG 或 GIF（最大 800 x 400px）",
+    "enterFirstName": "请输入名字",
+    "enterLastName": "请输入姓氏",
+    "enterDisplayName": "请输入显示名称",
+    "enterEmailAddress": "请输入邮箱地址",
+    "selectCountry": "选择国家/地区",
+    "selectTimeZone": "选择时区",
+    "selectLanguage": "选择语言",
+    "notSet": "未设置",
+    "searchRecordsToLink": "搜索要关联的记录...",
+    "noMatchingValues": "没有匹配的值",
+    "noHiddenValues": "没有隐藏的值",
+    "searchFunctions": "搜索函数...",
+    "noFunctionsFound": "未找到匹配的函数 \"{{query}}\"",
+    "startTyping": "开始输入...",
+    "linkText": "链接文本",
+    "placeholder": "https://example.com",
+    "enterFormula": "输入公式（例如 ADD({价格}, {税额})）",
+    "clearFormula": "清除"
+  },
+  "fieldTypes": {
+    "singleSelect": {
+      "label": "单选",
+      "noOptions": "没有可用选项"
+    },
+    "multiSelect": {
+      "label": "多选"
+    },
+    "date": {
+      "label": "日期",
+      "today": "今天",
+      "placeholder": "YYYY-MM-DD"
+    },
+    "dateTime": {
+      "label": "日期和时间",
+      "placeholder": "YYYY-MM-DD HH:mm",
+      "selectDate": "选择日期",
+      "selectTime": "选择时间"
+    },
+    "time": {
+      "label": "时间",
+      "placeholder": "HH:mm"
+    },
+    "year": {
+      "label": "年份",
+      "placeholder": "YYYY"
+    },
+    "number": {
+      "label": "数字"
+    },
+    "decimal": {
+      "label": "小数"
+    },
+    "currency": {
+      "label": "货币"
+    },
+    "percent": {
+      "label": "百分比"
+    },
+    "duration": {
+      "label": "时长"
+    },
+    "rating": {
+      "label": "评分"
+    },
+    "checkbox": {
+      "label": "复选框"
+    },
+    "email": {
+      "label": "邮箱"
+    },
+    "phone": {
+      "label": "电话号码"
+    },
+    "url": {
+      "label": "网址"
+    },
+    "user": {
+      "label": "用户"
+    },
+    "attachment": {
+      "label": "附件",
+      "uploadInProgress": "上传中...",
+      "previewDisabled": "预览已禁用",
+      "previewUnavailableDuringUpload": "上传期间预览不可用",
+      "previewAttachments": "预览附件"
+    },
+    "formula": {
+      "label": "公式"
+    },
+    "lookup": {
+      "label": "查找"
+    },
+    "links": {
+      "label": "链接"
+    },
+    "json": {
+      "label": "JSON"
+    },
+    "longText": {
+      "label": "长文本"
+    },
+    "singleLineText": {
+      "label": "单行文本"
+    },
+    "common": {
+      "today": "今天",
+      "now": "现在",
+      "clear": "清除",
+      "search": "搜索...",
+      "cancel": "取消",
+      "save": "保存",
+      "saveAndClose": "保存并关闭",
+      "close": "关闭",
+      "view": "查看",
+      "edit": "编辑",
+      "loading": "加载中...",
+      "loadingRecords": "正在加载记录...",
+      "loadingMore": "正在加载更多记录...",
+      "loadingUsers": "正在加载用户...",
+      "loadMore": "加载更多",
+      "loadMoreRemaining": "加载更多（剩余 {{count}} 条）",
+      "noResults": "无结果",
+      "noRecordsFound": "未找到记录",
+      "noRecordsAvailable": "没有可用记录",
+      "noUsersFound": "未找到用户",
+      "noUsersAvailable": "没有可用用户",
+      "usersSelected": "已选择 {{count}} 个用户",
+      "linked": "已关联",
+      "link": "关联",
+      "unlink": "取消关联",
+      "linkedSuccessfully": "记录关联成功",
+      "unlinkedSuccessfully": "记录取消关联成功",
+      "treeView": "树形",
+      "textView": "文本",
+      "invalidJSON": "无效的 JSON",
+      "emptyJSON": "空 JSON",
+      "functionsAndOperators": "函数和运算符",
+      "quickFunctions": "快捷函数",
+      "allFunctions": "所有函数 →",
+      "insertFunction": "插入函数",
+      "showDetails": "显示详情",
+      "hideDetails": "隐藏详情",
+      "syntax": "语法：",
+      "example": "示例：",
+      "howToUseFormulas": "如何使用公式：",
+      "formulaFieldTip": "使用 {{field}} 引用其他字段——名称需用大括号包裹，且区分大小写。",
+      "formulaOperatorTip": "可以点击任意函数添加，并结合 +, -, *, / 等运算符使用。",
+      "formulaTypeMatchTip": "确保字段类型与函数匹配：数学运算需要数字，文本需要文本，日期函数需要日期/时间字段。",
+      "formulaPlainTextTip": "纯文本需使用引号，例如：\"你好\" 或 \"世界\"。",
+      "viewAllFunctions": "查看所有函数",
+      "oneToOne": "一对一",
+      "hasMany": "一对多",
+      "manyToMany": "多对多",
+      "recordId": "记录 {{id}}",
+      "ofSelected": "/ {{selected}} 已选",
+      "showingFirstOfTotal": "显示前 {{shown}} 条，共 {{total}} 条",
+      "refineSearch": "请优化搜索条件。",
+      "noSearchResults": "没有匹配的值",
+      "noHiddenValues": "没有隐藏的值"
+    },
+    "dateTime": {
+      "label": "日期和时间",
+      "placeholder": "YYYY-MM-DD HH:mm",
+      "selectDate": "选择日期",
+      "selectTime": "选择时间"
+    },
+    "time": {
+      "label": "时间",
+      "placeholder": "HH:mm",
+      "now": "现在"
+    },
+    "year": {
+      "label": "年份",
+      "placeholder": "YYYY",
+      "clearValue": "清除值"
+    }
+  },
+  "columnModal": {
+    "newField": "新建字段",
+    "editField": "编辑字段",
+    "enterFieldName": "请输入字段名称",
+    "searchFieldType": "搜索字段类型",
+    "cancel": "取消",
+    "saving": "保存中...",
+    "saveField": "保存字段",
+    "fieldNameExists": "字段名称已存在",
+    "fieldInUse": "字段使用中",
+    "fieldTypeLocked": "无法更改字段类型，因为该字段被用于一个或多个视图。您仍然可以更新名称、描述和配置等其他属性。",
+    "fieldTypeChangeBlocked": "无法更改字段类型。该字段在以下视图中被用作关键字段：{{viewNames}}。请先更改视图配置。"
+  },
+  "columnConfig": {
+    "addDescription": "添加描述",
+    "enterFieldDescription": "请输入字段描述...",
+    "defaultValue": "默认值",
+    "checked": "已勾选",
+    "unchecked": "未勾选",
+    "description": "描述",
+    "icon": "图标",
+    "colour": "颜色",
+    "color": "颜色",
+    "optionAlreadyExists": "选项已存在",
+    "addOption": "添加选项",
+    "selectDefaultValue": "选择默认值",
+    "setDefaultValue": "设置默认值",
+    "clearDefault": "清除默认值",
+    "defaultStarRating": "默认：{{rating}}/{{max}}",
+    "maxRating": "最大评分",
+    "selectMaxRating": "选择最大评分",
+    "displayAsProgress": "显示为进度条",
+    "progressColor": "进度条颜色",
+    "selectProgressColor": "选择进度条颜色",
+    "enterDefaultPercentage": "输入默认百分比",
+    "currencyLocale": "货币区域",
+    "selectLocale": "选择区域",
+    "currencyCode": "货币代码",
+    "selectCurrency": "选择货币",
+    "selectedCurrency": "已选货币：",
+    "precision": "精度",
+    "selectPrecision": "选择精度",
+    "format": "格式",
+    "durationFormat": "时长格式",
+    "dateFormat": "日期格式",
+    "timeFormat": "时间格式",
+    "timeDisplay": "时间显示",
+    "hourFormat12": "12 小时",
+    "hourFormat24": "24 小时",
+    "displayTimeZone": "显示时区",
+    "sameTimezone": "所有成员使用相同时区",
+    "selectTimeZone": "选择时区",
+    "multipleUsers": "多用户",
+    "multipleUsersDesc": "启用后，用户可以选择多个用户",
+    "selectUsers": "选择用户...",
+    "enterJsonPlaceholder": "输入 JSON（例如 {\"key\": \"value\"}）",
+    "enableRichText": "启用富文本",
+    "showThousandsSeparator": "显示千位分隔符",
+    "singleLineText": {
+      "enterDefaultText": "输入默认文本"
+    },
+    "longText": {
+      "enterDefaultTextValue": "输入默认文本值"
+    },
+    "number": {
+      "enterDefaultNumber": "输入默认数字"
+    },
+    "decimal": {
+      "enterDefaultDecimal": "输入默认小数值"
+    },
+    "phoneNumber": {
+      "acceptValidPhoneNumbers": "仅接受有效电话号码",
+      "enterDefaultPhoneNumber": "输入默认电话号码"
+    },
+    "email": {
+      "emailValidation": "邮箱验证",
+      "enterDefaultEmail": "输入默认邮箱..."
+    },
+    "url": {
+      "urlValidation": "网址验证",
+      "enterDefaultUrl": "输入默认网址",
+      "placeholderUrl": "例如 https://example.com"
+    },
+    "date": {
+      "setDefaultValue": "设置默认值",
+      "dateFormat": "日期格式"
+    },
+    "year": {
+      "setDefaultValue": "设置默认值"
+    },
+    "time": {
+      "setDefaultValue": "设置默认值"
+    },
+    "options": "选项",
+    "boolean": {
+      "green": "绿色",
+      "blue": "蓝色",
+      "yellow": "黄色",
+      "red": "红色",
+      "purple": "紫色",
+      "gray": "灰色"
+    },
+    "rating": {
+      "star": "星形",
+      "heart": "心形",
+      "circle": "圆形",
+      "thumb": "拇指",
+      "flag": "旗帜",
+      "check": "勾选",
+      "badge": "徽章",
+      "shield": "盾牌",
+      "award": "奖章",
+      "trophy": "奖杯",
+      "medal": "奖牌",
+      "zap": "闪电",
+      "sparkles": "星星",
+      "crown": "皇冠",
+      "gem": "宝石",
+      "diamond": "钻石"
+    },
+    "relations": {
+      "relationType": "关联类型",
+      "whatIsALink": "什么是关联？",
+      "linkDescription": "关联在表之间创建关系以引用相关记录。例如：将"订单"关联到"客户"，以便查看每位客户下了哪些订单。",
+      "oneToOne": "一对一",
+      "oneToOneDesc": "每条记录精确关联到目标表中的一条记录",
+      "oneToOneLongDesc": "此表中的每条记录关联到目标表中精确一条记录。",
+      "hasMany": "一对多",
+      "hasManyDesc": "一条记录可以关联多条目标表中的记录",
+      "hasManyLongDesc": "此表中的每条记录可以关联目标表中的多条记录。",
+      "manyToMany": "多对多",
+      "manyToManyDesc": "多条记录可关联多条目标表中的记录",
+      "manyToManyLongDesc": "两个表中的记录均可关联多条记录。",
+      "targetTable": "目标表",
+      "selectTableToLink": "选择要关联的表",
+      "linkingTo": "关联到：",
+      "targetTableRequired": "关联字段必须选择目标表",
+      "linkField": "关联字段",
+      "noLinkFieldsFound": "此表中未找到关联字段。请先创建关联字段。",
+      "lookupField": "查找字段",
+      "selectOption": "-请选择-",
+      "noFieldsAvailable": "没有可用字段",
+      "loadingFields": "正在加载字段...",
+      "lookupFieldDesc": "此字段将显示..."
+    }
+  },
+  "recordModal": {
+    "newRecord": "新建记录",
+    "editRecord": "编辑记录",
+    "saveRecord": "保存记录",
+    "saveChanges": "保存更改",
+    "recordCreated": "记录创建成功",
+    "recordUpdated": "记录更新成功",
+    "recordCreateFailed": "保存记录失败，请重试。",
+    "recordUpdateFailed": "保存更改失败，请重试。",
+    "permissionCreate": "您没有创建记录的权限。",
+    "permissionEdit": "您没有编辑记录的权限。",
+    "requiredFieldsEmpty": "必填字段不能为空。",
+    "attachmentWarning": "记录已创建，但部分附件可能未上传成功。请检查并重试。",
+    "close": "关闭",
+    "closeModal": "关闭弹窗",
+    "recordMenu": "记录菜单",
+    "deleteRecord": "删除记录",
+    "cancel": "取消",
+    "confirm": "确认",
+    "hideHiddenFields": "隐藏 {{count}} 个隐藏字段",
+    "showHiddenFields": "显示 {{count}} 个隐藏字段"
+  }
+}

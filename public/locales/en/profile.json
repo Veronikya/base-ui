@@ -1,0 +1,49 @@
+{
+  "form": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "displayName": "Display Name",
+    "emailAddress": "Email address",
+    "country": "Country",
+    "timeZone": "Time Zone",
+    "language": "Language",
+    "dateOfBirth": "Date of Birth"
+  },
+  "placeholders": {
+    "enterFirstName": "Enter first name",
+    "enterLastName": "Enter last name",
+    "enterDisplayName": "Enter display name",
+    "enterEmailAddress": "Enter email address",
+    "selectCountry": "Select Country",
+    "selectTimeZone": "Select Time Zone",
+    "selectLanguage": "Select Language",
+    "notSet": "Not set"
+  },
+  "upload": {
+    "clickToUpload": "Click to upload",
+    "orDragAndDrop": "or drag and drop",
+    "imageConstraints": "SVG, PNG, JPG or GIF (max. 800 x 400px)"
+  },
+  "actions": {
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "update": "Update",
+    "tryAgain": "Try Again"
+  },
+  "messages": {
+    "loading": "Loading profile...",
+    "failedToLoad": "Failed to load profile",
+    "noDataAvailable": "No profile data available"
+  },
+  "errors": {
+    "invalidDateOfBirth": "Invalid Date of Birth",
+    "invalidFileType": "Please select an image file",
+    "fileTooLarge": "File size must be less than 5MB",
+    "profileSaveFailed": "Failed to save profile. Please try again.",
+    "avatarRemoveFailed": "Failed to remove avatar. Please try again."
+  },
+  "toast": {
+    "profileUpdated": "Profile updated successfully!",
+    "avatarRemoved": "Avatar removed successfully!"
+  }
+}

@@ -4,13 +4,16 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React from "react";
 import { AuditUser } from './AuditUser';
+import { useTranslation } from "react-i18next";
 
 interface AuditCreatedByProps {
   placeholder?: string;
 }
 
 export const AuditCreatedBy: React.FC<AuditCreatedByProps> = ({
-  placeholder = "Created by...",
+  placeholder,
 }) => {
-  return <AuditUser placeholder={placeholder} />;
+  const { t } = useTranslation(['fields']);
+  const defaultPlaceholder = t('fields:placeholders.createdBy');
+  return <AuditUser placeholder={placeholder ?? defaultPlaceholder} />;
 };

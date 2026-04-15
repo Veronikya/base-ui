@@ -5,6 +5,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { Search, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import { useGetTenantUsers } from '../../../hooks/useApi';
 import { calculateDropdownPosition } from '../../../utils/dropdownPosition';
@@ -60,12 +61,14 @@ export const User: React.FC<UserProps> = ({
   value,
   onChange,
   config = {},
-  placeholder = 'Select user...',
+  placeholder,
   disabled = false,
   readOnly = false,
   isBorder = false
 }) => {
+  const { t } = useTranslation(['fields']);
   const { allowMultiple = false, defaultUser, defaultValue } = config;
+  const resolvedPlaceholder = placeholder ?? t('fields:placeholders.selectUser');
 
   // Initialize with value, then defaultValue, then defaultUser, then null
   const getInitialValue = () => {
@@ -383,7 +386,7 @@ export const User: React.FC<UserProps> = ({
           onClick={() => !disabled && !readOnly && setIsOpen(!isOpen)}
           disabled={disabled || readOnly || loading}
         >
-          <span className="text-sm text-gray-500">{loading ? 'Loading users...' : placeholder}</span>
+          <span className="text-sm text-gray-500">{loading ? t('fields:common.loadingUsers') : resolvedPlaceholder}</span>
         </button>
       )}
       {/* User Dropdown Portal */}
@@ -404,7 +407,7 @@ export const User: React.FC<UserProps> = ({
             {selectedUsers.length > 0 && (
               <div className="mb-2 flex items-center justify-between">
                 <span className="text-xs text-gray-600">
-                  {selectedUsers.length} user{selectedUsers.length === 1 ? '' : 's'} selected
+                  {t('fields:common.usersSelected', { count: selectedUsers.length })}
                 </span>
                 <button
                   type="button"
@@ -420,7 +423,7 @@ export const User: React.FC<UserProps> = ({
                   disabled={readOnly}
                   className="text-xs text-red-600 hover:text-red-800 hover:underline"
                 >
-                  Clear
+                  {t('fields:common.clear')}
                 </button>
               </div>
             )}
@@ -430,7 +433,7 @@ export const User: React.FC<UserProps> = ({
               <input
                 ref={searchRef}
                 type="text"
-                placeholder="Select user..."
+                placeholder={t('fields:placeholders.selectUser')}
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
@@ -467,7 +470,7 @@ export const User: React.FC<UserProps> = ({
               if (loading) {
                 return (
                   <output className="p-3 text-center text-sm text-gray-500 block" aria-live="polite">
-                    Loading users...
+                    {t('fields:common.loadingUsers')}
                   </output>
                 );
               }
@@ -479,7 +482,7 @@ export const User: React.FC<UserProps> = ({
                 );
               }
               if (filteredUsers.length === 0) {
-                const message = searchTerm ? 'No users found' : 'No users available';
+                const message = searchTerm ? t('fields:common.noUsersFound') : t('fields:common.noUsersAvailable');
                 return (
                   <output className="p-3 text-center text-sm text-gray-500 font-bold block" aria-live="polite">
                     {message}
@@ -492,7 +495,7 @@ export const User: React.FC<UserProps> = ({
               <>
                 {filteredUsers.length > 100 && (
                   <div className="p-2 text-center text-xs text-gray-400 border-b">
-                    Showing first 100 of {filteredUsers.length} users. Refine your search.
+                    Showing first 100 of {filteredUsers.length} users. {t('fields:common.refineSearch')}
                   </div>
                 )}
                 {filteredUsers.slice(0, 100).map((user, index) => {

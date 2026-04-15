@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect } from 'react';
 import { Table2, X, HelpCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { MultiLineText } from '../common/Fields/MultiLineText';
 import { validateTableName, getDefaultTableName } from '../../utils/nameValidation';
 
@@ -20,10 +21,11 @@ export const CreateTableModal: React.FC<CreateTableModalProps> = ({
   isOpen,
   onClose,
   onCreate,
-  baseId,
+  baseId: _baseId,
   defaultName = '',
   existingTables = [],
 }) => {
+  const { t } = useTranslation(['common', 'tables', 'fields']);
   const [name, setName] = useState(defaultName);
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
@@ -70,14 +72,14 @@ export const CreateTableModal: React.FC<CreateTableModalProps> = ({
     e?.preventDefault();
 
     if (!name.trim()) {
-      setError('Table name is required');
+      setError(t('tables:createTable.errors.nameRequired'));
       return;
     }
 
     // Check validation
     const validation = validateTableName(name, existingTables);
     if (!validation.isValid) {
-      setError(validation.error || 'Invalid table name');
+      setError(validation.error || t('tables:createTable.errors.invalidName'));
       return;
     }
 
@@ -88,9 +90,9 @@ export const CreateTableModal: React.FC<CreateTableModalProps> = ({
       onCreate({ name: name.trim(), description: description.trim() });
     } catch (err: any) {
       if (err && typeof err === 'object' && 'message' in err) {
-        setError((err as Error).message || 'Failed to create table. Please try again.');
+        setError((err as Error).message || t('tables:createTable.errors.createFailed'));
       } else {
-        setError('Failed to create table. Please try again.');
+        setError(t('tables:createTable.errors.createFailed'));
       }
     } finally {
       setIsSubmitting(false);
@@ -122,8 +124,8 @@ export const CreateTableModal: React.FC<CreateTableModalProps> = ({
               <Table2 size={20} className="icon-primary" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-xl font-semibold text-primary truncate">Create Table</h2>
-              <p className="text-sm text-secondary truncate">Add a new table to your base</p>
+              <h2 className="text-xl font-semibold text-primary truncate">{t('tables:createTable.title')}</h2>
+              <p className="text-sm text-secondary truncate">{t('tables:createTable.subtitle')}</p>
             </div>
           </div>
           <button
@@ -139,7 +141,7 @@ export const CreateTableModal: React.FC<CreateTableModalProps> = ({
           <div className="p-4 space-y-4">
             <div className="space-y-1">
               <label htmlFor="tableName" className="block text-sm font-medium text-primary mb-1">
-                Table Name <span className="field-component-required">*</span>
+                {t('tables:createTable.form.tableName')} <span className="field-component-required">*</span>
               </label>
               <div className="relative">
                 <input
@@ -147,7 +149,7 @@ export const CreateTableModal: React.FC<CreateTableModalProps> = ({
                   id="tableName"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter table name"
+                  placeholder={t('tables:createTable.form.tableNamePlaceholder')}
                   className={`field-component field-component-border field-component-focus ${error || validationError ? 'border-red-500' : 'border'}`}
                   required
                   minLength={3}
@@ -163,10 +165,10 @@ export const CreateTableModal: React.FC<CreateTableModalProps> = ({
                       })()
                       } cursor-help`} />
                     <div className="invisible group-hover:visible absolute right-0 mt-1 mr-2 w-64 bg-card border rounded-xl shadow-lg p-3 text-sm z-50">
-                      <h4 className="mb-2 text-primary">Table name requirements:</h4>
+                      <h4 className="mb-2 text-primary">{t('tables:createTable.form.requirements')}</h4>
                       <ul className="space-y-1">
                         <li className={`flex items-center ${name.trim().length >= 3 ? 'text-green-600' : 'text-gray-500'}`}>
-                          • Minimum 3 characters
+                          • {t('tables:createTable.form.minChars')}
                         </li>
                       </ul>
                     </div>
@@ -180,14 +182,14 @@ export const CreateTableModal: React.FC<CreateTableModalProps> = ({
                 </div>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                {name.length}/50 characters
+                {t('tables:createTable.form.charCount', { count: name.length })}
               </p>
             </div>
             <MultiLineText
-              label="Description"
+              label={t('tables:createTable.form.description')}
               value={description}
               onChange={value => setDescription(value)}
-              placeholder="Enter table description"
+              placeholder={t('tables:createTable.form.descriptionPlaceholder')}
               rows={5}
               isBorder={true}
             />
@@ -202,7 +204,7 @@ export const CreateTableModal: React.FC<CreateTableModalProps> = ({
             disabled={isSubmitting}
             className="px-16 py-2 rounded-xl border bg-card hover:bg-gray-50 focus:ring-1 focus:ring-gray-500 transition-all disabled:opacity-50 text-gray-700"
           >
-            Cancel
+            {t('tables:createTable.buttons.cancel')}
           </button>
           <button
             type="button"
@@ -216,14 +218,14 @@ export const CreateTableModal: React.FC<CreateTableModalProps> = ({
             {isSubmitting ? (
               <>
                 <div className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin"></div>
-                Creating...
+                {t('tables:createTable.buttons.creating')}
               </>
             ) : (
-              'Create Table'
+              t('tables:createTable.buttons.create')
             )}
           </button>
         </div>
       </div>
     </div>
   );
-}; 
+};

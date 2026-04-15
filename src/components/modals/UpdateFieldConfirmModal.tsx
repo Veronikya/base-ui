@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React from 'react';
 import { TriangleAlert } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface UpdateFieldConfirmModalProps {
   isOpen: boolean;
@@ -14,13 +15,14 @@ interface UpdateFieldConfirmModalProps {
 }
 
 const UpdateFieldConfirmModal: React.FC<UpdateFieldConfirmModalProps> = ({ isOpen, title, message, onClose, onConfirm }) => {
+  const { t } = useTranslation(['fields']);
   if (!isOpen) return null;
 
   return (
     <div className="bg-modal-backdrop relative">
       <button
         type="button"
-        aria-label="Close modal"
+        aria-label={t('fields:recordModal.closeModal')}
         className="absolute inset-0"
         onClick={onClose}
       />
@@ -43,14 +45,14 @@ const UpdateFieldConfirmModal: React.FC<UpdateFieldConfirmModalProps> = ({ isOpe
             className="px-16 py-2 rounded-xl border bg-card hover:bg-gray-50 focus:ring-1 focus:ring-gray-500 transition-all text-gray-700"
             onClick={onClose}
           >
-            Cancel
+            {t('fields:recordModal.cancel')}
           </button>
           <button
             type="button"
             className="px-16 py-2 rounded-xl btn-primary text-white font-semibold hover:opacity-90 focus:ring-1 focus:ring-primary transition-all"
             onClick={onConfirm}
           >
-            Confirm
+            {t('fields:recordModal.confirm')}
           </button>
         </div>
       </div>

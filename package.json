@@ -33,7 +33,11 @@
     "react-router-dom": "^7.12.0",
     "semver": "^7.7.2",
     "uuid": "^11.1.0",
-    "zustand": "^5.0.6"
+    "zustand": "^5.0.6",
+    "i18next": "^23.16.8",
+    "react-i18next": "^15.4.1",
+    "i18next-browser-languagedetector": "^8.0.4",
+    "i18next-http-backend": "^3.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

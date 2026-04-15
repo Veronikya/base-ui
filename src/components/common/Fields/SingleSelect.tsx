@@ -5,6 +5,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronDown, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import { useDropdownPosition } from '../../../hooks/useDropdownPosition';
 import { getOptionColorClass, getReadableTextColor } from '../../../utils/optionColorUtils';
@@ -38,7 +39,7 @@ export const SingleSelect: React.FC<SingleSelectProps> = ({
   value,
   onChange,
   options,
-  placeholder = "Select option...",
+  placeholder = "",
   required = false,
   disabled = false,
   allowCustom = false,
@@ -49,6 +50,7 @@ export const SingleSelect: React.FC<SingleSelectProps> = ({
   helperText,
   config = {}
 }) => {
+  const { t } = useTranslation(['fields']);
   const { defaultValue = '', options: configOptions = options, allowCustom: configAllowCustom = allowCustom } = config;
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -78,11 +80,11 @@ export const SingleSelect: React.FC<SingleSelectProps> = ({
 
   const validate = (val: string) => {
     if (required && !val.trim()) {
-      return 'This field is required';
+      return t('fields:validation.fieldRequired');
     }
 
     if (val && !configAllowCustom && !normalizedOptions.some(o => o.option === val)) {
-      return 'Please select a valid option';
+      return t('fields:validation.selectValidOption');
     }
 
     return null;
@@ -134,7 +136,7 @@ export const SingleSelect: React.FC<SingleSelectProps> = ({
                 <span className="truncate">{displayValue}</span>
               </div>
             ) : (
-              <span className="text-gray-500 text-sm text-left truncate overflow-hidden whitespace-nowrap flex-1">{placeholder}</span>
+              <span className="text-gray-500 text-sm text-left truncate overflow-hidden whitespace-nowrap flex-1">{placeholder || t('fields:placeholders.selectOption')}</span>
             )}
           </div>
           <div className="flex items-center gap-1 ml-2 flex-shrink-0">
@@ -167,14 +169,14 @@ export const SingleSelect: React.FC<SingleSelectProps> = ({
             }}
           >
             {normalizedOptions.length === 0 ? (
-              <div className="px-3 py-2 text-sm text-gray-500">No options available</div>
+              <div className="px-3 py-2 text-sm text-gray-500">{t('fields:placeholders.noOptionsAvailable')}</div>
             ) : (
               <SelectOptionsMenu
                 options={normalizedOptions}
                 readOnly={readOnly}
                 isSelected={(opt) => value === opt.option}
                 onSelect={(opt) => handleSelect(opt.option)}
-                emptyMessage="No options available"
+                emptyMessage={t('fields:placeholders.noOptionsAvailable')}
                 optionClassName={(_, __, isDisabled) =>
                   `w-full text-left text-sm rounded-xl transition-colors flex items-center justify-between ${isDisabled
                     ? 'text-gray-400 cursor-not-allowed'

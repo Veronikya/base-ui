@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, Plus, Search, X, ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useTable, useInsertRelationData } from '../../../hooks/useApi';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import { useToast } from '../../common/Toast';
@@ -47,12 +48,14 @@ export const LinksField: React.FC<LinksFieldProps> = ({
     onChange,
     field,
     disabled = false,
-    placeholder = 'Search records to link...',
+    placeholder,
     currentRowId,
     currentTableId,
     persistImmediately = true, // Default to true for backward compatibility
     isBorder = false // Default to false for backward compatibility
 }) => {
+    const { t } = useTranslation(['fields']);
+    const resolvedPlaceholder = placeholder ?? t('fields:placeholders.searchRecordsToLink');
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
@@ -200,7 +203,7 @@ export const LinksField: React.FC<LinksFieldProps> = ({
         // If no records loaded yet, create placeholders
         return valueIds.map(id => ({
             id,
-            title: 'Loading...',
+            title: t('fields:common.loading'),
             _isPlaceholder: true
         }));
     }, [value, records, recordsById, isTableLoading]);
@@ -336,7 +339,7 @@ export const LinksField: React.FC<LinksFieldProps> = ({
 
             const success = await persistRelation(record.id, action);
             if (success) {
-                toast.success(isAlreadySelected ? 'Record unlinked successfully' : 'Record linked successfully');
+                toast.success(isAlreadySelected ? t('fields:common.unlinkedSuccessfully') : t('fields:common.linkedSuccessfully'));
                 // Force refetch to ensure data is in sync with server
                 if (currentTableId) {
                     queryClient.refetchQueries({
@@ -379,7 +382,7 @@ export const LinksField: React.FC<LinksFieldProps> = ({
 
             const success = await persistRelation(recordId, 'unlink');
             if (success) {
-                toast.success('Record unlinked successfully');
+                toast.success(t('fields:common.unlinkedSuccessfully'));
                 // Force refetch to ensure data is in sync with server
                 if (currentTableId) {
                     queryClient.refetchQueries({
@@ -413,7 +416,7 @@ export const LinksField: React.FC<LinksFieldProps> = ({
 
         // If it's a placeholder, show loading
         if (record._isPlaceholder) {
-            return record.title || 'Loading...';
+            return record.title || t('fields:common.loading');
         }
 
         // Last resort
@@ -456,10 +459,10 @@ export const LinksField: React.FC<LinksFieldProps> = ({
 
     const getRelationTypeDisplay = () => {
         switch (relationType) {
-            case 'one-to-one': return 'One to One';
-            case 'has-many': return 'Has Many';
-            case 'many-to-many': return 'Many to Many';
-            default: return 'One to One';
+            case 'one-to-one': return t('fields:common.oneToOne');
+            case 'has-many': return t('fields:common.hasMany');
+            case 'many-to-many': return t('fields:common.manyToMany');
+            default: return t('fields:common.oneToOne');
         }
     };
 
@@ -477,7 +480,7 @@ export const LinksField: React.FC<LinksFieldProps> = ({
                     }
                 }}
                 tabIndex={disabled ? -1 : 0}
-                aria-label={`${field.title} - ${selectedRecords.length} record${selectedRecords.length === 1 ? '' : 's'} linked`}
+                aria-label={`${field.title} - ${selectedRecords.length} ${selectedRecords.length === 1 ? 'record' : 'records'} ${t('fields:common.linked')}`}
                 aria-expanded={isOpen}
                 aria-haspopup="listbox"
                 className={`field-component ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} ${isBorder ? 'field-component-border' : ''}`}
@@ -490,7 +493,7 @@ export const LinksField: React.FC<LinksFieldProps> = ({
                             }
 
                             if (selectedRecords.length === 0) {
-                                return <span className="text-sm text-gray-500 truncate block min-w-0">{placeholder}</span>;
+                                return <span className="text-sm text-gray-500 truncate block min-w-0">{resolvedPlaceholder}</span>;
                             }
 
                             if (selectedRecords.length === 1) {
@@ -632,7 +635,7 @@ export const LinksField: React.FC<LinksFieldProps> = ({
                             <input
                                 ref={searchRef}
                                 type="text"
-                                placeholder="Search records to link..."
+                                placeholder={t('fields:placeholders.searchRecordsToLink')}
                                 value={searchTerm}
                                 onChange={(e) => {
                                     setSearchTerm(e.target.value);
@@ -688,7 +691,7 @@ export const LinksField: React.FC<LinksFieldProps> = ({
                                 return (
                                     <div //NOSONAR
                                         className="p-4 text-center text-gray-500" role="status" aria-live="polite">
-                                        {debouncedSearchTerm ? 'No records found' : 'No records available'}
+                                        {debouncedSearchTerm ? t('fields:common.noRecordsFound') : t('fields:common.noRecordsAvailable')}
                                     </div>
                                 );
                             }
@@ -818,7 +821,7 @@ export const LinksField: React.FC<LinksFieldProps> = ({
                                     onClick={handleLoadMore}
                                     className="px-4 py-2 text-sm font-medium rounded-xl btn-secondary disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
                                 >
-                                    Load more ({formatCompactNumber(totalItems - paginatedRecords.length)} remaining)
+                                    {t('fields:common.loadMore')} ({formatCompactNumber(totalItems - paginatedRecords.length)} remaining)
                                 </button>
                             </div>
                         )}

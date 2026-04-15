@@ -1,0 +1,49 @@
+{
+  "form": {
+    "firstName": "名",
+    "lastName": "姓",
+    "displayName": "显示名称",
+    "emailAddress": "邮箱地址",
+    "country": "国家/地区",
+    "timeZone": "时区",
+    "language": "语言",
+    "dateOfBirth": "出生日期"
+  },
+  "placeholders": {
+    "enterFirstName": "请输入名字",
+    "enterLastName": "请输入姓氏",
+    "enterDisplayName": "请输入显示名称",
+    "enterEmailAddress": "请输入邮箱地址",
+    "selectCountry": "选择国家/地区",
+    "selectTimeZone": "选择时区",
+    "selectLanguage": "选择语言",
+    "notSet": "未设置"
+  },
+  "upload": {
+    "clickToUpload": "点击上传",
+    "orDragAndDrop": "或拖拽文件到此处",
+    "imageConstraints": "SVG、PNG、JPG 或 GIF（最大 800 x 400px）"
+  },
+  "actions": {
+    "edit": "编辑",
+    "cancel": "取消",
+    "update": "更新",
+    "tryAgain": "重试"
+  },
+  "messages": {
+    "loading": "正在加载个人资料...",
+    "failedToLoad": "加载个人资料失败",
+    "noDataAvailable": "暂无个人资料数据"
+  },
+  "errors": {
+    "invalidDateOfBirth": "出生日期无效",
+    "invalidFileType": "请选择图片文件",
+    "fileTooLarge": "文件大小必须小于 5MB",
+    "profileSaveFailed": "保存个人资料失败，请重试。",
+    "avatarRemoveFailed": "移除头像失败，请重试。"
+  },
+  "toast": {
+    "profileUpdated": "个人资料更新成功！",
+    "avatarRemoved": "头像移除成功！"
+  }
+}

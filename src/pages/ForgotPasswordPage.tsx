@@ -5,9 +5,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, CheckCircle } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 import { forgotPassword } from "../service/clientService";
 
 const ForgotPasswordPage: React.FC = () => {
+  const { t } = useTranslation(['auth', 'common', 'fields']);
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -86,12 +88,12 @@ const ForgotPasswordPage: React.FC = () => {
     setEmailError(null);
     
     if (!email.trim()) {
-      setEmailError("Email field is required");
+      setEmailError(t('auth:validation.emailRequired'));
       return;
     }
-    
+
     if (!validateEmail(email.trim())) {
-      setEmailError("Please enter a valid email address");
+      setEmailError(t('auth:validation.emailInvalid'));
       return;
     }
 
@@ -100,7 +102,7 @@ const ForgotPasswordPage: React.FC = () => {
       await forgotPassword({ email: email.trim() });
       setIsSuccess(true);
     } catch (err: any) {
-      setError(err?.message || "Failed to send reset email");
+      setError(err?.message || t('common:errors.failedToSendResetEmail'));
     } finally {
       setIsLoading(false);
     }
@@ -113,17 +115,16 @@ const ForgotPasswordPage: React.FC = () => {
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Check Your Email</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('auth:forgotPassword.successTitle')}</h1>
           <p className="text-gray-600 mb-6">
-            We've sent a password reset link to <strong>{email}</strong>. 
-            Please check your email and click the link to reset your password.
+            {t('auth:forgotPassword.successMessage', { email })}
           </p>
           <div className="space-y-4">
-            <Link 
-              to="/login" 
+            <Link
+              to="/login"
               className="w-full btn-primary py-2 rounded-md transition inline-block text-center"
             >
-              Back to Login
+              {t('auth:forgotPassword.backToLogin')}
             </Link>
             <button
               onClick={() => {
@@ -132,7 +133,7 @@ const ForgotPasswordPage: React.FC = () => {
               }}
               className="w-full text-sm text-gray-600 hover:text-gray-800 transition"
             >
-              Try a different email
+              {t('auth:forgotPassword.tryDifferentEmail')}
             </button>
           </div>
         </div>
@@ -144,23 +145,23 @@ const ForgotPasswordPage: React.FC = () => {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="max-w-lg w-full bg-card border rounded-2xl shadow-md p-8">
         <div className="mb-6">
-          <Link 
+          <Link
             to="/login"
             className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800 transition mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Login
+            {t('auth:forgotPassword.backToLogin')}
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Forgot Password?</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('auth:forgotPassword.title')}</h1>
           <p className="text-gray-600">
-            No worries! Enter your email address and we'll send you a link to reset your password.
+            {t('auth:forgotPassword.subtitle')}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
             <label htmlFor="forgot-password-email" className="field-component-label">
-              Email Address <span className="field-component-required">*</span>
+              {t('auth:forgotPassword.emailLabel')} <span className="field-component-required">*</span>
             </label>
             <input
               type="email"
@@ -171,11 +172,11 @@ const ForgotPasswordPage: React.FC = () => {
                 if (error) setError("");
               }}
               onBlur={() => {
-                if (!email.trim()) setEmailError("Email field is required");
+                if (!email.trim()) setEmailError(t('auth:validation.emailRequired'));
                 else if (validateEmail(email.trim())) {setEmailError(null);}
-                else {setEmailError("Please enter a valid email address");}
+                else {setEmailError(t('auth:validation.emailInvalid'));}
               }}
-              placeholder="Enter your email address"
+              placeholder={t('auth:forgotPassword.emailPlaceholder')}
               className={`field-component field-component-border field-component-focus placeholder-[var(--color-text-placeholder)] ${emailError ? "border-destructive bg-red-50" : ""} shadow-[var(--shadow-xs)]`}
               style={{ boxShadow: "var(--shadow-xs)" }}
             />
@@ -191,15 +192,15 @@ const ForgotPasswordPage: React.FC = () => {
             disabled={isLoading}
             className="w-full btn-primary py-2 px-4 rounded-xl font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Sending..." : "Send Reset Link"}
+            {isLoading ? t('auth:forgotPassword.sendingButton') : t('auth:forgotPassword.sendButton')}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Remember your password?{" "}
+            {t('auth:forgotPassword.rememberPassword')}{" "}
             <Link to="/login" className="text-primary hover:underline">
-              Sign In
+              {t('auth:forgotPassword.signInLink')}
             </Link>
           </p>
         </div>

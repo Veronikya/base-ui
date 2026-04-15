@@ -8,6 +8,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import { pad2 } from '../../../utils/timeFormatUtils';
 import { useDropdownPosition } from '../../../hooks/useDropdownPosition';
+import { useTranslation } from 'react-i18next';
 
 interface TimeProps {
   label?: string;
@@ -84,6 +85,7 @@ export const Time: React.FC<TimeProps> = ({
   helperText,
   config = {}
 }) => {
+  const { t } = useTranslation(['fields']);
   const {
     hourFormat = '24',
     } = config;
@@ -119,7 +121,7 @@ export const Time: React.FC<TimeProps> = ({
 
   const validate = (val: string) => {
     if (required && !val.trim()) {
-      return 'This field is required';
+      return t('fields:validation.fieldRequired');
     }
     // No further validation for time
     return null;
@@ -227,7 +229,7 @@ export const Time: React.FC<TimeProps> = ({
                 onClick={() => !readOnly && handleNow()}
                 disabled={readOnly}
               >
-                Now
+                {t('fields:common.now')}
               </button>
             </div>
           </div>,

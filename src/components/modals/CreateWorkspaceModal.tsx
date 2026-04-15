@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect } from 'react';
 import { X, Loader2, HelpCircle, Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useCreateWorkspace, useWorkspaces, useDeleteWorkspace } from '../../hooks/useApi';
 import { useToast } from '../common/Toast';
 import { MultiLineText } from '../common/Fields';
@@ -52,10 +53,15 @@ const getNameState = (
   };
 };
 
-const getHeaderSubtitle = (title: string) => (
-  title === 'Create Workspace'
-    ? 'Start organizing your workspace'
-    : 'Update workspace details'
+interface GetHeaderSubtitleOptions {
+  isCreateMode: boolean;
+  t: (key: string, options?: Record<string, unknown>) => string;
+}
+
+const getHeaderSubtitle = ({ isCreateMode, t }: GetHeaderSubtitleOptions) => (
+  isCreateMode
+    ? t('workspace:general.startOrganizing')
+    : t('workspace:general.updateWorkspaceDetails')
 );
 
 const getShowInformationTab = (isEditMode: boolean, activeTab: 'information' | 'dangerzone') => (
@@ -92,6 +98,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
   onSubmit: controlledSubmit,
   currentWorkspaceId,
 }) => {
+  const { t } = useTranslation(['common', 'workspace', 'fields']);
   const internalMutation = useCreateWorkspace();
   const deleteWorkspaceMutation = useDeleteWorkspace();
   const { data: workspacesData } = useWorkspaces();
@@ -108,6 +115,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const isEditMode = !!currentWorkspaceId;
+  const isCreateMode = title === 'Create Workspace';
   const canDelete = canDeleteWorkspace();
   const { isControlled, effectiveName, effectiveDescription } = getControlState(
     controlledName,
@@ -124,7 +132,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
     isControlled,
     submitting
   );
-  const headerSubtitle = getHeaderSubtitle(title);
+  const headerSubtitle = getHeaderSubtitle({ isCreateMode, t });
   const showInformationTab = getShowInformationTab(isEditMode, activeTab);
 
   // Get existing workspaces for validation
@@ -183,7 +191,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
       if (isControlled) {
         controlledError && toast.error(controlledError);
       } else {
-        setError('Workspace name is required');
+        setError(t('workspace:errors.workspaceNameRequired'));
       }
       return true;
     }
@@ -194,9 +202,9 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
   const handleValidationError = (validation: { isValid: boolean; error?: string }): boolean => {
     if (!validation.isValid) {
       if (isControlled) {
-        toast.error(validation.error || 'Invalid workspace name');
+        toast.error(validation.error || t('workspace:errors.invalidWorkspaceName'));
       } else {
-        setError(validation.error || 'Invalid workspace name');
+        setError(validation.error || t('workspace:errors.invalidWorkspaceName'));
         setValidationError(validation.error || '');
       }
       return true;
@@ -225,13 +233,13 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
           description: desc.trim(),
         },
       });
-      toast.success('Workspace created successfully');
+      toast.success(t('common:toast.workspaceCreated'));
     }
   };
 
   // Handle submission error - extracted to reduce complexity
   const handleSubmissionError = (err: any) => {
-    const errorMsg = err?.message || 'Failed to create workspace';
+    const errorMsg = err?.message || t('workspace:errors.createWorkspaceFailed');
     if (!isControlled) setError(errorMsg);
     toast.error(errorMsg);
   };
@@ -272,13 +280,13 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
       // Use the navigation handler to properly clean up localStorage and navigate
       handleWorkspaceDeletion(wsId);
 
-      toast.success('Workspace deleted successfully');
+      toast.success(t('common:toast.workspaceDeleted'));
       setShowDeleteConfirm(false);
       onClose();
       onSuccess?.();
     } catch (err: any) {
       console.error('Failed to delete workspace:', err);
-      toast.error(err?.message || 'Failed to delete workspace. Please try again.');
+      toast.error(err?.message || t('workspace:errors.deleteWorkspaceFailed'));
       throw err; // Re-throw so modal can handle it
     }
   };
@@ -295,7 +303,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
   // Get button text based on submitting state - extracted to avoid nested ternary
   let buttonText: string;
   if (submitting) {
-    buttonText = submitButtonText.includes('Save') ? 'Saving...' : 'Creating...';
+    buttonText = submitButtonText.includes('Save') ? t('common:messages.saving') : t('common:buttons.creating');
   } else {
     buttonText = submitButtonText;
   }
@@ -394,7 +402,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
                     ${getTabButtonClassName('information')}
                   `}
                 >
-                  Information
+                  {t('workspace:general.information')}
                 </button>
                 {canDelete && (
                   <button
@@ -405,7 +413,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
                       ${getTabButtonClassName('dangerzone')}
                     `}
                   >
-                    Danger Zone
+                    {t('workspace:general.dangerZone')}
                   </button>
                 )}
               </nav>
@@ -418,7 +426,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
               <div className="p-4 space-y-4">
                 <div className="space-y-1">
                   <label htmlFor="workspaceName" className="block text-sm font-medium text-primary mb-1">
-                    Workspace Name <span className="field-component-required">*</span>
+                    {t('workspace:general.workspaceName')} <span className="field-component-required">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -426,7 +434,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
                       type="text"
                       value={effectiveName}
                       onChange={handleNameChange}
-                      placeholder="Enter workspace name"
+                      placeholder={t('workspace:general.workspaceNamePlaceholder')}
                       className={`field-component field-component-border field-component-focus ${hasNameError ? 'border-red-500' : 'border'}`}
                       required
                       minLength={3}
@@ -437,13 +445,13 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
                       <span className="relative inline-block group">
                         <HelpCircle className={`w-4 h-4 ${getHelpIconColorClass()} cursor-help`} />
                         <div className="invisible group-hover:visible absolute right-0 mt-1 mr-2 w-64 bg-card border rounded-xl shadow-lg p-3 text-sm z-50">
-                          <h4 className="font-medium text-primary mb-2">Workspace name requirements:</h4>
+                          <h4 className="font-medium text-primary mb-2">{t('workspace:general.workspaceNameRequirements')}</h4>
                           <ul className="space-y-1">
                             <li className={`flex items-center ${getListItemColorClass()}`}>
-                              * Minimum 3 characters
+                              * {t('workspace:general.minChars3')}
                             </li>
                             <li className="flex items-center text-gray-500">
-                              * Must be unique
+                              * {t('workspace:general.mustBeUnique')}
                             </li>
                           </ul>
                         </div>
@@ -458,15 +466,15 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
                   )}
 
                   <p className="mt-1 text-xs text-gray-500">
-                    {effectiveName.length}/50 characters
+                    {effectiveName.length}/50 {t('workspace:general.characters')}
                   </p>
                 </div>
 
                 <MultiLineText
-                  label="Description"
+                  label={t('workspace:general.workspaceDescription')}
                   value={effectiveDescription}
                   onChange={handleDescriptionChange}
-                  placeholder="Enter workspace description"
+                  placeholder={t('workspace:general.workspaceDescriptionPlaceholder')}
                   rows={5}
                   isBorder={true}
                 />
@@ -477,20 +485,20 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
             /* Danger Tab Content */
             <div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
               <div className="p-6 space-y-6">
-                <h2 className="text-lg text-gray-900 mb-4">Danger Zone</h2>
+                <h2 className="text-lg text-gray-900 mb-4">{t('workspace:general.dangerZone')}</h2>
                 {canDelete && (
                   <div className="flex items-center justify-between p-4 rounded-xl border border-red-400">
                     <div className="flex-1">
-                      <h3 className="text-sm font-medium text-gray-900">Delete this workspace and all it's contents.</h3>
+                      <h3 className="text-sm font-medium text-gray-900">{t('workspace:general.deleteWorkspaceWarning')}</h3>
                       <p className="text-sm text-gray-600 mt-1">
-                        This will permanently remove the workspace and all its contents. This action cannot be undone.
+                        {t('workspace:general.deleteWorkspaceWarningDescription')}
                       </p>
                     </div>
                     <button
                       onClick={() => setShowDeleteConfirm(true)}
                       className="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 focus:outline-none focus:ring-1 focus:ring-red-500 focus:ring-offset-2"
                     >
-                      Delete Workspace
+                      {t('workspace:general.deleteWorkspaceButton')}
                     </button>
                   </div>
                 )}
@@ -507,7 +515,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
                 disabled={submitting}
                 className="px-16 py-2 rounded-xl border bg-card hover:bg-gray-50 focus:ring-1 focus:ring-gray-500 transition-all disabled:opacity-50 text-gray-700"
               >
-                Cancel
+                {t('common:buttons.cancel')}
               </button>
               <button
                 type="submit"
@@ -526,7 +534,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
                 onClick={onClose}
                 className="px-16 py-2 rounded-xl border bg-card hover:bg-gray-50 focus:ring-1 focus:ring-gray-500 transition-all text-gray-700"
               >
-                Close
+                {t('common:buttons.close')}
               </button>
             </div>
           )}

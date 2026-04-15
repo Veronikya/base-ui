@@ -1,0 +1,399 @@
+{
+  "email": {
+    "label": "Email Address",
+    "placeholder": "Enter your email address",
+    "required": "Email field is required",
+    "invalid": "Please enter a valid email address"
+  },
+  "password": {
+    "label": "Password",
+    "placeholder": "Password",
+    "required": "Password field is required",
+    "new": "New Password",
+    "confirm": "Confirm New Password"
+  },
+  "submit": {
+    "label": "Submit"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "validation": {
+    "fieldRequired": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidNumber": "Invalid number",
+    "invalidAmount": "Please enter a valid amount",
+    "invalidDuration": "Please enter a valid duration",
+    "invalidPhone": "Please enter a valid phone number",
+    "invalidURL": "Please enter a valid URL",
+    "invalidDate": "Please enter a valid date",
+    "numberTooLarge": "Number too large (max {{max}} digits)",
+    "dateMustBeAfter": "Date must be after {{date}}",
+    "dateMustBeBefore": "Date must be before {{date}}",
+    "maxChars": "Max {{max}} characters allowed",
+    "selectValidOption": "Please select a valid option",
+    "invalidPercentage": "Please enter a valid percentage",
+    "percentageRange": "Percentage must be between 0 and 100",
+    "invalidRating": "Please provide a rating",
+    "ratingRange": "Rating must be between 0 and {{max}}",
+    "invalidText": "Text must be {{max}} characters or less",
+    "attachmentRequired": "Please attach at least one file"
+  },
+  "placeholders": {
+    "selectOption": "Select option...",
+    "noOptionsAvailable": "No options available",
+    "enterValue": "Enter value...",
+    "createdBy": "Created by...",
+    "lastModifiedBy": "Last Modified by...",
+    "user": "User...",
+    "selectUser": "Select user...",
+    "clickToUpload": "Click to upload",
+    "orDragAndDrop": "or drag and drop",
+    "imageConstraints": "SVG, PNG, JPG or GIF (max. 800 x 400px)",
+    "enterFirstName": "Enter first name",
+    "enterLastName": "Enter last name",
+    "enterDisplayName": "Enter display name",
+    "enterEmailAddress": "Enter email address",
+    "selectCountry": "Select country",
+    "selectTimeZone": "Select time zone",
+    "selectLanguage": "Select language",
+    "notSet": "Not set",
+    "searchRecordsToLink": "Search records to link...",
+    "noMatchingValues": "No matching values",
+    "noHiddenValues": "No hidden values",
+    "searchFunctions": "Search functions...",
+    "noFunctionsFound": "No functions found matching \"{{query}}\"",
+    "startTyping": "Start typing...",
+    "linkText": "Link text",
+    "placeholder": "https://example.com",
+    "enterFormula": "Enter formula (e.g., ADD({Price}, {Tax}))",
+    "clearFormula": "Clear"
+  },
+  "fieldTypes": {
+    "singleSelect": {
+      "label": "Single Select",
+      "noOptions": "No options available"
+    },
+    "multiSelect": {
+      "label": "Multi Select"
+    },
+    "date": {
+      "label": "Date",
+      "today": "Today",
+      "placeholder": "YYYY-MM-DD"
+    },
+    "dateTime": {
+      "label": "Date & Time",
+      "placeholder": "YYYY-MM-DD HH:mm",
+      "selectDate": "Select date",
+      "selectTime": "Select time"
+    },
+    "time": {
+      "label": "Time",
+      "placeholder": "HH:mm"
+    },
+    "year": {
+      "label": "Year",
+      "placeholder": "YYYY"
+    },
+    "number": {
+      "label": "Number"
+    },
+    "decimal": {
+      "label": "Decimal"
+    },
+    "currency": {
+      "label": "Currency"
+    },
+    "percent": {
+      "label": "Percent"
+    },
+    "duration": {
+      "label": "Duration"
+    },
+    "rating": {
+      "label": "Rating"
+    },
+    "checkbox": {
+      "label": "Checkbox"
+    },
+    "email": {
+      "label": "Email"
+    },
+    "phone": {
+      "label": "Phone Number"
+    },
+    "url": {
+      "label": "URL"
+    },
+    "user": {
+      "label": "User"
+    },
+    "attachment": {
+      "label": "Attachment",
+      "uploadInProgress": "Upload in progress...",
+      "previewDisabled": "Preview disabled",
+      "previewUnavailableDuringUpload": "Preview unavailable during upload",
+      "previewAttachments": "Preview attachments"
+    },
+    "formula": {
+      "label": "Formula"
+    },
+    "lookup": {
+      "label": "Lookup"
+    },
+    "links": {
+      "label": "Links"
+    },
+    "json": {
+      "label": "JSON"
+    },
+    "longText": {
+      "label": "Long Text"
+    },
+    "singleLineText": {
+      "label": "Single Line Text"
+    },
+    "common": {
+      "today": "Today",
+      "now": "Now",
+      "clear": "Clear",
+      "search": "Search...",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saveAndClose": "Save & Close",
+      "close": "Close",
+      "view": "View",
+      "edit": "Edit",
+      "loading": "Loading...",
+      "loadingRecords": "Loading records...",
+      "loadingMore": "Loading more records...",
+      "loadingUsers": "Loading users...",
+      "loadMore": "Load more",
+      "loadMoreRemaining": "Load more ({{count}} remaining)",
+      "noResults": "No results",
+      "noRecordsFound": "No records found",
+      "noRecordsAvailable": "No records available",
+      "noUsersFound": "No users found",
+      "noUsersAvailable": "No users available",
+      "usersSelected": "{{count}} user{{count, plural, one {s} other {}} selected",
+      "linked": "Linked",
+      "link": "Link",
+      "unlink": "Unlink",
+      "linkedSuccessfully": "Record linked successfully",
+      "unlinkedSuccessfully": "Record unlinked successfully",
+      "treeView": "Tree",
+      "textView": "Text",
+      "invalidJSON": "Invalid JSON",
+      "emptyJSON": "Empty JSON",
+      "functionsAndOperators": "Functions & Operators",
+      "quickFunctions": "Quick Functions",
+      "allFunctions": "All functions →",
+      "insertFunction": "Insert function",
+      "showDetails": "Show details",
+      "hideDetails": "Hide details",
+      "syntax": "Syntax:",
+      "example": "Example:",
+      "howToUseFormulas": "How to use formulas:",
+      "formulaFieldTip": "Use {{field}} to refer to other fields — always wrap names in curly brackets and note that they're case-sensitive.",
+      "formulaOperatorTip": "You can click any function to add it and combine it with operators like +, -, *, or /.",
+      "formulaTypeMatchTip": "Make sure the field type matches the function: math needs numbers, text needs text, and date functions need date/time fields.",
+      "formulaPlainTextTip": "For plain text, use quotes — for example: \"Hello\" or \"World\".",
+      "viewAllFunctions": "View all functions",
+      "oneToOne": "One to One",
+      "hasMany": "Has Many",
+      "manyToMany": "Many to Many",
+      "recordId": "Record {{id}}",
+      "ofSelected": "of {{selected}} selected",
+      "showingFirstOfTotal": "Showing first {{shown}} of {{total}}",
+      "refineSearch": "Refine your search.",
+      "noSearchResults": "No matching values",
+      "noHiddenValues": "No hidden values"
+    },
+    "dateTime": {
+      "label": "Date & Time",
+      "placeholder": "YYYY-MM-DD HH:mm",
+      "selectDate": "Select date",
+      "selectTime": "Select time"
+    },
+    "time": {
+      "label": "Time",
+      "placeholder": "HH:mm",
+      "now": "Now"
+    },
+    "year": {
+      "label": "Year",
+      "placeholder": "YYYY",
+      "clearValue": "Clear value"
+    }
+  },
+  "columnModal": {
+    "newField": "New Field",
+    "editField": "Edit Field",
+    "enterFieldName": "Enter Field name",
+    "searchFieldType": "Search field type",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "saveField": "Save Field",
+    "fieldNameExists": "Field name already exists",
+    "fieldInUse": "Field in Use",
+    "fieldTypeLocked": "Field type cannot be changed because this field is used in one or more views. You can still update other properties like name, description, and configuration.",
+    "fieldTypeChangeBlocked": "Cannot change field type. This field is used as a critical field in: {{viewNames}}. Please change the view configuration first."
+  },
+  "columnConfig": {
+    "addDescription": "Add description",
+    "enterFieldDescription": "Enter field description...",
+    "defaultValue": "Default value",
+    "checked": "Checked",
+    "unchecked": "Unchecked",
+    "description": "Description",
+    "icon": "Icon",
+    "colour": "Colour",
+    "color": "Color",
+    "optionAlreadyExists": "Option already exists",
+    "addOption": "Add option",
+    "selectDefaultValue": "Select Default Value",
+    "setDefaultValue": "Set default value",
+    "clearDefault": "Clear default",
+    "defaultStarRating": "Default: {{rating}}/{{max}}",
+    "maxRating": "Max rating",
+    "selectMaxRating": "Select max rating",
+    "displayAsProgress": "Display as progress",
+    "progressColor": "Progress color",
+    "selectProgressColor": "Select progress color",
+    "enterDefaultPercentage": "Enter default percentage",
+    "currencyLocale": "Currency Locale",
+    "selectLocale": "Select Locale",
+    "currencyCode": "Currency Code",
+    "selectCurrency": "Select Currency",
+    "selectedCurrency": "Selected currency:",
+    "precision": "Precision",
+    "selectPrecision": "Select precision",
+    "format": "Format",
+    "durationFormat": "Duration format",
+    "dateFormat": "Date format",
+    "timeFormat": "Time format",
+    "timeDisplay": "Time Display",
+    "hourFormat12": "12 Hrs",
+    "hourFormat24": "24 Hrs",
+    "displayTimeZone": "Display time zone",
+    "sameTimezone": "Use same timezone for all members",
+    "selectTimeZone": "Select time zone",
+    "multipleUsers": "Multiple users",
+    "multipleUsersDesc": "When enabled, users can select multiple users",
+    "selectUsers": "Select users...",
+    "enterJsonPlaceholder": "Enter JSON (e.g. {\"key\": \"value\"})",
+    "enableRichText": "Enable rich text",
+    "showThousandsSeparator": "Show thousands separator",
+    "singleLineText": {
+      "enterDefaultText": "Enter default text"
+    },
+    "longText": {
+      "enterDefaultTextValue": "Enter default text value"
+    },
+    "number": {
+      "enterDefaultNumber": "Enter default number"
+    },
+    "decimal": {
+      "enterDefaultDecimal": "Enter default decimal value"
+    },
+    "phoneNumber": {
+      "acceptValidPhoneNumbers": "Accept only valid phone numbers",
+      "enterDefaultPhoneNumber": "Enter default phone number"
+    },
+    "email": {
+      "emailValidation": "Email validation",
+      "enterDefaultEmail": "Enter default email..."
+    },
+    "url": {
+      "urlValidation": "URL validation",
+      "enterDefaultUrl": "Enter default URL",
+      "placeholderUrl": "e.g. https://example.com"
+    },
+    "date": {
+      "setDefaultValue": "Set default value",
+      "dateFormat": "Date format"
+    },
+    "year": {
+      "setDefaultValue": "Set default value"
+    },
+    "time": {
+      "setDefaultValue": "Set default value"
+    },
+    "options": "Options",
+    "boolean": {
+      "green": "Green",
+      "blue": "Blue",
+      "yellow": "Yellow",
+      "red": "Red",
+      "purple": "Purple",
+      "gray": "Gray"
+    },
+    "rating": {
+      "star": "Star",
+      "heart": "Heart",
+      "circle": "Circle",
+      "thumb": "Thumb",
+      "flag": "Flag",
+      "check": "Check",
+      "badge": "Badge",
+      "shield": "Shield",
+      "award": "Award",
+      "trophy": "Trophy",
+      "medal": "Medal",
+      "zap": "Zap",
+      "sparkles": "Sparkles",
+      "crown": "Crown",
+      "gem": "Gem",
+      "diamond": "Diamond"
+    },
+    "relations": {
+      "relationType": "Relation Type",
+      "whatIsALink": "What is a Link?",
+      "linkDescription": "A link creates a relationship between tables to reference related records. Example: link \"Orders\" to \"Customers\" to see which customer placed each order.",
+      "oneToOne": "One to One",
+      "oneToOneDesc": "Each record links to exactly one related record",
+      "oneToOneLongDesc": "Each record in this table links to exactly one record in the target table.",
+      "hasMany": "Has Many",
+      "hasManyDesc": "One record can link to many related records",
+      "hasManyLongDesc": "Each record in this table can link to multiple records in the target table.",
+      "manyToMany": "Many to Many",
+      "manyToManyDesc": "Multiple records link to multiple related records",
+      "manyToManyLongDesc": "Records in both tables can link to multiple records.",
+      "targetTable": "Target Table",
+      "selectTableToLink": "Select table to link",
+      "linkingTo": "Linking to:",
+      "targetTableRequired": "Target table is required for relation fields",
+      "linkField": "Link Field",
+      "noLinkFieldsFound": "No link fields found in this table. Create a link field first.",
+      "lookupField": "Lookup Field",
+      "selectOption": "-select-",
+      "noFieldsAvailable": "No fields available",
+      "loadingFields": "Loading fields...",
+      "lookupFieldDesc": "This field will display the..."
+    }
+  },
+  "recordModal": {
+    "newRecord": "New record",
+    "editRecord": "Edit record",
+    "saveRecord": "Save record",
+    "saveChanges": "Save changes",
+    "recordCreated": "Record created successfully",
+    "recordUpdated": "Record updated successfully",
+    "recordCreateFailed": "Failed to save record. Please try again.",
+    "recordUpdateFailed": "Failed to save changes. Please try again.",
+    "permissionCreate": "You do not have permission to create records.",
+    "permissionEdit": "You do not have permission to edit records.",
+    "requiredFieldsEmpty": "Required field(s) must not be left empty.",
+    "attachmentWarning": "Record created, but some attachments may not have uploaded. Please check and retry.",
+    "close": "Close",
+    "closeModal": "Close modal",
+    "recordMenu": "Record menu",
+    "deleteRecord": "Delete record",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "hideHiddenFields": "Hide {{count}} hidden fields",
+    "showHiddenFields": "Show {{count}} hidden fields"
+  }
+}

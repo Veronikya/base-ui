@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useEffect, useMemo, useState } from 'react';
 import { X, CirclePlus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import FieldRenderer from '../../plugins/FormViewPlugin/components/shared/FieldRenderer';
 import { useAddRow, useInsertRowData, useAddAttachment, useInsertRelationData } from '../../hooks/useApi';
 import { getFieldTypeIconWithMargin, getRelationTypeFromField } from '../../types/fieldTypes';
@@ -29,10 +30,13 @@ const CreateRecordModal: React.FC<CreateRecordModalProps> = ({
     fields,
     onClose,
     onSuccess,
-    title = 'New record',
-    submitLabel = 'Save record',
+    title,
+    submitLabel,
     initialValues = {},
 }) => {
+    const { t } = useTranslation(['fields']);
+    const resolvedTitle = title ?? t('fields:recordModal.newRecord');
+    const resolvedSubmitLabel = submitLabel ?? t('fields:recordModal.saveRecord');
     const [showHidden, setShowHidden] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
@@ -238,7 +242,7 @@ const CreateRecordModal: React.FC<CreateRecordModalProps> = ({
                 await Promise.all(attachmentPromises);
             } catch (error) {
                 console.error('Some attachment uploads failed:', error);
-                setFormError('Record created, but some attachments may not have uploaded. Please check and retry.');
+                setFormError(t('fields:recordModal.attachmentWarning'));
             }
         }
     };
@@ -280,14 +284,14 @@ const CreateRecordModal: React.FC<CreateRecordModalProps> = ({
     const handleSave = async () => {
         // Check permission before saving
         if (!canCreateRecord()) {
-            setFormError('You do not have permission to create records.');
+            setFormError(t('fields:recordModal.permissionCreate'));
             return;
         }
 
         setFormError(null);
         const missing = validateRequired();
         if (missing.length) {
-            setFormError('Required field(s) must not be left empty.');
+            setFormError(t('fields:recordModal.requiredFieldsEmpty'));
             return;
         }
 
@@ -302,13 +306,13 @@ const CreateRecordModal: React.FC<CreateRecordModalProps> = ({
             await insertRelations(recordId);
 
             setSubmitting(false);
-            toast.success('Record created successfully');
+            toast.success(t('fields:recordModal.recordCreated'));
             onSuccess?.({ recordId });
             onClose();
         } catch (err) {
             console.error('Failed to create record', err);
             setSubmitting(false);
-            setFormError('Failed to save record. Please try again.');
+            setFormError(t('fields:recordModal.recordCreateFailed'));
         }
     };
 
@@ -393,7 +397,7 @@ const CreateRecordModal: React.FC<CreateRecordModalProps> = ({
         <div className="bg-modal-backdrop relative">
             <button
                 type="button"
-                aria-label="Close modal"
+                aria-label={t('fields:recordModal.closeModal')}
                 className="absolute inset-0"
                 onClick={onClose}
             />
@@ -404,10 +408,10 @@ const CreateRecordModal: React.FC<CreateRecordModalProps> = ({
                         <CirclePlus className="w-5 h-5 icons-primary flex-shrink-0" />
                         <div className="flex items-center gap-2 min-w-0">
                             <span className="text-sm bg-gray-100 text-gray-700 px-2 py-1 rounded truncate max-w-[150px] flex-shrink-0">{table?.title}</span>
-                            <h2 className="text-2xl font-semibold truncate">{title}</h2>
+                            <h2 className="text-2xl font-semibold truncate">{resolvedTitle}</h2>
                         </div>
                     </div>
-                    <button type="button" className="p-2 flex-shrink-0" onClick={onClose} aria-label="Close">
+                    <button type="button" className="p-2 flex-shrink-0" onClick={onClose} aria-label={t('fields:recordModal.close')}>
                         <X className="w-5 h-5 text-gray-500" />
                     </button>
                 </div>
@@ -445,7 +449,7 @@ const CreateRecordModal: React.FC<CreateRecordModalProps> = ({
                                     className="px-4 py-2 rounded-full border text-sm text-primary bg-card hover:bg-gray-50"
                                     onClick={() => setShowHidden(v => !v)}
                                 >
-                                    {showHidden ? `Hide ${hiddenFields.length} hidden fields` : `Show ${hiddenFields.length} hidden fields`}
+                                    {showHidden ? t('fields:recordModal.hideHiddenFields', { count: hiddenFields.length }) : t('fields:recordModal.showHiddenFields', { count: hiddenFields.length })}
                                 </button>
                                 <div className="h-px bg-gray-200 flex-1" />
                             </div>
@@ -487,7 +491,7 @@ const CreateRecordModal: React.FC<CreateRecordModalProps> = ({
                             disabled={submitting}
                             className="px-16 py-2 rounded-xl border bg-card hover:bg-gray-50 focus:ring-1 focus:ring-gray-500 transition-all disabled:opacity-50 text-gray-700"
                         >
-                            Cancel
+                            {t('fields:recordModal.cancel')}
                         </button>
                         <button
                             type="button"
@@ -495,7 +499,7 @@ const CreateRecordModal: React.FC<CreateRecordModalProps> = ({
                             onClick={handleSave}
                             className={`px-16 py-2 rounded-xl btn-primary ${isSaveDisabled ? 'opacity-60 cursor-not-allowed' : ''}`}
                         >
-                            {submitLabel}
+                            {resolvedSubmitLabel}
                         </button>
                     </div>
                 )}

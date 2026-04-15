@@ -3,6 +3,7 @@
 // Websites: https://www.aptlogica.com | https://www.serenibase.com
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../auth/AuthContext';
 import { useCurrentUser } from '../../auth/useCurrentUser';
 import { useUserProfile, useUpdateUserProfile, useRemoveAvatar } from '../../hooks/useApi';
@@ -101,9 +102,9 @@ const getAvatarUploadStateClass = (isEditing: boolean, isDragging: boolean): str
   return 'border hover:border-green-500 bg-gray-50 cursor-pointer';
 };
 
-const getTzDropdownPlaceholder = (isEditing: boolean, activeCountry: string): string => {
-  if (!isEditing) return 'Not set';
-  return activeCountry ? 'Select Time Zone' : 'Select Country first';
+const getTzDropdownPlaceholder = (isEditing: boolean, activeCountry: string, t: (key: string) => string): string => {
+  if (!isEditing) return t('profile:placeholders.notSet');
+  return activeCountry ? t('profile:placeholders.selectTimeZone') : t('common:messages.selectCountryFirst');
 };
 
 interface AvatarUploadAreaProps {
@@ -117,6 +118,7 @@ interface AvatarUploadAreaProps {
   onDragLeave: (e: React.DragEvent<HTMLElement>) => void;
   triggerAvatarInput: () => void;
   handleAvatarUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  t: (key: string) => string;
 }
 
 const AvatarUploadArea: React.FC<AvatarUploadAreaProps> = ({
@@ -130,6 +132,7 @@ const AvatarUploadArea: React.FC<AvatarUploadAreaProps> = ({
   triggerAvatarInput,
   handleAvatarUpload,
   isDragging,
+  t,
 }) => (
   <button
     onDragOver={isEditing ? onDragOver : undefined}
@@ -148,10 +151,10 @@ const AvatarUploadArea: React.FC<AvatarUploadAreaProps> = ({
     />
     <CloudUpload className={`w-12 h-12 ${isDragging ? 'text-[var(--color-brand-600)]' : 'text-gray-400'} mx-auto mb-3`} />
     <p className="text-sm text-gray-600 mb-1">
-      <span className="text-green-500 font-medium">Click to upload</span> or drag and drop
+      <span className="text-green-500 font-medium">{t('profile:upload.clickToUpload')}</span> {t('profile:upload.orDragAndDrop')}
     </p>
     <p className="text-xs text-gray-500">
-      SVG, PNG, JPG or GIF (max. 800 x 400px)
+      {t('profile:upload.imageConstraints')}
     </p>
   </button>
 );
@@ -209,6 +212,7 @@ const AvatarImage: React.FC<AvatarImageProps> = ({
 );
 
 export const ProfileSection: React.FC = () => {
+  const { t } = useTranslation(['common', 'profile']);
   const { user: authUser } = useAuth();
   const currentUser = useCurrentUser();
   const [isEditing, setIsEditing] = useState(false);
@@ -314,14 +318,14 @@ export const ProfileSection: React.FC = () => {
           onClick={handleCancel}
           className="flex items-center gap-2 px-16 py-2 text-sm border text-gray-700 rounded-xl hover:bg-gray-50 font-medium disabled:opacity-50 transition-colors"
         >
-          Cancel
+          {t('common:buttons.cancel')}
         </button>
         <button
           onClick={handleSave}
           disabled={!hasChanges}
           className="flex items-center gap-2 px-16 py-2 text-sm btn-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-xl text-primary"
         >
-          Update
+          {t('common:buttons.update')}
         </button>
       </div>
     ) : (
@@ -335,7 +339,7 @@ export const ProfileSection: React.FC = () => {
           }}
           className="flex items-center gap-2 px-16 py-2 text-sm btn-primary transition-colors rounded-xl text-primary"
         >
-          Edit
+          {t('common:buttons.edit')}
         </button>
       </div>
     );
@@ -383,7 +387,7 @@ export const ProfileSection: React.FC = () => {
     const dobErr = validateDOB(dob, 'DD-MM-YYYY');
     if (dobErr) {
       setDobError(dobErr);
-      toast.error(dobErr, { title: 'Invalid Date of Birth' });
+      toast.error(dobErr, { title: t('common:errors.invalidDateOfBirth') });
       return false;
     }
     return true;
@@ -434,9 +438,9 @@ export const ProfileSection: React.FC = () => {
 
       persistProfileSettings(latestFormData);
       resetProfileState();
-      toast.success('Profile updated successfully!', { title: 'Success' });
+      toast.success(t('common:toast.profileUpdated'), { title: t('common:messages.success') });
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to save profile. Please try again.', { title: 'Save Failed' });
+      toast.error(t('common:errors.profileSaveFailed'), { title: t('common:messages.error') });
     }
   };
 
@@ -461,13 +465,13 @@ export const ProfileSection: React.FC = () => {
   const processFile = async (file: File) => {
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file', { title: 'Invalid File Type' });
+      toast.error(t('common:errors.invalidFileType'), { title: t('common:messages.error') });
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('File size must be less than 5MB', { title: 'File Too Large' });
+      toast.error(t('common:errors.fileTooLarge'), { title: t('common:messages.error') });
       return;
     }
 
@@ -512,9 +516,9 @@ export const ProfileSection: React.FC = () => {
   const handleRemoveAvatar = async () => {
     try {
       await removeAvatarMutation.mutateAsync();
-      toast.success('Avatar removed successfully!', { title: 'Success' });
+      toast.success(t('common:toast.avatarRemoved'), { title: t('common:messages.success') });
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to remove avatar. Please try again.', { title: 'Remove Failed' });
+      toast.error(t('common:errors.avatarRemoveFailed'), { title: t('common:messages.error') });
     }
   };
 
@@ -524,7 +528,7 @@ export const ProfileSection: React.FC = () => {
       <div className="flex items-center justify-center py-12">
         <div className="flex items-center gap-3">
           <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-          <span className="text-gray-600">Loading profile...</span>
+          <span className="text-gray-600">{t('profile:messages.loading')}</span>
         </div>
       </div>
     );
@@ -535,12 +539,12 @@ export const ProfileSection: React.FC = () => {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="text-red-600 mb-2">Failed to load profile</div>
+          <div className="text-red-600 mb-2">{t('profile:messages.failedToLoad')}</div>
           <button
             onClick={() => refetch()}
             className="px-4 py-2 bg-blue-600 text-primary rounded-md hover:bg-blue-700"
           >
-            Try Again
+            {t('common:buttons.tryAgain')}
           </button>
         </div>
       </div>
@@ -552,7 +556,7 @@ export const ProfileSection: React.FC = () => {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="text-gray-600 mb-2">No profile data available</div>
+          <div className="text-gray-600 mb-2">{t('profile:messages.noDataAvailable')}</div>
         </div>
       </div>
     );
@@ -566,7 +570,7 @@ export const ProfileSection: React.FC = () => {
   const tzDropdownOptions = getTimeZonesForCountry(activeCountry)
     .map((t) => ({ label: `${t.label} (${t.value})`, value: t.value }));
   const tzDropdownValue = isEditing ? (formData.timezone || '') : (userProfile.timezone || '');
-  const tzDropdownPlaceholder = getTzDropdownPlaceholder(isEditing, activeCountry);
+  const tzDropdownPlaceholder = getTzDropdownPlaceholder(isEditing, activeCountry, t);
 
   const triggerAvatarInput = () => {
     if (!isEditing || updateProfileMutation.isPending) return;
@@ -584,14 +588,14 @@ export const ProfileSection: React.FC = () => {
           {/* First Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              <span>First Name</span>
+              <span>{t('profile:form.firstName')}</span>
               <input
                 type="text"
                 value={isEditing ? (formData.first_name || '') : (userProfile.first_name || '')}
                 onChange={(e) => handleInputChange('first_name', e.target.value)}
                 disabled={isEditing === false}
                 className="w-full px-4 py-3 border rounded-xl bg-alpha-white focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-600)] focus:border-transparent transition-colors disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
-                placeholder="Enter first name"
+                placeholder={t('profile:placeholders.enterFirstName')}
               />
             </label>
           </div>
@@ -599,14 +603,14 @@ export const ProfileSection: React.FC = () => {
           {/* Last Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              <span>Last Name</span>
+              <span>{t('profile:form.lastName')}</span>
               <input
                 type="text"
                 value={isEditing ? (formData.last_name || '') : (userProfile.last_name || '')}
                 onChange={(e) => handleInputChange('last_name', e.target.value)}
                 disabled={isEditing === false}
                 className="w-full px-4 py-3 border rounded-xl bg-alpha-white focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-600)] focus:border-transparent transition-colors disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
-                placeholder="Enter last name"
+                placeholder={t('profile:placeholders.enterLastName')}
               />
             </label>
           </div>
@@ -615,14 +619,14 @@ export const ProfileSection: React.FC = () => {
         {/* Display Name - Full Width */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            <span>Display Name</span>
+            <span>{t('profile:form.displayName')}</span>
             <input
               type="text"
               value={isEditing ? (formData.display_name || '') : (userProfile.display_name || '')}
               onChange={(e) => handleInputChange('display_name', e.target.value)}
               disabled={isEditing === false}
               className="w-full px-4 py-3 border rounded-xl bg-alpha-white focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-600)] focus:border-transparent transition-colors disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
-              placeholder="Enter display name"
+              placeholder={t('profile:placeholders.enterDisplayName')}
             />
           </label>
         </div>
@@ -630,14 +634,14 @@ export const ProfileSection: React.FC = () => {
         {/* Email Address */}
         <div>
           <div className="block text-sm font-medium text-gray-700 mb-2">
-            Email address
+            {t('profile:form.emailAddress')}
           </div>
           <div className="px-4 py-3 bg-gray-50 border rounded-xl text-gray-500 flex items-center justify-between gap-2 disabled:cursor-not-allowed">
             <span>{userProfile.email}</span>
             {userProfile.email_verified && (
               <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
                 <CheckCircle className="w-3 h-3" />
-                Verified
+                {t('common:messages.verified')}
               </span>
             )}
           </div>
@@ -646,7 +650,7 @@ export const ProfileSection: React.FC = () => {
         {/* Profile Image */}
         <div>
           <div className="block text-sm font-medium text-gray-700 mb-2">
-            Profile Image
+            {t('common:labels.profileImage')}
           </div>
           {displayAvatarUrl ? (
             <div className="flex gap-4">
@@ -680,6 +684,7 @@ export const ProfileSection: React.FC = () => {
                   onDragLeave={handleDragLeave}
                   triggerAvatarInput={triggerAvatarInput}
                   handleAvatarUpload={handleAvatarUpload}
+                  t={t}
                 />
               </div>
             </div>
@@ -695,6 +700,7 @@ export const ProfileSection: React.FC = () => {
               onDragLeave={handleDragLeave}
               triggerAvatarInput={triggerAvatarInput}
               handleAvatarUpload={handleAvatarUpload}
+              t={t}
             />
           )}
         </div>
@@ -702,7 +708,7 @@ export const ProfileSection: React.FC = () => {
         {/* Country */}
         <div>
           <div className="block text-sm font-medium text-gray-700 mb-2">
-            Country
+            {t('profile:form.country')}
           </div>
           <AdvancedDropdown
             options={Array.from(new Set(timeZoneOptions.map(t => t.country)))
@@ -710,7 +716,7 @@ export const ProfileSection: React.FC = () => {
               .map((country) => ({ label: country, value: country }))}
             value={isEditing ? (formData.country || '') : (userProfile.country || '')}
             onChange={(val) => handleInputChange('country', (val as string) || '')}
-            placeholder="Select Country"
+            placeholder={t('profile:placeholders.selectCountry')}
             searchable
             clearable
             disabled={!isEditing}
@@ -721,7 +727,7 @@ export const ProfileSection: React.FC = () => {
         {/* Time Zone */}
         <div>
           <div className="block text-sm font-medium text-gray-700 mb-2">
-            Time Zone
+            {t('profile:form.timeZone')}
           </div>
           <AdvancedDropdown
             options={tzDropdownOptions}
@@ -738,13 +744,13 @@ export const ProfileSection: React.FC = () => {
         {/* Language */}
         <div>
           <div className="block text-sm font-medium text-gray-700 mb-2">
-            Language
+            {t('profile:form.language')}
           </div>
           <AdvancedDropdown
             options={currencyLocaleOptions}
             value={isEditing ? (formData.locale || '') : (userProfile.locale || '')}
             onChange={(val) => handleInputChange('locale', (val as string) || '')}
-            placeholder="Select Language"
+            placeholder={t('profile:placeholders.selectLanguage')}
             searchable
             clearable
             disabled={!isEditing}
@@ -755,7 +761,7 @@ export const ProfileSection: React.FC = () => {
         {/* Date of Birth */}
         <div>
           <div className="block text-sm font-medium text-gray-700 mb-2">
-            Date of Birth
+            {t('profile:form.dateOfBirth')}
           </div>
           {isEditing ? (
             <>
@@ -782,7 +788,7 @@ export const ProfileSection: React.FC = () => {
               value={userProfile.dob || ''}
               disabled
               className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-600)] focus:border-transparent transition-colors disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
-              placeholder="Not set"
+              placeholder={t('profile:placeholders.notSet')}
             />
           )}
         </div>

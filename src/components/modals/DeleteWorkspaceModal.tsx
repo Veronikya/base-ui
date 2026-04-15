@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect } from 'react';
 import { X, AlertTriangle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface DeleteWorkspaceModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ export const DeleteWorkspaceModal: React.FC<DeleteWorkspaceModalProps> = ({
   onClose,
   onConfirm,
 }) => {
+  const { t } = useTranslation(['common', 'workspace']);
   const [workspaceNameToDelete, setWorkspaceNameToDelete] = useState('');
   const [isDeletingWorkspace, setIsDeletingWorkspace] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -86,8 +88,8 @@ export const DeleteWorkspaceModal: React.FC<DeleteWorkspaceModalProps> = ({
               <AlertTriangle className="w-5 h-5 text-red-600" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-xl font-semibold text-primary truncate">Delete Workspace</h2>
-              <p className="text-sm text-secondary truncate">Permanently delete this workspace and all its contents</p>
+              <h2 className="text-xl font-semibold text-primary truncate">{t('workspace:delete.title')}</h2>
+              <p className="text-sm text-secondary truncate">{t('workspace:delete.subtitle')}</p>
             </div>
           </div>
           <button
@@ -104,23 +106,23 @@ export const DeleteWorkspaceModal: React.FC<DeleteWorkspaceModalProps> = ({
           <div className="p-4 space-y-4">
             <div className="bg-[var(--color-error-50)] border border-red-200 rounded-xl p-3">
               <p className="text-red-800 text-sm">
-                <strong>Warning:</strong> All associated bases, tables, views and data will be permanently deleted.
+                <strong>{t('workspace:delete.warning')}</strong> {t('workspace:delete.warningDetail')}
               </p>
             </div>
 
             <div>
               <p className="text-sm text-primary">
-                <strong>Are you sure you want to proceed? This deletion cannot be reversed.</strong> Confirming this action will permanently delete the workspace <strong>&quot;{workspaceTitle}&quot;</strong> and all of its related contents.
+                <strong>{t('workspace:delete.confirmPrompt')}</strong> {t('workspace:delete.confirmDetail', { title: workspaceTitle })}
               </p>
             </div>
 
             <div>
-              <p className="text-sm text-gray-700 mb-2">Please type <strong>{workspaceTitle}</strong> to confirm.</p>
+              <p className="text-sm text-gray-700 mb-2">{t('workspace:delete.typeToConfirm', { title: workspaceTitle })}</p>
               <input
                 type="text"
                 value={workspaceNameToDelete}
                 onChange={handleInputChange}
-                placeholder="Enter workspace name"
+                placeholder={t('workspace:general.workspaceNamePlaceholder')}
                 className="w-full text-sm px-3 h-10 border rounded-lg text-primary focus:border-primary placeholder:text-gray-400 bg-card outline-none transition-all"
                 required
                 minLength={3}
@@ -139,7 +141,7 @@ export const DeleteWorkspaceModal: React.FC<DeleteWorkspaceModalProps> = ({
             disabled={isSubmitting}
             className="px-16 py-2 rounded-xl border bg-card hover:bg-gray-50 focus:ring-1 focus:ring-gray-500 transition-all disabled:opacity-50 text-gray-700"
           >
-            Cancel
+            {t('common:buttons.cancel')}
           </button>
           <button
             type="button"
@@ -147,7 +149,7 @@ export const DeleteWorkspaceModal: React.FC<DeleteWorkspaceModalProps> = ({
             disabled={!isDeletingWorkspace || isSubmitting}
             className="px-16 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 focus:ring-1 focus:ring-red-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? 'Deleting...' : 'Delete Workspace'}
+            {isSubmitting ? t('workspace:delete.deleting') : t('workspace:delete.deleteButton')}
           </button>
         </div>
       </div>

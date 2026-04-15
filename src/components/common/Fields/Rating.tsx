@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState } from 'react';
 import { Star, Heart, Circle, ThumbsUp, Flag, CheckCircle, BadgeCheck, ShieldCheck, Award, Trophy, Medal, Zap, Sparkles, Crown, Gem, Diamond } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface RatingProps {
   value: number;
@@ -30,6 +31,7 @@ export const Rating: React.FC<RatingProps> = ({
   readOnly = false,
   config = {}
 }) => {
+  const { t } = useTranslation(['fields']);
   const { ratingMax = max, ratingDefault = 0, ratingIcon = 'star', ratingColor = 'yellow' } = config;
 
   // Color mapping (match config modal)
@@ -85,10 +87,10 @@ export const Rating: React.FC<RatingProps> = ({
 
   const validate = (val: number) => {
     if (required && val === 0) {
-      return 'Please provide a rating';
+      return t('fields:validation.invalidRating');
     }
     if (val < 0 || val > ratingMax) {
-      return `Rating must be between 0 and ${ratingMax}`;
+      return t('fields:validation.ratingRange', { max: ratingMax });
     }
     return null;
   };

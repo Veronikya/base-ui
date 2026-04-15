@@ -142,230 +142,99 @@ function renderBooleanConfig({
     {
       key: 'star',
       label: 'Star',
-      checkedIcon: <Star className="w-4 h-4 text-yellow-500 fill-current" />,
-      uncheckedIcon: <Star className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'heart',
-      label: 'Heart',
-      checkedIcon: <Heart className="w-4 h-4 text-red-500 fill-current" />,
-      uncheckedIcon: <Heart className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'thumb',
-      label: 'Thumb',
-      checkedIcon: <ThumbsUp className="w-4 h-4 text-green-500 fill-current" />,
-      uncheckedIcon: <ThumbsDown className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'flag',
-      label: 'Flag',
-      checkedIcon: <Flag className="w-4 h-4 text-red-500 fill-current" />,
-      uncheckedIcon: <Flag className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'badge',
-      label: 'Badge',
-      checkedIcon: <BadgeCheck className="w-4 h-4 text-blue-500 fill-current" />,
-      uncheckedIcon: <BadgeCheck className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'shield',
-      label: 'Shield',
-      checkedIcon: <ShieldCheck className="w-4 h-4 text-purple-500 fill-current" />,
-      uncheckedIcon: <ShieldCheck className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'award',
-      label: 'Award',
-      checkedIcon: <Award className="w-4 h-4 text-orange-500 fill-current" />,
-      uncheckedIcon: <Award className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'trophy',
-      label: 'Trophy',
-      checkedIcon: <Trophy className="w-4 h-4 text-yellow-500 fill-current" />,
-      uncheckedIcon: <Trophy className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'medal',
-      label: 'Medal',
-      checkedIcon: <Medal className="w-4 h-4 text-amber-500 fill-current" />,
-      uncheckedIcon: <Medal className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'crown',
-      label: 'Crown',
-      checkedIcon: <Crown className="w-4 h-4 text-yellow-500 fill-current" />,
-      uncheckedIcon: <Crown className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'gem',
-      label: 'Gem',
-      checkedIcon: <Gem className="w-4 h-4 text-purple-500 fill-current" />,
-      uncheckedIcon: <Gem className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'diamond',
-      label: 'Diamond',
-      checkedIcon: <Diamond className="w-4 h-4 text-blue-500 fill-current" />,
-      uncheckedIcon: <Diamond className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'zap',
-      label: 'Zap',
-      checkedIcon: <Zap className="w-4 h-4 text-yellow-500 fill-current" />,
-      uncheckedIcon: <Zap className="w-4 h-4 text-gray-400" />
-    },
-    {
-      key: 'sparkles',
-      label: 'Sparkles',
-      checkedIcon: <Sparkles className="w-4 h-4 text-pink-500 fill-current" />,
-      uncheckedIcon: <Sparkles className="w-4 h-4 text-gray-400" />
+      checkedIcon: (
+        <div className="w-4 h-4 rounded flex items-center justify-center bg-green-500 border-green-500">
+          <Check className="w-2.5 h-2.5 text-primary" />
+        </div>
+      ),
+      uncheckedIcon: (
+        <div className="w-4 h-4 rounded flex items-center justify-center">
+          <Square className="w-4 h-4 text-gray-400" />
+        </div>
+      )
     },
   ];
 
-  const colorOptions: { key: string; label: string; className: string; color: string; bgClass: string }[] = [
-    { key: 'green', label: 'Green', className: 'text-green-600', color: 'green', bgClass: 'bg-green-500' },
-    { key: 'blue', label: 'Blue', className: 'text-blue-600', color: 'blue', bgClass: 'bg-blue-500' },
-    { key: 'yellow', label: 'Yellow', className: 'text-yellow-500', color: 'yellow', bgClass: 'bg-yellow-400' },
-    { key: 'red', label: 'Red', className: 'text-red-600', color: 'red', bgClass: 'bg-red-500' },
-    { key: 'purple', label: 'Purple', className: 'text-purple-600', color: 'purple', bgClass: 'bg-purple-500' },
-    { key: 'gray', label: 'Gray', className: 'text-gray-600', color: 'gray', bgClass: 'bg-gray-500' },
+  const colorOptions = [
+    { key: 'green', label: 'Green', color: 'green', icon: <Check className="w-4 h-4 text-green-600" /> },
+    { key: 'red', label: 'Red', color: 'red', icon: <Square className="w-4 h-4 text-red-600" /> },
+    { key: 'blue', label: 'Blue', color: 'blue', icon: <Circle className="w-4 h-4 text-blue-600" /> },
+    { key: 'yellow', label: 'Yellow', color: 'yellow', icon: <Star className="w-4 h-4 text-yellow-500" /> },
+    { key: 'purple', label: 'Purple', color: 'purple', icon: <Diamond className="w-4 h-4 text-purple-600" /> },
+    { key: 'gray', label: 'Gray', color: 'gray', icon: <Square className="w-4 h-4 text-gray-400" /> },
   ];
 
-  const selectedIconOption = iconOptions.find(opt => opt.key === checkboxIcon) || iconOptions[0];
-  const selectedColorOption = colorOptions.find(opt => opt.key === checkboxColor) || colorOptions[0];
+  const selectedIconOption = iconOptions.find(opt => opt.key === checkboxIcon);
+  const selectedColorOption = colorOptions.find(opt => opt.key === checkboxColor);
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div>
-          <div className="text-sm font-medium text-[var(--color-text-tertiary)] mb-2">Icon</div>
-          <div className="relative icon-dropdown">
+      <div className="mb-4">
+        <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Icon</div>
+        <div className="grid grid-cols-3 gap-2">
+          {iconOptions.map((option) => (
             <button
+              key={option.key}
               type="button"
-              className="w-full px-3 py-2 border rounded-xl text-sm text-[var(--color-text-tertiary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-focus-ring)] flex items-center justify-between"
-              onClick={() => setShowIconDropdown((v: boolean) => !v)}
+              onClick={() => setCheckboxIcon(option.key)}
+              className={`p-3 rounded-xl border-2 transition-all ${checkboxIcon === option.key
+                  ? 'text-[var(--color-text-primary)] rounded-xl border-[var(--color-border-brand)]'
+                  : 'text-[var(--color-text-primary)] border hover:bg-gray-50'
+                }`}
             >
-              <div className="flex items-center gap-2">
-                {selectedIconOption.checkedIcon}
-                {selectedIconOption.uncheckedIcon}
-                <span>{selectedIconOption.label}</span>
+              <div className="flex flex-col items-center gap-2">
+                {selectedIconOption?.key === option.key ? option.checkedIcon : option.uncheckedIcon}
+                <span className="text-xs">{option.label}</span>
               </div>
-              {showIconDropdown ? <ChevronUp className="h-4 w-4 ml-auto" /> : <ChevronDown className="h-4 w-4 ml-auto" />}
             </button>
-
-            {showIconDropdown && (
-              <div className="absolute p-2 space-y-1 top-full left-0 right-0 mt-1 bg-[var(--color-alpha-white)] text-[var(--color-text-secondary)] border rounded-xl shadow-lg z-50 max-h-60 overflow-y-auto">
-                {iconOptions.map((option) => (
-                  <button
-                    key={option.key}
-                    type="button"
-                    className={`w-full px-3 py-2 rounded-xl text-left hover:bg-[var(--color-bg-brand-primary)] hover:text-black focus:bg-[var(--color-bg-brand-secondary)] flex items-center gap-2 ${checkboxIcon === option.key ? 'bg-[var(--color-bg-brand-secondary)] text-black font-bold' : ''
-                      }`}
-                    onClick={() => {
-                      setCheckboxIcon(option.key);
-                      setShowIconDropdown(false);
-                    }}
-                  >
-                    {option.checkedIcon}
-                    {option.uncheckedIcon}
-                    <span>{option.label}</span>
-                    {checkboxIcon === option.key && (
-                      <Check className="w-4 h-4 ml-auto text-black" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div>
-          <div className="text-sm font-medium text-[var(--color-text-tertiary)] mb-2">Colour</div>
-          <div className="relative color-dropdown">
-            <button
-              type="button"
-              className="w-full px-3 py-2 border rounded-xl text-sm text-[var(--color-text-tertiary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-focus-ring)] flex items-center justify-between"
-              onClick={() => setShowColorDropdown((v: boolean) => !v)}
-            >
-              <div className="flex items-center gap-2">
-                <div className={`w-4 h-4 rounded-full ${selectedColorOption.bgClass}`}></div>
-                <span>{selectedColorOption.label}</span>
-              </div>
-              {showColorDropdown ? <ChevronUp className="h-4 w-4 ml-auto" /> : <ChevronDown className="h-4 w-4 ml-auto" />}
-            </button>
-
-            {showColorDropdown && (
-              <div className="absolute p-2 space-y-1 rounded-xl top-full left-0 right-0 mt-1 bg-[var(--color-alpha-white)] text-[var(--color-text-secondary)] border shadow-lg z-50 max-h-60 overflow-y-auto">
-                {colorOptions.map((colorOption) => (
-                  <button
-                    key={colorOption.key}
-                    type="button"
-                    className={`w-full px-3 py-2 rounded-xl text-left hover:bg-[var(--color-bg-brand-primary)] hover:text-black focus:bg-[var(--color-bg-brand-secondary)] flex items-center gap-2 ${checkboxColor === colorOption.key ? 'bg-[var(--color-bg-brand-secondary)] text-black font-bold' : ''
-                      }`}
-                    onClick={() => {
-                      setCheckboxColor(colorOption.key);
-                      setShowColorDropdown(false);
-                    }}
-                  >
-                    <div className={`w-4 h-4 rounded-full ${colorOption.bgClass}`}></div>
-                    <span>{colorOption.label}</span>
-                    {checkboxColor === colorOption.key && (
-                      <Check className="w-4 h-4 ml-auto text-black" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          ))}
         </div>
       </div>
 
       <div className="mb-4">
-        <div className="text-sm font-medium text-[var(--color-text-tertiary)] mb-2">Default value</div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className={`px-3 py-2 border rounded-xl text-sm text-[var(--color-text-tertiary)] flex items-center gap-2 ${checkboxDefault
-              ? 'border-[var(--color-focus-ring)] bg-[var(--color-gray-100)] text-[var(--color-gray-100)]'
-              : 'border-[var(--color-gray-300)] hover:border-[var(--color-gray-400)]'
-              }`}
-            onClick={() => setCheckboxDefault(true)}
-          >
-            {selectedIconOption.checkedIcon}
-            <span>Checked</span>
-          </button>
-          <button
-            type="button"
-            className={`px-3 py-2 border rounded-xl text-sm text-[var(--color-text-tertiary)] flex items-center gap-2 ${checkboxDefault
-              ? 'border-[var(--color-gray-300)] hover:border-[var(--color-gray-400)]'
-              : 'border-[var(--color-focus-ring)] bg-[var(--color-gray-100)] text-[var(--color-gray-100)]'
-              }`}
-            onClick={() => setCheckboxDefault(false)}
-          >
-            {selectedIconOption.uncheckedIcon}
-            <span>Unchecked</span>
-          </button>
+        <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Color</div>
+        <div className="grid grid-cols-6 gap-2">
+          {colorOptions.map((option) => (
+            <button
+              key={option.key}
+              type="button"
+              onClick={() => setCheckboxColor(option.key)}
+              className={`p-2 rounded-xl border-2 transition-all flex items-center justify-center ${checkboxColor === option.key
+                  ? 'border-[var(--color-border-brand)]'
+                  : 'border hover:bg-gray-50'
+                }`}
+            >
+              {option.icon}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="relative">
-        <div className="text-sm font-medium text-[var(--color-text-tertiary)] my-3 space-y-2">Description</div>
-        <MultiLineText
-          placeholder="Enter field description..."
-          value={description}
-          onChange={(value) => setDescription(value)}
-          rows={4}
-          isBorder={true}
-        />
-        {description &&
-          <button className="absolute right-2 top-2 text-gray-400 hover:text-red-500" onClick={() => setDescription('')}>
-            <Trash2 className="w-5 h-5" />
-          </button>
-        }
+      <div className="mb-4">
+        <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Default value</div>
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="checkboxDefault"
+            checked={checkboxDefault}
+            onChange={(e) => setCheckboxDefault(e.target.checked)}
+            className="checkbox-primary-brand"
+          />
+          <label htmlFor="checkboxDefault" className="text-sm text-[var(--color-text-secondary)]">
+            Checked by default
+          </label>
+        </div>
       </div>
+
+      {renderDescriptionToggle({
+        showDescription,
+        setShowDescription,
+        description,
+        setDescription,
+        buttonClassName: descriptionButtonClassName,
+        wrapperClassName: descriptionWrapperClassName,
+        clearButtonClassName: descriptionClearButtonClassName,
+      })}
     </>
   );
 }
@@ -446,6 +315,19 @@ function renderMultiSelectConfig({
     if (optionError) setOptionError('');
   };
 
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    handleAddOnEnter(event, () => addUniqueOption({
+      newOption,
+      selectOptions,
+      color,
+      getOptionColor,
+      setSelectOptions,
+      setColor,
+      setNewOption,
+      setOptionError,
+    }));
+  };
+
   const handleColorChange = (idx: number, value: string) => {
     updateOptionColor(idx, value, selectOptions, setSelectOptions);
   };
@@ -460,133 +342,157 @@ function renderMultiSelectConfig({
     setEditingOptionValue('');
   };
 
-  const handleEditBlur = (idx: number, option: string) => {
-    const trimmedValue = editingOptionValue.trim();
-    if (trimmedValue && trimmedValue !== option) {
+  const handleEditChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEditingOptionValue(event.target.value);
+  };
+
+  const handleEditKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, idx: number) => {
+    if (event.key === 'Enter') {
+      const trimmed = editingOptionValue.trim();
+      if (!trimmed) return;
       const newOptions = [...selectOptions];
-      newOptions[idx] = { ...newOptions[idx], option: trimmedValue };
+      const otherOptions = newOptions.filter((_, i) => i !== idx);
+      const exists = otherOptions.some((opt) => opt.option.toLowerCase() === trimmed.toLowerCase());
+      if (exists) return;
+      newOptions[idx] = { ...newOptions[idx], option: trimmed };
       setSelectOptions(newOptions);
-
-      if (multiDefault.includes(option)) {
-        setMultiDefault(multiDefault.map((value: string) => value === option ? trimmedValue : value));
-      }
+      handleEditCancel();
+    } else if (event.key === 'Escape') {
+      handleEditCancel();
     }
-    handleEditCancel();
   };
 
-  const handleEditKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    handleEditInputKeyDown(event, handleEditCancel);
+  const handleDeleteOption = (idx: number) => {
+    const newOptions = selectOptions.filter((_: any, i: number) => i !== idx);
+    setSelectOptions(newOptions);
+    if (multiDefault.includes(selectOptions[idx]?.option)) {
+      setMultiDefault(multiDefault.filter((v: string) => v !== selectOptions[idx]?.option));
+    }
   };
 
-  const handleRemoveOption = (option: string, idx: number) => {
-    setSelectOptions(selectOptions.filter((_: any, index: number) => index !== idx));
+  const handleToggleDefault = (option: string) => {
     if (multiDefault.includes(option)) {
-      setMultiDefault(multiDefault.filter((value: string) => value !== option));
+      setMultiDefault(multiDefault.filter((v: string) => v !== option));
+    } else {
+      setMultiDefault([...multiDefault, option]);
     }
   };
 
-  const handleMultiCheck = (option: string) => {
-    setMultiDefault([...multiDefault, option]);
-  };
-
-  const handleMultiUncheck = (option: string) => {
-    setMultiDefault(multiDefault.filter((value: string) => value !== option));
+  const handleAddOption = () => {
+    addUniqueOption({
+      newOption,
+      selectOptions,
+      color,
+      getOptionColor,
+      setSelectOptions,
+      setColor,
+      setNewOption,
+      setOptionError,
+    });
   };
 
   return (
     <>
-      <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Options</div>
-      <div className="flex gap-2 mb-3">
-        <input
-          className="flex-1 px-3 py-2 border border-[var(--color-gray-300)] bg-[var(--color-alpha-white)] text-[var(--color-gray-900)] rounded-xl text-sm outline-none field-component-focus"
-          placeholder="Add option"
-          value={newOption}
-          onChange={handleInputChange}
-          onKeyDown={(event) => handleAddOnEnter(event, () => addUniqueOption({
-            newOption,
-            selectOptions,
-            color,
-            getOptionColor,
-            setSelectOptions,
-            setColor,
-            setNewOption,
-            setOptionError,
-          }))}
-        />
-        <button
-          type="button"
-          className="px-3 py-1 btn-add-option text-sm"
-          onClick={() => addUniqueOption({
-            newOption,
-            selectOptions,
-            color,
-            getOptionColor,
-            setSelectOptions,
-            setColor,
-            setNewOption,
-            setOptionError,
-          })}
-        >
-          Add option
-        </button>
-      </div>
-      {optionError && <div className="text-red-500 text-xs mt-1 mb-3">{optionError}</div>}
-
-      {selectOptions.length > 0 && (
-        <>
-          <span className='text-primary'>Select Default Value</span>
-          <div className="flex flex-col gap-1 my-2 max-w-full border border-primary rounded-xl p-2 group max-h-48 overflow-auto">
-            {selectOptions.map((opt: any, idx: number) => (
-              <div key={`multi-${opt.option}-${opt.color || 'none'}`} className="relative flex items-center gap-2 min-w-0 hover:bg-[var(--color-hover-bg)] rounded-xl px-1">
-                <input
-                  type="checkbox"
-                  checked={multiDefault.includes(opt.option)}
-                  onChange={(event) => (
-                    event.target.checked ? handleMultiCheck(opt.option) : handleMultiUncheck(opt.option)
-                  )}
-                  className="checkbox-primary-brand"
-                  onClick={(event) => event.stopPropagation()}
-                />
-                <input
-                  type="color"
-                  value={opt.color || '#cccccc'}
-                  onChange={(event) => handleColorChange(idx, event.target.value)}
-                  onClick={(event) => event.stopPropagation()}
-                  className="color-input"
-                />
+      <div className="mb-3">
+        <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Options</div>
+        <div className="space-y-2">
+          {selectOptions.map((opt: any, idx: number) => (
+            <div key={idx} className="flex items-center gap-2">
+              <div
+                className="w-6 h-6 flex-shrink-0 rounded border flex items-center justify-center"
+                style={{ backgroundColor: opt.color }}
+              >
                 {editingOptionIndex === idx ? (
-                  <input
-                    ref={editInputRef}
-                    className='flex-1 px-2 py-2.5 rounded-xl text-[var(--color-text-secondary)] bg-[--color-alpha-white] border border-[var(--color-gray-300)] text-xs min-w-0 focus:outline-none focus:ring-1 focus:ring-[var(--color-focus-ring)]'
-                    value={editingOptionValue}
-                    onChange={(event) => setEditingOptionValue(event.target.value)}
-                    onBlur={() => handleEditBlur(idx, opt.option)}
-                    onKeyDown={handleEditKeyDown}
-                    autoFocus
-                  />
+                  <div className="w-4 h-4 bg-white/30 rounded" />
                 ) : (
-                  <span //NOSONAR
-                    className="flex-1 px-2 py-2.5 rounded-xl text-[var(--color-text-secondary)] text-xs truncate min-w-0 cursor-pointer"
-                    onClick={() => handleEditStart(idx, opt.option)}
-                  >
-                    {opt.option}
-                  </span>
+                  <Check className="w-3 h-3 text-white" />
                 )}
+              </div>
+              {editingOptionIndex === idx ? (
+                <input
+                  ref={editInputRef}
+                  type="text"
+                  className="flex-1 px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-[var(--color-focus-ring)]"
+                  value={editingOptionValue}
+                  onChange={handleEditChange}
+                  onKeyDown={(e) => handleEditKeyDown(e, idx)}
+                  onBlur={handleEditCancel}
+                  autoFocus
+                />
+              ) : (
+                <span
+                  className="flex-1 text-sm cursor-pointer hover:text-[var(--color-brand-800)]"
+                  onClick={() => handleEditStart(idx, opt.option)}
+                >
+                  {opt.option}
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={() => handleToggleDefault(opt.option)}
+                className={`px-2 py-0.5 text-xs rounded border ${multiDefault.includes(opt.option)
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'border-gray-300 text-gray-500 hover:border-gray-400'
+                  }`}
+              >
+                {multiDefault.includes(opt.option) ? 'Default' : 'Set default'}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDeleteOption(idx)}
+                className="text-gray-400 hover:text-red-500"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-4">
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              className={`w-full px-3 py-2 pr-16 text-sm border rounded-xl focus:outline-none focus:ring-1 ${optionError ? 'border-red-500 focus:ring-red-500' : 'border-[var(--color-border)] focus:ring-[var(--color-focus-ring)]'
+                }`}
+              placeholder="Add an option"
+              value={newOption}
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyDown}
+            />
+            <button
+              type="button"
+              onClick={() => setColor('#cccccc')}
+              className="absolute right-10 top-1/2 -translate-y-1/2 w-6 h-6 rounded border border-gray-300 flex items-center justify-center hover:border-gray-400"
+              style={{ backgroundColor: color || '#cccccc' }}
+            >
+              {!color && <ChevronDown className="w-3 h-3 text-gray-400" />}
+            </button>
+            <AdvancedDropdown
+              options={colorOptions}
+              value={color || '#cccccc'}
+              onChange={(val) => setColor(val as string)}
+              trigger={
                 <button
                   type="button"
-                  className="h-8 w-8 rounded flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleRemoveOption(opt.option, idx);
-                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded flex items-center justify-center"
                 >
-                  <Trash2 className='w-5 h-5 text-[var(--color-error-400)]' />
+                  <ChevronDown className="w-3 h-3 text-gray-400" />
                 </button>
-              </div>
-            ))}
+              }
+            />
           </div>
-        </>
-      )}
+          <button
+            type="button"
+            className="px-3 py-1 btn-add-option text-sm"
+            onClick={handleAddOption}
+          >
+            Add
+          </button>
+        </div>
+        {optionError && <p className="mt-1 text-xs text-red-500">{optionError}</p>}
+      </div>
 
       {renderDescriptionToggle({
         showDescription,
@@ -600,6 +506,19 @@ function renderMultiSelectConfig({
     </>
   );
 }
+
+const colorOptions = [
+  { key: '#3b82f6', label: 'Blue', color: '#3b82f6' },
+  { key: '#ef4444', label: 'Red', color: '#ef4444' },
+  { key: '#22c55e', label: 'Green', color: '#22c55e' },
+  { key: '#eab308', label: 'Yellow', color: '#eab308' },
+  { key: '#a855f7', label: 'Purple', color: '#a855f7' },
+  { key: '#ec4899', label: 'Pink', color: '#ec4899' },
+  { key: '#f97316', label: 'Orange', color: '#f97316' },
+  { key: '#06b6d4', label: 'Cyan', color: '#06b6d4' },
+  { key: '#6b7280', label: 'Gray', color: '#6b7280' },
+  { key: '#000000', label: 'Black', color: '#000000' },
+];
 
 function renderSelectConfig({
   newOption,
@@ -655,119 +574,145 @@ function renderSelectConfig({
     setEditingOptionValue('');
   };
 
-  const handleEditBlur = (idx: number, option: string) => {
-    const trimmedValue = editingOptionValue.trim();
-    if (trimmedValue && trimmedValue !== option) {
+  const handleEditChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEditingOptionValue(event.target.value);
+  };
+
+  const handleEditKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, idx: number) => {
+    if (event.key === 'Enter') {
+      const trimmed = editingOptionValue.trim();
+      if (!trimmed) return;
       const newOptions = [...selectOptions];
-      newOptions[idx] = { ...newOptions[idx], option: trimmedValue };
+      const otherOptions = newOptions.filter((_, i) => i !== idx);
+      const exists = otherOptions.some((opt) => opt.option.toLowerCase() === trimmed.toLowerCase());
+      if (exists) return;
+      newOptions[idx] = { ...newOptions[idx], option: trimmed };
       setSelectOptions(newOptions);
-
-      if (singleDefault === option) {
-        setSingleDefault(trimmedValue);
-      }
+      handleEditCancel();
+    } else if (event.key === 'Escape') {
+      handleEditCancel();
     }
-    handleEditCancel();
   };
 
-  const handleEditKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    handleEditInputKeyDown(event, handleEditCancel);
-  };
-
-  const handleRemoveOption = (option: string, idx: number) => {
-    setSelectOptions(selectOptions.filter((_: any, index: number) => index !== idx));
-    if (singleDefault === option) {
+  const handleDeleteOption = (idx: number) => {
+    const newOptions = selectOptions.filter((_: any, i: number) => i !== idx);
+    setSelectOptions(newOptions);
+    if (singleDefault === selectOptions[idx]?.option) {
       setSingleDefault('');
     }
   };
 
+  const handleAddOption = () => {
+    addUniqueOption({
+      newOption,
+      selectOptions,
+      color,
+      getOptionColor,
+      setSelectOptions,
+      setColor,
+      setNewOption,
+      setOptionError,
+    });
+  };
+
   return (
     <>
-      <div className="flex gap-2 mb-3 w-full">
-        <input
-          className="flex-1 px-3 py-2 border border-[var(--color-gray-300)] bg-[var(--color-alpha-white)] text-[var(--color-gray-900)] rounded-xl text-sm outline-none field-component-focus"
-          placeholder="Add option"
-          value={newOption}
-          onChange={handleInputChange}
-          onKeyDown={handleInputKeyDown}
-        />
-        <button
-          type="button"
-          className="px-3 py-1 btn-add-option"
-          onClick={() => addUniqueOption({
-            newOption,
-            selectOptions,
-            color,
-            getOptionColor,
-            setSelectOptions,
-            setColor,
-            setNewOption,
-            setOptionError,
-          })}
-        >
-          Add option
-        </button>
+      <div className="mb-3">
+        <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Options</div>
+        <div className="space-y-2">
+          {selectOptions.map((opt: any, idx: number) => (
+            <div key={idx} className="flex items-center gap-2">
+              <div
+                className="w-6 h-6 flex-shrink-0 rounded border flex items-center justify-center"
+                style={{ backgroundColor: opt.color }}
+              >
+                {singleDefault === opt.option && <Check className="w-3 h-3 text-white" />}
+              </div>
+              {editingOptionIndex === idx ? (
+                <input
+                  ref={editInputRef}
+                  type="text"
+                  className="flex-1 px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-[var(--color-focus-ring)]"
+                  value={editingOptionValue}
+                  onChange={handleEditChange}
+                  onKeyDown={(e) => handleEditKeyDown(e, idx)}
+                  onBlur={handleEditCancel}
+                  autoFocus
+                />
+              ) : (
+                <span
+                  className="flex-1 text-sm cursor-pointer hover:text-[var(--color-brand-800)]"
+                  onClick={() => handleEditStart(idx, opt.option)}
+                >
+                  {opt.option}
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={() => setSingleDefault(singleDefault === opt.option ? '' : opt.option)}
+                className={`px-2 py-0.5 text-xs rounded border ${singleDefault === opt.option
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'border-gray-300 text-gray-500 hover:border-gray-400'
+                  }`}
+              >
+                {singleDefault === opt.option ? 'Default' : 'Set default'}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDeleteOption(idx)}
+                className="text-gray-400 hover:text-red-500"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-      {optionError && <div className="text-red-500 text-xs mt-1">{optionError}</div>}
-      {selectOptions.length > 0 && (
-        <>
-          <div className="m-2 text-sm font-medium text-[var(--color-text-tertiary)]">Select Default value</div>
-          <div className="flex flex-col gap-1 mb-2 max-w-full border border-primary rounded-xl p-2 group max-h-48 overflow-auto">
-            {selectOptions.map((opt: any, idx: number) => (
-              <div key={`single-${opt.option}-${opt.color || 'none'}`} className="relative flex items-center gap-2 min-w-0 hover:bg-[var(--color-hover-bg)] rounded-xl px-1">
-                <input
-                  type="radio"
-                  className="flex-shrink-0 checkbox-primary-brand"
-                  checked={singleDefault === opt.option}
-                  onChange={() => { }}
-                  onClick={() => {
-                    if (singleDefault === opt.option) {
-                      setSingleDefault('');
-                    } else {
-                      setSingleDefault(opt.option);
-                    }
-                  }}
-                />
-                <input
-                  type="color"
-                  value={opt.color || '#cccccc'}
-                  onChange={(event) => handleColorChange(idx, event.target.value)}
-                  onClick={(event) => event.stopPropagation()}
-                  className="color-input"
-                />
 
-                {editingOptionIndex === idx ? (
-                  <input
-                    ref={editInputRef}
-                    className='flex-1 px-2 py-2.5 rounded-xl text-[var(--color-text-secondary)] border border-[var(--color-gray-300)] bg-[--color-alpha-white] text-xs min-w-0 focus:outline-none focus:ring-1 focus:ring-[var(--color-focus-ring)]'
-                    value={editingOptionValue}
-                    onChange={(event) => setEditingOptionValue(event.target.value)}
-                    onBlur={() => handleEditBlur(idx, opt.option)}
-                    onKeyDown={handleEditKeyDown}
-                    autoFocus
-                  />
-                ) : (
-                  <span //NOSONAR
-                    className="flex-1 px-2 py-2.5 rounded-xl text-[var(--color-text-secondary)] text-xs truncate min-w-0 cursor-pointer"
-                    onClick={() => handleEditStart(idx, opt.option)}
-                  >
-                    {opt.option}
-                  </span>
-                )}
+      <div className="mb-4">
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              className={`w-full px-3 py-2 pr-16 text-sm border rounded-xl focus:outline-none focus:ring-1 ${optionError ? 'border-red-500 focus:ring-red-500' : 'border-[var(--color-border)] focus:ring-[var(--color-focus-ring)]'
+                }`}
+              placeholder="Add an option"
+              value={newOption}
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyDown}
+            />
+            <button
+              type="button"
+              onClick={() => setColor('#cccccc')}
+              className="absolute right-10 top-1/2 -translate-y-1/2 w-6 h-6 rounded border border-gray-300 flex items-center justify-center hover:border-gray-400"
+              style={{ backgroundColor: color || '#cccccc' }}
+            >
+              {!color && <ChevronDown className="w-3 h-3 text-gray-400" />}
+            </button>
+            <AdvancedDropdown
+              options={colorOptions}
+              value={color || '#cccccc'}
+              onChange={(val) => setColor(val as string)}
+              trigger={
                 <button
                   type="button"
-                  className=" h-8 w-8 rounded flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleRemoveOption(opt.option, idx);
-                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded flex items-center justify-center"
                 >
-                  <Trash2 className='w-4 h-4 text-[var(--color-error-400)]' />
+                  <ChevronDown className="w-3 h-3 text-gray-400" />
                 </button>
-              </div>
-            ))}
+              }
+            />
           </div>
-        </>
-      )}
+          <button
+            type="button"
+            className="px-3 py-1 btn-add-option text-sm"
+            onClick={handleAddOption}
+          >
+            Add
+          </button>
+        </div>
+        {optionError && <p className="mt-1 text-xs text-red-500">{optionError}</p>}
+      </div>
 
       {renderDescriptionToggle({
         showDescription,
@@ -811,203 +756,102 @@ function renderRatingConfig({
     { key: 'thumb', label: 'Thumb', icon: <ThumbsUp className="w-4 h-4" /> },
     { key: 'flag', label: 'Flag', icon: <Flag className="w-4 h-4" /> },
     { key: 'check', label: 'Check', icon: <CheckCircle className="w-4 h-4" /> },
-    { key: 'badge', label: 'Badge', icon: <BadgeCheck className="w-4 h-4" /> },
-    { key: 'shield', label: 'Shield', icon: <ShieldCheck className="w-4 h-4" /> },
-    { key: 'award', label: 'Award', icon: <Award className="w-4 h-4" /> },
-    { key: 'trophy', label: 'Trophy', icon: <Trophy className="w-4 h-4" /> },
-    { key: 'medal', label: 'Medal', icon: <Medal className="w-4 h-4" /> },
-    { key: 'zap', label: 'Zap', icon: <Zap className="w-4 h-4" /> },
-    { key: 'sparkles', label: 'Sparkles', icon: <Sparkles className="w-4 h-4" /> },
-    { key: 'crown', label: 'Crown', icon: <Crown className="w-4 h-4" /> },
-    { key: 'gem', label: 'Gem', icon: <Gem className="w-4 h-4" /> },
-    { key: 'diamond', label: 'Diamond', icon: <Diamond className="w-4 h-4" /> },
   ];
 
-  const selectedRatingIconOption = ratingIconOptions.find(opt => opt.key === ratingIcon) || ratingIconOptions[0];
-  const selectedRatingColorOption = ratingColorOptions.find(opt => opt.key === ratingColor) || ratingColorOptions[0];
-  const ratingFillClassByColor: Record<string, string> = {
-    yellow: 'text-yellow-400 fill-yellow-400',
-    blue: 'text-blue-400 fill-blue-400',
-    red: 'text-red-400 fill-red-400',
-    green: 'text-green-400 fill-green-400',
-    purple: 'text-purple-400 fill-purple-400',
-    pink: 'text-pink-400 fill-pink-400',
-    orange: 'text-orange-400 fill-orange-400',
-    indigo: 'text-indigo-400 fill-indigo-400',
-    teal: 'text-teal-400 fill-teal-400',
-    gray: 'text-gray-400 fill-gray-400',
-  };
-  const selectedRatingFillClass = ratingFillClassByColor[ratingColor] || ratingFillClassByColor.yellow;
+  const ratingColorOptions2 = [
+    { key: 'yellow', label: 'Yellow', color: '#eab308', icon: <Star className="w-4 h-4 text-yellow-500" /> },
+    { key: 'red', label: 'Red', color: '#ef4444', icon: <Heart className="w-4 h-4 text-red-500" /> },
+    { key: 'blue', label: 'Blue', color: '#3b82f6', icon: <ThumbsUp className="w-4 h-4 text-blue-500" /> },
+    { key: 'green', label: 'Green', color: '#22c55e', icon: <CheckCircle className="w-4 h-4 text-green-500" /> },
+    { key: 'purple', label: 'Purple', color: '#a855f7', icon: <Flag className="w-4 h-4 text-purple-500" /> },
+    { key: 'orange', label: 'Orange', color: '#f97316', icon: <Circle className="w-4 h-4 text-orange-500" /> },
+  ];
 
-  const getIcon = (icon: string, isFilled: boolean = false) => {
-    const iconProps = {
-      className: "w-5 h-5",
-      fill: isFilled ? "currentColor" : "none",
-    };
-
-    const iconMap: Record<string, React.ReactNode> = {
-      star: <Star {...iconProps} />,
-      heart: <Heart {...iconProps} />,
-      circle: <Circle {...iconProps} />,
-      thumb: <ThumbsUp {...iconProps} />,
-      flag: <Flag {...iconProps} />,
-      check: <CheckCircle {...iconProps} />,
-      badge: <BadgeCheck {...iconProps} />,
-      shield: <ShieldCheck {...iconProps} />,
-      award: <Award {...iconProps} />,
-      trophy: <Trophy {...iconProps} />,
-      medal: <Medal {...iconProps} />,
-      zap: <Zap {...iconProps} />,
-      sparkles: <Sparkles {...iconProps} />,
-      crown: <Crown {...iconProps} />,
-      gem: <Gem {...iconProps} />,
-      diamond: <Diamond {...iconProps} />
-    };
-    return iconMap[icon] || iconMap.star;
-  };
+  const selectedIconOption = ratingIconOptions.find(opt => opt.key === ratingIcon);
+  const selectedColorOption = ratingColorOptions2.find(opt => opt.key === ratingColor);
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div>
-          <div className="text-sm font-medium text-[var(--color-text-tertiary)] mb-2">Icon</div>
-          <div className="relative rating-icon-dropdown">
+      <div className="mb-4">
+        <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Icon</div>
+        <div className="grid grid-cols-6 gap-2">
+          {ratingIconOptions.map((option) => (
             <button
+              key={option.key}
               type="button"
-              className="w-full px-3 py-2 border text-[var(--color-text-tertiary)] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-600)] flex items-center justify-between"
-              onClick={() => setShowRatingIconDropdown((v: boolean) => !v)}
+              onClick={() => setRatingIcon(option.key)}
+              className={`p-2 rounded-xl border-2 transition-all flex items-center justify-center ${ratingIcon === option.key
+                  ? 'border-[var(--color-border-brand)] bg-[var(--color-gray-100)]'
+                  : 'border hover:bg-gray-50'
+                }`}
             >
-              <div className="flex items-center gap-2">
-                {selectedRatingIconOption.icon}
-                <span>{selectedRatingIconOption.label}</span>
-              </div>
-              {showRatingIconDropdown ? <ChevronUp className="h-4 w-4 ml-auto" /> : <ChevronDown className="h-4 w-4 ml-auto" />}
+              {option.icon}
             </button>
-
-            {showRatingIconDropdown && (
-              <div className="absolute top-full p-2 space-y-1 left-0 right-0 mt-1 bg-[var(--color-alpha-white)] text-[var(--color-text-secondary)] border rounded-xl shadow-lg z-50 max-h-60 overflow-y-auto">
-                {ratingIconOptions.map((option) => (
-                  <button
-                    key={option.key}
-                    type="button"
-                    className={`w-full px-3 py-2 text-left rounded-xl hover:bg-[var(--color-bg-brand-primary)] hover:text-black focus:bg-[var(--color-bg-brand-secondary)] flex items-center gap-2 ${ratingIcon === option.key ? 'bg-[var(--color-bg-brand-secondary)] text-black font-bold' : ''}`}
-                    onClick={() => {
-                      setRatingIcon(option.key);
-                      setShowRatingIconDropdown(false);
-                    }}
-                  >
-                    {option.icon}
-                    <span>{option.label}</span>
-                    {ratingIcon === option.key && (
-                      <Check className="w-4 h-4 ml-auto text-black" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div>
-          <div className="text-sm font-medium text-[var(--color-text-tertiary)] mb-2">Colour</div>
-          <div className="relative rating-color-dropdown">
-            <button
-              type="button"
-              className="w-full px-3 py-2 border text-[var(--color-text-tertiary)] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-600)] flex items-center justify-between"
-              onClick={() => setShowRatingColorDropdown((v: boolean) => !v)}
-            >
-              <div className="flex items-center gap-2">
-                <div className={`w-4 h-4 rounded-full`} style={{ backgroundColor: selectedRatingColorOption.color }}></div>
-                <span>{selectedRatingColorOption.label}</span>
-              </div>
-              {showRatingColorDropdown ? <ChevronUp className="h-4 w-4 ml-auto" /> : <ChevronDown className="h-4 w-4 ml-auto" />}
-            </button>
-
-            {showRatingColorDropdown && (
-              <div className="absolute top-full p-2 space-y-1 left-0 right-0 mt-1 bg-[var(--color-alpha-white)] text-[var(--color-text-secondary)] border rounded-xl shadow-lg z-50 max-h-60 overflow-y-auto">
-                {ratingColorOptions.map((color) => (
-                  <button
-                    key={color.key}
-                    type="button"
-                    className={`w-full px-3 py-2 text-left rounded-xl hover:bg-[var(--color-bg-brand-primary)] hover:text-black focus:bg-[var(--color-bg-brand-secondary)] flex items-center gap-2 ${ratingColor === color.key ? 'bg-[var(--color-bg-brand-secondary)] text-black font-bold' : ''
-                      }`}
-                    onClick={() => {
-                      setRatingColor(color.key);
-                      setShowRatingColorDropdown(false);
-                    }}
-                  >
-                    <div className={`w-4 h-4 rounded-full`} style={{ backgroundColor: color.color }}></div>
-                    <span>{color.label}</span>
-                    {ratingColor === color.key && (
-                      <Check className="w-4 h-4 ml-auto text-black" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          ))}
         </div>
       </div>
 
       <div className="mb-4">
-        <div className="text-sm font-medium text-[var(--color-text-tertiary)] mb-2">Max rating</div>
-        <Dropdown
-          options={[1, 2, 3, 4, 5, 6, 7].map(n => ({ label: n.toString(), value: n.toString() }))}
-          value={ratingMax.toString()}
-          onChange={(value: any) => setRatingMax(value)}
-          placeholder="Select max rating"
+        <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Color</div>
+        <div className="grid grid-cols-6 gap-2">
+          {ratingColorOptions2.map((option) => (
+            <button
+              key={option.key}
+              type="button"
+              onClick={() => setRatingColor(option.key)}
+              className={`p-2 rounded-xl border-2 transition-all flex items-center justify-center ${ratingColor === option.key
+                  ? 'border-[var(--color-border-brand)] bg-[var(--color-gray-100)]'
+                  : 'border hover:bg-gray-50'
+                }`}
+            >
+              {option.icon}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-4">
+        <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Max rating</div>
+        <AdvancedDropdown
+          options={[
+            { value: '3', label: '3' },
+            { value: '5', label: '5' },
+            { value: '10', label: '10' },
+          ]}
+          value={ratingMax}
+          onChange={(val) => setRatingMax(val as string)}
         />
       </div>
 
-      <div className="mb-3">
-        <button className="flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] mb-1" onClick={() => setShowRatingDefault((v: boolean) => !v)}>
-          <Plus className="w-5 h-5" />
-          Set default value
-        </button>
-
+      <div className="mb-4">
+        <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Default value</div>
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="ratingShowDefault"
+            checked={showRatingDefault}
+            onChange={(e) => setShowRatingDefault(e.target.checked)}
+            className="checkbox-primary-brand"
+          />
+          <label htmlFor="ratingShowDefault" className="text-sm text-[var(--color-text-secondary)]">
+            Set a default rating
+          </label>
+        </div>
         {showRatingDefault && (
-          <div //NOSONAR
-            className="flex items-center gap-2" onMouseLeave={() => setRatingDefaultHover(null)}>
-            <div className="flex gap-1">
-              {Array.from({ length: ratingMax }, (_, i) => {
-                const starIndex = i + 1;
-                const currentValue = ratingDefaultHover ?? ratingDefault;
-                const isFilled = currentValue >= starIndex;
-                return (
-                  <button
-                    key={starIndex}
-                    type="button"
-                    onClick={() => setRatingDefault(starIndex)}
-                    onMouseEnter={() => setRatingDefaultHover(starIndex)}
-                    className={`my-1 h-8 w-8 flex items-center justify-center transition-all duration-150 ${isFilled ? 'scale-110' : 'hover:scale-105'
-                      }`}
-                    title={`Set default to ${starIndex}`}
-                  >
-                    <span className={isFilled ? selectedRatingFillClass : 'text-gray-300'}>
-                      {getIcon(ratingIcon, isFilled)}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            {ratingDefault > 0 && (
-              <button
-                type="button"
-                className="ml-2 text-gray-400 hover:text-gray-600 text-sm"
-                onClick={() => setRatingDefault(0)}
-                title="Clear default"
-              >
-                Clear
-              </button>
-            )}
-            {ratingDefault > 0 && (
-              <span className="text-xs text-gray-500 ml-2">
-                {`Default: ${ratingDefault}/${ratingMax}`}
-              </span>
-            )}
+          <div className="mt-2">
+            <AdvancedDropdown
+              options={Array.from({ length: Number(ratingMax) }, (_, i) => ({
+                value: String(i + 1),
+                label: String(i + 1),
+              }))}
+              value={ratingDefault}
+              onChange={(val) => setRatingDefault(val as string)}
+              placeholder="Select default rating"
+            />
           </div>
         )}
       </div>
+
       {renderDescriptionToggle({
         showDescription,
         setShowDescription,
@@ -1222,72 +1066,6 @@ export function renderNewColumnConfigStep(props: any) {
     BRL: 'R$',
   };
 
-  const renderDefaultValueToggle = ({
-    show,
-    setShow,
-    children,
-    label = 'Set default value',
-    buttonClassName = 'flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] mb-3 space-y-2',
-    wrapperClassName = '',
-  }: {
-    show: boolean;
-    setShow: (value: boolean | ((prev: boolean) => boolean)) => void;
-    children: React.ReactNode;
-    label?: string;
-    buttonClassName?: string;
-    wrapperClassName?: string;
-  }) => (
-    <div className={wrapperClassName}>
-      <button
-        type="button"
-        className={buttonClassName}
-        onClick={() => setShow((v: boolean) => !v)}
-      >
-        <Plus className="w-5 h-5" />
-        {label}
-      </button>
-      {show && children}
-    </div>
-  );
-
-  const renderHourFormatToggle = ({
-    hourFormat,
-    setHourFormat,
-    wrapperClassName = 'grid grid-cols-2 gap-4 mb-2',
-  }: {
-    hourFormat: '12' | '24';
-    setHourFormat: (value: '12' | '24') => void;
-    wrapperClassName?: string;
-  }) => (
-    <div className={wrapperClassName}>
-      <label
-        className={`flex items-center px-3 py-2 border rounded-xl text-sm text-[var(--color-text-tertiary)] cursor-pointer transition-colors ${hourFormat === '12'
-          ? 'border-[var(--color-focus-ring)] bg-[var(--color-gray-100)] text-[var(--color-gray-100)]'
-          : 'border-[var(--color-gray-300)] hover:border-[var(--color-gray-400)]'}`}
-      >
-        <input
-          type="radio"
-          className="hidden"
-          checked={hourFormat === '12'}
-          onChange={() => setHourFormat('12')}
-        />12 Hrs
-      </label>
-      <label
-        className={`flex items-center px-3 py-2 border rounded-xl text-sm text-[var(--color-text-tertiary)] cursor-pointer transition-colors ${hourFormat === '24'
-          ? 'border-[var(--color-focus-ring)] bg-[var(--color-gray-100)] text-[var(--color-gray-100)]'
-          : 'border-[var(--color-gray-300)] hover:border-[var(--color-gray-400)]'}`}
-      >
-        <input
-          type="radio"
-          className="hidden"
-          checked={hourFormat === '24'}
-          onChange={() => setHourFormat('24')}
-        />24 Hrs
-      </label>
-    </div>
-  );
-
-  // Config step for each type
   function renderConfigStep() {
     const basicConfig = renderBasicConfigStep({
       selectedType,
@@ -1460,7 +1238,7 @@ export function renderNewColumnConfigStep(props: any) {
                 />
                 <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-1 peer-focus:ring-[var(--color-focus-ring)] rounded-full peer peer-checked:bg-primary transition-colors" />
                 <div className="absolute left-0.5 top-1 w-4 h-4 bg-card rounded-full shadow transform transition-transform peer-checked:translate-x-4" />
-                <span className="text-sm font-medium text-[var(--color-text-tertiary)]">Display as progress</span>
+                <span className="text-sm font-medium text-[var(--color-text-tertiary)]">Display as progress bar</span>
               </label>
             </div>
 
@@ -1525,28 +1303,28 @@ export function renderNewColumnConfigStep(props: any) {
           <>
             <div className='flex gap-2 mb-2'>
               <div className='flex-1'>
-                <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Currency Locale</div>
+                <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Locale</div>
                 <AdvancedDropdown
                   options={uniqueCurrencyLocaleOptions}
                   value={currencyLocale}
                   onChange={(val) => setCurrencyLocale(val as string)}
-                  placeholder="Select Locale"
+                  placeholder="Select locale"
                   searchable={true}
                 />
               </div>
               <div className='flex-1'>
-                <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Currency Code</div>
+                <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Currency</div>
                 <AdvancedDropdown
                   options={uniqueCurrencyOptions}
                   value={currencyType}
                   onChange={(val) => setCurrencyType(val as string)}
-                  placeholder="Select Currency"
+                  placeholder="Select currency"
                   searchable={true}
                 />
               </div>
             </div>
             <div className="mb-4 text-xs text-gray-600">
-              Selected currency : {currencySymbolByType[currencyType] || currencyType}
+              Selected currency: {currencySymbolByType[currencyType] || currencyType}
             </div>
             <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Precision</div>
             <AdvancedDropdown
@@ -1679,7 +1457,7 @@ export function renderNewColumnConfigStep(props: any) {
           <>
             {/* Date Format */}
             <div className="mb-3">
-              <div className="block text-sm font-medium text-[var(--color-text-tertiary)] mb-1">Date Format</div>
+              <div className="block text-sm font-medium text-[var(--color-text-tertiary)] mb-1">Date format</div>
               <AdvancedDropdown
                 options={dateFormatOptions}
                 value={dateFormat}
@@ -1688,236 +1466,228 @@ export function renderNewColumnConfigStep(props: any) {
             </div>
             {/* Time Format */}
             <div className="mb-3">
-              <div className="block text-sm font-medium text-[var(--color-text-tertiary)] mb-1">Time Format</div>
+              <div className="block text-sm font-medium text-[var(--color-text-tertiary)] mb-1">Time format</div>
               <AdvancedDropdown
                 options={timeFormatOptions}
                 value={timeFormat}
-                onChange={(value: any) => setTimeFormat(value)}
+                onChange={(val) => setTimeFormat(val as string)}
               />
             </div>
-
-            {/* Time Display Preference */}
+            {/* Time Zone */}
             <div className="mb-3">
-              <div className="block text-sm font-medium text-[var(--color-text-tertiary)] mb-1">Time Display</div>
-              <div className="flex items-center gap-2">
-                {renderHourFormatToggle({
-                  hourFormat,
-                  setHourFormat,
-                  wrapperClassName: 'flex items-center gap-2',
-                })}
+              <div className="mb-2">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="displayTimeZone"
+                    checked={displayTimeZone}
+                    onChange={(e) => setDisplayTimeZone(e.target.checked)}
+                    className="checkbox-primary-brand"
+                  />
+                  <label htmlFor="displayTimeZone" className="text-sm text-[var(--text-color-secondary)]">
+                    Display timezone
+                  </label>
+                </div>
               </div>
-            </div>
-
-            {/* Timezone Options */}
-            <div className="mb-3">
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <div className="relative inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={displayTimeZone}
-                      onChange={e => setDisplayTimeZone(e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-1 peer-focus:ring-[var(--color-focus-ring)] rounded-full peer peer-checked:bg-primary transition-colors" />
-                    <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-card rounded-full shadow transform transition-transform peer-checked:translate-x-4" />
+              {displayTimeZone && (
+                <>
+                  <div className="mb-2">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="sameTimezone"
+                        checked={sameTimezone}
+                        onChange={(e) => setSameTimezone(e.target.checked)}
+                        className="checkbox-primary-brand"
+                      />
+                      <label htmlFor="sameTimezone" className="text-sm text-[var(--text-color-secondary)]">
+                        Same timezone for all values
+                      </label>
+                    </div>
                   </div>
-                  <span className="text-sm text-[var(--color-text-tertiary)]">Display time zone</span>
-                </label>
-
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <div className="relative inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={sameTimezone}
-                      onChange={e => setSameTimezone(e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-1 peer-focus:ring-[var(--color-focus-ring)] rounded-full peer peer-checked:bg-primary transition-colors" />
-                    <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-card rounded-full shadow transform transition-transform peer-checked:translate-x-4" />
-                  </div>
-                  <span className="text-sm text-[var(--color-text-tertiary)]">Use same timezone for all members</span>
-                </label>
-                {sameTimezone && (
-                  <div className="mt-2">
+                  {!sameTimezone && (
                     <AdvancedDropdown
-                      options={timeZoneOptions.map((o: any) => ({ label: o.label, value: o.label, rightLabel: o.value, description: o.value }))}
+                      options={timeZoneOptions}
                       value={timeZone}
-                      onChange={(val: any) => setTimeZone(val as string)}
-                      searchable={true}
-                      placeholder="Select time zone"
+                      onChange={(val) => setTimeZone(val as string)}
+                      placeholder="Select timezone"
+                      searchable
                     />
-                  </div>
-                )}
-              </div>
+                  )}
+                </>
+              )}
             </div>
-
-            {/* Default Value - Only show for datetime, not for createdTime/lastModifiedTime */}
-            {selectedType?.key === 'datetime' && (
-              renderDefaultValueToggle({
-                show: showDateTimeDefault,
-                setShow: setShowDateTimeDefault,
-                buttonClassName: 'flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)]',
-                wrapperClassName: 'mb-3',
-                children: (
-                  <div className="mt-2">
-                    <DateTime
-                      value={dateTimeDefault}
-                      onChange={(value: any) => setDateTimeDefault(value)}
-                      config={{
-                        dateFormat: dateFormat,
-                        timeFormat: timeFormat,
-                        hourFormat: hourFormat,
-                      }}
-                      isBorder={true}
-                    />
-                  </div>
-                ),
-              })
-            )}
-
-            {/* Description */}
+            {/* Set default */}
+            <div className="mb-3">
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="showDateTimeDefault"
+                  checked={showDateTimeDefault}
+                  onChange={(e) => setShowDateTimeDefault(e.target.checked)}
+                  className="checkbox-primary-brand"
+                />
+                <label htmlFor="showDateTimeDefault" className="text-sm text-[var(--text-color-secondary)]">
+                  Set default value
+                </label>
+              </div>
+              {showDateTimeDefault && (
+                <div className="mt-2">
+                  <DateTime
+                    value={dateTimeDefault}
+                    onChange={setDateTimeDefault}
+                    dateFormat={dateFormat}
+                    timeFormat={timeFormat}
+                    isBorder={true}
+                    config={{}}
+                  />
+                </div>
+              )}
+            </div>
             {renderDescriptionToggle({
               showDescription,
               setShowDescription,
               description,
               setDescription,
-              buttonClassName: 'flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] my-3 space-y-2',
-              wrapperClassName: 'relative',
+              buttonClassName: descriptionButtonClassName,
+              wrapperClassName: descriptionWrapperClassName,
+              clearButtonClassName: descriptionClearButtonClassName,
             })}
           </>
         );
       case 'user':
         return (
           <>
-            <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Multiple users</div>
-            <div className="flex items-center gap-2 mb-3">
-              <label className="relative inline-flex gap-3 items-center cursor-pointer">
+            <div className="mb-3">
+              <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  id="multi-user-select"
+                  id="allowMultipleUsers"
                   checked={allowMultipleUsers}
-                  onChange={e => setAllowMultipleUsers(e.target.checked)}
-                  className="sr-only peer"
+                  onChange={(e) => setAllowMultipleUsers(e.target.checked)}
+                  className="checkbox-primary-brand"
                 />
-                <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-1 peer-focus:ring-[var(--color-focus-ring)] rounded-full peer peer-checked:bg-primary transition-colors" />
-                <div className="absolute left-0.5 top-1 w-4 h-4 bg-card rounded-full shadow transform transition-transform peer-checked:translate-x-4" />
-                <span className="text-sm text-gray-600">When enabled, users can select multiple users</span>
-              </label>
+                <label htmlFor="allowMultipleUsers" className="text-sm text-[var(--text-color-secondary)]">
+                  Allow multiple users
+                </label>
+              </div>
             </div>
-
-            {renderDefaultValueToggle({
-              show: showUserDefault,
-              setShow: setShowUserDefault,
-              children: (
-                <User
-                  value={selectedUsers}
-                  onChange={(user: any) => setSelectedUsers(user)}
-                  config={{
-                    allowMultiple: allowMultipleUsers,
-                    showAvatar: true,
-                  }}
-                  isBorder={true}
-                  placeholder="Select users..."
-                />
-              ),
-            })}
+            <button className="flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] my-3 space-y-2" onClick={() => setShowUserDefault((v: boolean) => !v)}>
+              <Plus className="w-5 h-5" />
+              Set default value
+            </button>
+            {showUserDefault && (
+              <User
+                value={selectedUsers}
+                onChange={setSelectedUsers}
+                config={{}}
+                isBorder={true}
+              />
+            )}
             {renderDescriptionToggle({
               showDescription,
               setShowDescription,
               description,
               setDescription,
-              buttonClassName: 'flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] my-3 space-y-2',
-              wrapperClassName: 'relative',
+              buttonClassName: descriptionButtonClassName,
+              wrapperClassName: descriptionWrapperClassName,
+              clearButtonClassName: descriptionClearButtonClassName,
             })}
           </>
         );
-      case 'attachment':
+      case 'formula':
         return (
-          renderDescriptionToggle({
-            showDescription,
-            setShowDescription,
-            description,
-            setDescription,
-            buttonClassName: 'flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] my-3 space-y-2',
-            wrapperClassName: 'mb-3 relative',
-          })
+          <>
+            <div className="mb-3">
+              <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Formula</div>
+              <Formula
+                value={formulaText}
+                onChange={(value) => {
+                  setFormulaText(value);
+                  setFormulaError(null);
+                }}
+                fields={fields}
+                config={{}}
+                isBorder={true}
+              />
+              {formulaError && (
+                <p className="mt-1 text-xs text-red-500">{formulaError}</p>
+              )}
+            </div>
+            <div className="mb-3">
+              <div className="flex items-center gap-2 mb-2">
+                <input
+                  type="checkbox"
+                  id="formulaFormatting"
+                  checked={formulaFormatting}
+                  onChange={(e) => {
+                    setDefaultValue(e.target.checked ? 'formatted' : 'unformatted');
+                  }}
+                  className="checkbox-primary-brand"
+                />
+                <label htmlFor="formulaFormatting" className="text-sm text-[var(--text-color-secondary)]">
+                  Format result as number
+                </label>
+              </div>
+            </div>
+            <div className="relative">
+              <button className="flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] my-3 space-y-2" onClick={() => setShowDescription((v: boolean) => !v)}>
+                <Plus className="w-5 h-5" />
+                Add description
+              </button>
+              {showDescription && (
+                <>
+                  <MultiLineText
+                    placeholder="Enter field description..."
+                    value={description}
+                    onChange={value => setDescription(value)}
+                    rows={4}
+                    isBorder={true}
+                  />
+                  {description &&
+                    <button className="absolute right-2 top-2 text-gray-400 hover:text-red-500" onClick={() => setDescription('')}>
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  }
+                </>
+              )}
+            </div>
+          </>
         );
       case 'json':
         return (
           <>
             <div className="mb-3">
-              {/* <label className="block text-sm font-medium text-[var(--color-text-tertiary)] mb-1">Default JSON</label> */}
-              {renderDefaultValueToggle({
-                show: showJsonDefault,
-                setShow: setShowJsonDefault,
-                children: (
-                  <JSONField
-                    value={defaultValue}
-                    onChange={handleJsonChange}
-                    placeholder='{"key": "value"}'
+              <div className="mb-2 text-sm font-medium text-[var(--color-text-tertiary)]">Default value</div>
+              <JSONField
+                value={defaultValue ? JSON.parse(defaultValue) : {}}
+                onChange={handleJsonChange}
+                config={{}}
+                isBorder={true}
+              />
+            </div>
+            <div className="relative">
+              <button className="flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] my-3 space-y-2" onClick={() => setShowDescription((v: boolean) => !v)}>
+                <Plus className="w-5 h-5" />
+                Add description
+              </button>
+              {showDescription && (
+                <>
+                  <MultiLineText
+                    placeholder="Enter field description..."
+                    value={description}
+                    onChange={value => setDescription(value)}
+                    rows={4}
                     isBorder={true}
                   />
-                ),
-              })}
+                  {description &&
+                    <button className="absolute right-2 top-2 text-gray-400 hover:text-red-500" onClick={() => setDescription('')}>
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  }
+                </>
+              )}
             </div>
-            {renderDescriptionToggle({
-              showDescription,
-              setShowDescription,
-              description,
-              setDescription,
-              buttonClassName: 'flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] mb-3 space-y-2',
-              wrapperClassName: 'relative',
-            })}
-          </>
-        );
-      case 'createdBy':
-      case 'lastModifiedBy':
-        return (
-          renderDescriptionToggle({
-            showDescription,
-            setShowDescription,
-            description,
-            setDescription,
-            buttonClassName: 'flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] mb-3 space-y-2',
-            wrapperClassName: 'relative',
-          })
-        );
-      case 'formula':
-        return (
-          <>
-            <Formula
-              value={formulaText}
-              config={{
-                formula: formulaText,
-                formatting: {
-                  type: formulaFormatting.type,
-                  precision: formulaFormatting.precision,
-                  currency: formulaFormatting.currency,
-                  dateFormat: formulaFormatting.dateFormat
-                }
-              }}
-              columns={fields.map((field: any) => ({
-                id: field.id,
-                name: field.title || field.column_name || field.key,
-                title: field.title || field.column_name || field.key,
-                column_name: field.column_name,
-                key: field.key || field.column_name,
-                type: field.type || field.uidt,
-                system: field.system || field.isSystem
-              }))}
-              onFormulaChange={(formula) => setFormulaText(formula)}
-              onErrorChange={(error) => setFormulaError(error)}
-              isBorder={true}
-            />
-            {renderDescriptionToggle({
-              showDescription,
-              setShowDescription,
-              description,
-              setDescription,
-              buttonClassName: 'flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] mb-3',
-              wrapperClassName: 'relative mt-3',
-            })}
           </>
         );
       default:
@@ -1925,8 +1695,9 @@ export function renderNewColumnConfigStep(props: any) {
     }
   }
 
-
-  return renderConfigStep();
+  return (
+    <div className="space-y-4">
+      {renderConfigStep()}
+    </div>
+  );
 }
-
-

@@ -1,0 +1,61 @@
+{
+  "welcome": {
+    "title": "Welcome",
+    "subtitle": "We've created intuitive interfaces efficiently and effortlessly to help you manage your data."
+  },
+  "actionCards": {
+    "createBase": "Create New Base",
+    "createBaseDesc": "Creates a new base.",
+    "importData": "Import Data",
+    "importDataDesc": "Bring in external data."
+  },
+  "bases": {
+    "title": "All Bases",
+    "untitled": "Untitled Base",
+    "noDescription": "Base for general purpose work.",
+    "lastModified": "Last modified",
+    "lastModifiedUnknown": "Last modified Unknown",
+    "noBases": "No bases found",
+    "noBasesMatchSearch": "No bases match your search. Try a different term.",
+    "noBasesYet": "You don't have any bases yet. Create your first base to get started.",
+    "createFirst": "Create your first base"
+  },
+  "sort": {
+    "recent": "Recent",
+    "aToZ": "A-Z",
+    "zToA": "Z-A"
+  },
+  "search": {
+    "placeholder": "Search bases"
+  },
+  "roles": {
+    "owner": "Owner",
+    "maintainer": "Maintainer",
+    "baseMember": "Base Member",
+    "baseRead": "Read Only"
+  },
+  "toast": {
+    "noTablesYet": "This base has no tables yet. Create your first table to get started!",
+    "noWorkspace": "Please select a workspace first",
+    "noChangesToSave": "No changes to save",
+    "baseCreated": "Base created successfully",
+    "baseUpdated": "Base updated successfully",
+    "baseDeleted": "Base deleted successfully",
+    "tableCreated": "Table created successfully",
+    "navigationFailed": "Failed to navigate to base. Please try again.",
+    "updateFailed": "Failed to update base. Please try again.",
+    "createFailed": "Failed to create base. Please try again.",
+    "deleteFailed": "Failed to delete base. Please try again.",
+    "importAvailableSoon": "{{type}} import will be available soon"
+  },
+  "noWorkspace": {
+    "title": "Welcome",
+    "subtitle": "We've created intuitive interfaces efficiently and effortlessly to help you manage your data.",
+    "selectPrompt": "Please select a workspace",
+    "selectDescription": "Select a workspace from the dropdown in the header to view your bases."
+  },
+  "editBase": {
+    "title": "Edit Base",
+    "subtitle": "Update base name and description"
+  }
+}

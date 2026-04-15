@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { ChevronDown, ChevronUp, HelpCircle, X, Search, Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { FORMULA_FUNCTIONS, FREQUENTLY_USED_FUNCTION_NAMES } from '../../../utils/formulaConstants';
 import {
   evaluateFormula,
@@ -61,6 +62,7 @@ export const Formula: React.FC<FormulaProps> = ({
   allColumns = []
 }) => {
   const { formula = '', formatting = {} } = config;
+  const { t } = useTranslation(['fields']);
   const [formulaText, setFormulaText] = useState(formula);
   const [formattingType, setFormattingType] = useState(formatting.type || 'text');
   const [precision, setPrecision] = useState(formatting.precision || 2);
@@ -921,7 +923,7 @@ export const Formula: React.FC<FormulaProps> = ({
           <div className="flex-1 mb-0 flex flex-col">
             <div className="flex items-center justify-between w-full">
               <label className="field-component-label flex items-center gap-2">
-                <span>Formula</span>
+                <span>{t('fields:fieldTypes.formula.label')}</span>
                 <span //NOSONAR
                   ref={helpIconRef}
                   className="relative inline-block"
@@ -934,13 +936,13 @@ export const Formula: React.FC<FormulaProps> = ({
                       className="fixed w-80 bg-card border rounded-xl shadow-lg p-4 text-sm z-[10000]"
                       style={{ top: `${tooltipPosition.top}px`, left: `${tooltipPosition.left}px` }}
                     >
-                      <h4 className="mb-3 text-primary font-semibold">How to use formulas:</h4>
+                      <h4 className="mb-3 text-primary font-semibold">{t('fields:common.howToUseFormulas')}</h4>
 
                       <ul className="space-y-2 text-gray-600">
-                        <li className="pb-2 border-b border-primary">• Use <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-[var(--color-utility-bg)] text-gray-700 text-xs font-mono font-semibold">{'{FieldName}'}</span> to refer to other fields — always wrap names in curly brackets and note that they're case-sensitive.</li>
-                        <li className="pb-2 border-b border-primary">• You can click any function to add it and combine it with operators like <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-[var(--color-utility-bg)] text-gray-700 text-xs font-mono font-semibold">+</span>, <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-[var(--color-utility-bg)] text-gray-700 text-xs font-mono font-semibold">-</span>, <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-[var(--color-utility-bg)] text-gray-700 text-xs font-mono font-semibold">*</span>, or <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-[var(--color-utility-bg)] text-gray-700 text-xs font-mono font-semibold">/</span>.</li>
-                        <li className="pb-2 border-b border-primary">• Make sure the field type matches the function: math needs numbers, text needs text, and date functions need date/time fields.</li>
-                        <li>• For plain text, use quotes — for example: <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-[var(--color-utility-bg)] text-gray-700 text-xs font-mono font-semibold">"Hello"</span> or <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-[var(--color-utility-bg)] text-gray-700 text-xs font-mono font-semibold">"World"</span>.</li>
+                        <li className="pb-2 border-b border-primary">• {t('fields:common.formulaFieldTip', { field: '{FieldName}' })}</li>
+                        <li className="pb-2 border-b border-primary">• {t('fields:common.formulaOperatorTip')}</li>
+                        <li className="pb-2 border-b border-primary">• {t('fields:common.formulaTypeMatchTip')}</li>
+                        <li>• {t('fields:common.formulaPlainTextTip')}</li>
                       </ul>
                     </div>,
                     document.body
@@ -952,10 +954,10 @@ export const Formula: React.FC<FormulaProps> = ({
                   type="button"
                   onClick={handleClear}
                   className="px-2 py-1 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex-shrink-0"
-                  aria-label="Clear formula"
-                  title="Clear formula"
+                  aria-label={t('fields:common.clear')}
+                  title={t('fields:common.clear')}
                 >
-                  Clear
+                  {t('fields:common.clear')}
                 </button>
               )}
             </div>
@@ -1035,7 +1037,7 @@ export const Formula: React.FC<FormulaProps> = ({
                   }
                 }}
                 onMouseUp={updateCursorPosition}
-                placeholder="Enter formula (e.g., ADD({Price}, {Tax})"
+                placeholder={t('fields:placeholders.enterFormula')}
                 className={`w-full field-component p-2.5 resize-none !h-[75px] ${formulaError
                     ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
                     : 'field-component-focus'
@@ -1050,15 +1052,15 @@ export const Formula: React.FC<FormulaProps> = ({
           {/* Frequently Used Functions - Compact button grid */}
           <div className="flex flex-col">
             <div className="flex items-center justify-between mb-2">
-              <span className="field-component-label text-sm">Quick Functions</span>
+              <span className="field-component-label text-sm">{t('fields:common.quickFunctions')}</span>
               <button
                 ref={showAllFunctionsButtonRef}
                 onClick={handleShowAllFunctionsClick}
                 className="px-2.5 py-1 text-xs text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] hover:bg-gray-50 rounded transition-colors"
-                aria-label="View all functions"
-                title="View all functions"
+                aria-label={t('fields:common.viewAllFunctions')}
+                title={t('fields:common.viewAllFunctions')}
               >
-                All functions →
+                {t('fields:common.allFunctions')}
               </button>
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -1117,7 +1119,7 @@ export const Formula: React.FC<FormulaProps> = ({
                           )}
                           {example && (
                             <div className="bg-gray-50 px-2 mb-2 font-mono rounded-xl text-gray-500 mt-1">
-                              Example: <span className="font-mono text-gray-700">{example}</span>
+                              {t('fields:common.example')} <span className="font-mono text-gray-700">{example}</span>
                             </div>
                           )}
                         </div>
@@ -1192,7 +1194,7 @@ export const Formula: React.FC<FormulaProps> = ({
             {/* Modal Header */}
             <div className="px-4 py-3 border-b border-gray-100 flex-shrink-0">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-medium text-gray-700">Functions & Operators</h3>
+                <h3 className="text-sm font-medium text-gray-700">{t('fields:common.functionsAndOperators')}</h3>
                 <button
                   onClick={() => setShowAllFunctions(false)}
                   className="text-gray-400 hover:text-gray-600 transition-colors p-1"
@@ -1207,7 +1209,7 @@ export const Formula: React.FC<FormulaProps> = ({
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search functions..."
+                  placeholder={t('fields:placeholders.searchFunctions')}
                   value={functionSearchQuery}
                   onChange={(e) => setFunctionSearchQuery(e.target.value)}
                   className="w-full field-component !pl-9 !pr-3 !py-2 field-component-focus field-component-border"
@@ -1229,7 +1231,7 @@ export const Formula: React.FC<FormulaProps> = ({
             <div className="overflow-y-auto flex-1 bg-[var(--color-alpha-white)]">
               {Object.keys(filteredFormulaFunctions).length === 0 ? (
                 <div className="px-4 py-8 text-center text-sm text-gray-500">
-                  No functions found matching "{functionSearchQuery}"
+                  {t('fields:placeholders.noFunctionsFound', { query: functionSearchQuery })}
                 </div>
               ) : (
                 <div className="divide-y divide-gray-100">
@@ -1289,8 +1291,8 @@ export const Formula: React.FC<FormulaProps> = ({
                                       insertFunction(func.name);
                                     }}
                                     className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-colors text-gray-400 hover:text-[var(--color-brand-600)] hover:bg-gray-100"
-                                    aria-label="Insert function"
-                                    title="Insert function"
+                                    aria-label={t('fields:common.insertFunction')}
+                                    title={t('fields:common.insertFunction')}
                                   >
                                     <Plus className="w-3 h-3" />
                                   </button>
@@ -1304,8 +1306,8 @@ export const Formula: React.FC<FormulaProps> = ({
                                         ? "bg-gray-200 text-gray-700"
                                         : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
                                       }`}
-                                    aria-label="Toggle function details"
-                                    title="Show details"
+                                    aria-label={t('fields:common.showDetails')}
+                                    title={t('fields:common.showDetails')}
                                   >
                                     <HelpCircle className="w-3 h-3" />
                                   </button>
@@ -1317,14 +1319,14 @@ export const Formula: React.FC<FormulaProps> = ({
                                     )}
                                     <div className="space-y-1.5">
                                       <div>
-                                        <span className="text-gray-500">Syntax: </span>
+                                        <span className="text-gray-500">{t('fields:common.syntax')}</span>
                                         <code className="text-gray-800 font-mono bg-gray-50 px-1.5 py-0.5 rounded text-xs">
                                           {getFunctionSyntax(func.name, func.example || '')}
                                         </code>
                                       </div>
                                       {func.example && (
                                         <div>
-                                          <span className="text-gray-500">Example: </span>
+                                          <span className="text-gray-500">{t('fields:common.example')}</span>
                                           <code className="text-gray-800 font-mono bg-gray-50 px-1.5 py-0.5 rounded text-xs">
                                             {func.example}
                                           </code>

@@ -4,6 +4,7 @@
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useEffect } from "react";
 import { useClickHandler } from "../../../utils/helpers";
+import { useTranslation } from "react-i18next";
 
 interface NumberConfig {
   defaultValue?: number | string;
@@ -53,6 +54,7 @@ export const NumberField: React.FC<NumberFieldProps> = ({
   };
 
   const [localValue, setLocalValue] = useState(getInitialValue());
+  const { t } = useTranslation(['fields']);
   const [isEditing, setIsEditing] = useState(false);
 
   // keep local value in sync if prop changes
@@ -105,16 +107,16 @@ export const NumberField: React.FC<NumberFieldProps> = ({
   };
 
   const validate = (val: string) => {
-    if (required && !val.trim()) return "This field is required";
+    if (required && !val.trim()) return t('fields:validation.fieldRequired');
     if (val.trim() === "") return null;
 
     const cleanVal = val.replaceAll(",", "");
-    if (!isValidNumericFormat(cleanVal)) return "Invalid number";
+    if (!isValidNumericFormat(cleanVal)) return t('fields:validation.invalidNumber');
 
     // Check total digits (excluding decimal point and minus sign)
     const digitsOnly = cleanVal.split('').filter(char => char >= '0' && char <= '9').join('');
     if (digitsOnly.length > MAX_DIGITS) {
-      return `Number too large (max ${MAX_DIGITS} digits)`;
+      return t('fields:validation.numberTooLarge', { max: MAX_DIGITS });
     }
 
     return null;

@@ -5,6 +5,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { MoreHorizontal, Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useLookupSourceColumn } from '../../../hooks/useLookupSourceColumn';
 import {
   renderRatingPill,
@@ -173,6 +174,7 @@ export const Lookup: React.FC<LookupProps> = ({
   icon = "",
   field
 }) => {
+  const { t } = useTranslation(['fields']);
   // Get lookup_column_id from field meta
   const lookupColumnId = useMemo(() => getLookupColumnId(field), [field]);
 
@@ -259,7 +261,7 @@ export const Lookup: React.FC<LookupProps> = ({
     if (isLoadingSourceColumn) {
       return (
         <span className="inline-flex items-center px-2.5 py-1 rounded-full text-sm bg-gray-100 text-gray-700 border border-gray-200">
-          Loading...
+          {t('fields:common.loading')}
         </span>
       );
     }
@@ -355,7 +357,7 @@ export const Lookup: React.FC<LookupProps> = ({
               <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder={t('fields:common.search')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-8 pr-3 py-2 text-sm border rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] bg-[--color-alpha-white] outline-none transition-all duration-200"
@@ -368,7 +370,7 @@ export const Lookup: React.FC<LookupProps> = ({
           <div className="p-2 max-h-60 overflow-y-auto">
             {filteredHiddenItems.length === 0 ? (
               <div className="text-sm text-gray-500 text-center py-2">
-                {searchTerm ? 'No matching values' : 'No hidden values'}
+                {searchTerm ? t('fields:placeholders.noMatchingValues') : t('fields:placeholders.noHiddenValues')}
               </div>
             ) : (
               renderValues(filteredHiddenItems, true)

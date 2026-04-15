@@ -3,6 +3,7 @@
 // Websites: https://www.aptlogica.com | https://www.serenibase.com
 // Support: support@aptlogica.com | support@serenibase.com
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface TablePaginationProps {
   currentPage: number;
@@ -15,6 +16,8 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
+  const { t } = useTranslation(['common', 'fields']);
+
   if (totalPages <= 1) return null;
 
   return (
@@ -24,7 +27,7 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
         disabled={currentPage === 1}
         className="px-3 py-1 text-sm border rounded-lg text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
       >
-        ← Previous
+        ← {t('common:fields.pagination.previous')}
       </button>
 
       <div className="flex items-center gap-2">
@@ -55,7 +58,7 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
         disabled={currentPage === totalPages}
         className="px-3 py-1 text-sm border rounded-lg text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
       >
-        Next →
+        {t('common:fields.pagination.next')} →
       </button>
     </div>
   );

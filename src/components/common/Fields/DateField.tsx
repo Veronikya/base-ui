@@ -5,6 +5,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Info, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import { useDropdownPosition } from '../../../hooks/useDropdownPosition';
 import { getTodayISO } from '../../../utils/timeFormatUtils';
@@ -231,6 +232,7 @@ export const DateField: React.FC<DateProps> = ({
   helperText,
   config = {}
 }) => {
+  const { t } = useTranslation(['fields']);
   const { defaultValue = '', dateFormat = format, min: configMin = min, max: configMax = max, hideTodayButton = false } = config;
   const [date, setDate] = useState(value || '');
   const [error, setError] = useState<string | null>(null);
@@ -395,20 +397,20 @@ export const DateField: React.FC<DateProps> = ({
 
   const validateDateValue = (isoDate: string, minVal: string | undefined, maxVal: string | undefined, minFormat: string, maxFormat: string): string | null => {
     const dateValue = new Date(isoDate);
-    if (Number.isNaN(dateValue.getTime())) return 'Please enter a valid date';
+    if (Number.isNaN(dateValue.getTime())) return t('fields:validation.invalidDate');
     if (minVal) {
       const minISO = convertDateFormat(minVal, minFormat, 'YYYY-MM-DD');
-      if (isoDate < minISO) return `Date must be after ${minVal}`;
+      if (isoDate < minISO) return t('fields:validation.dateMustBeAfter', { date: minVal });
     }
     if (maxVal) {
       const maxISO = convertDateFormat(maxVal, maxFormat, 'YYYY-MM-DD');
-      if (isoDate > maxISO) return `Date must be before ${maxVal}`;
+      if (isoDate > maxISO) return t('fields:validation.dateMustBeBefore', { date: maxVal });
     }
     return null;
   };
 
   const validate = (d: string) => {
-    if (required && !d) return 'This field is required';
+    if (required && !d) return t('fields:validation.fieldRequired');
     if (!d) return null;
     const isoDate = convertDateFormat(d, dateFormat, 'YYYY-MM-DD');
     return validateDateValue(isoDate, configMin, configMax, dateFormat, dateFormat);
@@ -713,7 +715,7 @@ export const DateField: React.FC<DateProps> = ({
             onClick={() => !readOnly && handleDateSelect(todayISO)}
             disabled={readOnly}
           >
-            Today
+            {t('fields:fieldTypes.date.today')}
           </button>
         </div>
       )}

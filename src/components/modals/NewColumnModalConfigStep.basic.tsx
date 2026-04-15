@@ -141,8 +141,8 @@ export function renderBasicConfigStep(props: any) {
           />
 
           <div className="my-3 flex items-center gap-2">
-            <input type="checkbox" className="checkbox-primary-brand" id="showThousands" checked={showThousands} onChange={e => setShowThousands(e.target.checked)} />
-            <label htmlFor="showThousands" className="text-sm text-[var(--text-color-secondary)]">Show thousands separator</label>
+            <input type="checkbox" className="checkbox-primary-brand" id="showThousandsDec" checked={showThousands} onChange={e => setShowThousands(e.target.checked)} />
+            <label htmlFor="showThousandsDec" className="text-sm text-[var(--text-color-secondary)]">Show thousands separator</label>
           </div>
           <button className="flex items-center gap-2 text-primary-brand text-sm font-medium hover:text-[var(--color-brand-800)] mb-3 space-y-2" onClick={() => setShowTextDefault((v: boolean) => !v)}>
             <Plus className="w-5 h-5" />

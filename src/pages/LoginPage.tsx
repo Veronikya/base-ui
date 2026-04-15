@@ -5,6 +5,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../auth/AuthContext';
 import { isAuthenticated, login as apiLogin, resendOtp } from '../service/clientService';
 import { useToast } from "../components/common/Toast";
@@ -21,6 +22,7 @@ interface FormData {
 }
 
 const LogIn: React.FC = () => {
+  const { t } = useTranslation(['auth', 'common', 'fields']);
   const [formData, setFormData] = useState<FormData>({ email: "", password: "" });
   const [error, setError] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -91,7 +93,7 @@ const LogIn: React.FC = () => {
         if (!isActive || hasRedirectedRef.current) return;
         if (alreadyAuthed) {
           hasRedirectedRef.current = true;
-          toast.info('You are already signed in. Redirecting...');
+          toast.info(t('common:toast.alreadySignedIn'));
           navigate('/', { replace: true });
           return;
         }
@@ -162,14 +164,14 @@ const LogIn: React.FC = () => {
     // Password format/strength validation is handled by server during authentication
     let hasErrors = false;
     if (!email.trim()) {
-      setEmailError("Email field is required");
+      setEmailError(t('auth:validation.emailRequired'));
       hasErrors = true;
     } else if (!validateEmail(email.trim())) {
-      setEmailError("Please enter a valid email address");
+      setEmailError(t('auth:validation.emailInvalid'));
       hasErrors = true;
     }
     if (!password.trim()) {
-      setPasswordError("Password field is required");
+      setPasswordError(t('auth:validation.passwordRequired'));
       hasErrors = true;
     }
     if (hasErrors) return;
@@ -200,7 +202,7 @@ const LogIn: React.FC = () => {
         }
 
         // OTP sent successfully - user should check their email
-        toast.success('OTP sent to your email. Please check your inbox.');
+        toast.success(t('common:toast.otpSent'));
         return;
       }
 
@@ -213,7 +215,7 @@ const LogIn: React.FC = () => {
       // NavigationResolver will handle navigation to saved view or first workspace
       navigate('/', { replace: true });
     } catch (err: any) {
-      setError(err?.message || "Login failed");
+      setError(err?.message || t('common:errors.invalidLogin'));
     }
   };
 
@@ -235,17 +237,17 @@ const LogIn: React.FC = () => {
             <span className="text-xl font-semibold text-gray-900">Sereni Base</span>
           </div>
 
-          <h2 className="text-3xl font-bold text-foreground text-left">Welcome back</h2>
-          <p className="text-base lg:text-lg text-white/90 leading-relaxed drop-shadow-md">Welcome back! Please enter your details.</p>
+          <h2 className="text-3xl font-bold text-foreground text-left">{t('auth:login.title')}</h2>
+          <p className="text-base lg:text-lg text-white/90 leading-relaxed drop-shadow-md">{t('auth:login.subtitle')}</p>
           {hasOtherSession && (
             <div className="text-sm text-gray-600 bg-gray-50 border border-gray-200 rounded-md px-3 py-2">
-              Another tab is already signed in. Signing in here will sign out the other tab.
+              {t('auth:login.otherSessionWarning')}
             </div>
           )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
               <label htmlFor="email" className="field-component-label">
-                Email<span className="field-component-required">*</span>
+                {t('fields:email.label')}<span className="field-component-required">*</span>
               </label>
               <input
                 id="email"
@@ -261,13 +263,13 @@ const LogIn: React.FC = () => {
                     if (validateEmail(formData.email.trim())) {
                       setEmailError(null);
                     } else {
-                      setEmailError("Please enter a valid email address");
+                      setEmailError(t('auth:validation.emailInvalid'));
                     }
                   } else {
-                    setEmailError("Email field is required");
+                    setEmailError(t('auth:validation.emailRequired'));
                   }
                 }}
-                placeholder="Email"
+                placeholder={t('fields:email.placeholder')}
                 className={`field-component field-component-border field-component-focus ${emailError ? "border-destructive bg-red-50" : ""}`}
                 style={{ boxShadow: "var(--shadow-xs)" }}
               />
@@ -275,7 +277,7 @@ const LogIn: React.FC = () => {
             </div>
             <div className="relative">
               <label htmlFor="password" className="field-component-label">
-                Password<span className="field-component-required">*</span>
+                {t('fields:password.label')}<span className="field-component-required">*</span>
               </label>
               <div className="relative">
                 <input
@@ -291,10 +293,10 @@ const LogIn: React.FC = () => {
                     if (formData.password.trim()) {
                       setPasswordError(null);
                     } else {
-                      setPasswordError("Password field is required");
+                      setPasswordError(t('auth:validation.passwordRequired'));
                     }
                   }}
-                  placeholder="Password"
+                  placeholder={t('fields:password.placeholder')}
                   className={`field-component field-component-border field-component-focus ${passwordError ? "border-destructive bg-red-50" : ""}`}
                   style={{ boxShadow: "var(--shadow-xs)" }}
                 />
@@ -316,14 +318,14 @@ const LogIn: React.FC = () => {
               {passwordError && <div className="mt-1.5 text-red-500 text-sm">{passwordError}</div>}
             </div>
             <div className="flex items-center justify-between text-sm">
-              <Link to="/forgot-password" className="text-primary hover:underline">Forgot password?</Link>
+              <Link to="/forgot-password" className="text-primary hover:underline">{t('auth:login.forgotPassword')}</Link>
             </div>
             <button
               type="submit"
               disabled={isSendingOtp}
               className="w-full btn-primary py-2 rounded-md transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-              {isSendingOtp ? 'Sending OTP...' : 'Sign in'}
+              {isSendingOtp ? t('common:messages.otpSending') : t('auth:login.signInButton')}
             </button>
               {error && <div className="text-red-500 text-sm text-center">{error}</div>}
           </form>

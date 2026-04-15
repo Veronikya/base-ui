@@ -3,6 +3,7 @@
 // Websites: https://www.aptlogica.com | https://www.serenibase.com
 // Support: support@aptlogica.com | support@serenibase.com
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AddUserModal } from './AddUserModal';
 import { useToast } from '../../common/Toast';
 import { useGetTenantUsers, useRemoveTenantUser, useActivateTenantUser, useDeactivateTenantUser } from '../../../hooks/useApi';
@@ -15,6 +16,7 @@ interface UserSettingsTabProps {
 }
 
 export const UserSettingsTab: React.FC<UserSettingsTabProps> = () => {
+  const { t } = useTranslation(['common', 'workspace']);
   const { data: tenantUsers = [], isLoading, error } = useGetTenantUsers();
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<TenantUser | null>(null);
@@ -31,9 +33,9 @@ export const UserSettingsTab: React.FC<UserSettingsTabProps> = () => {
   const handleRemoveUser = async (userId: string) => {
     try {
       await removeTenantUserMutation.mutateAsync(userId);
-      toast.success('User removed successfully');
+      toast.success(t('common:toast.userRemoved'));
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to remove user');
+      toast.error(t('common:errors.failedToRemoveUser'));
     }
   };
 
@@ -50,25 +52,25 @@ export const UserSettingsTab: React.FC<UserSettingsTabProps> = () => {
   const handleActivateUser = async (userId: string) => {
     try {
       await activateTenantUserMutation.mutateAsync(userId);
-      toast.success('User activated successfully');
+      toast.success(t('common:toast.userActivated'));
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to activate user');
+      toast.error(t('common:errors.failedToActivateUser'));
     }
   };
 
   const handleDeactivateUser = async (userId: string) => {
     try {
       await deactivateTenantUserMutation.mutateAsync(userId);
-      toast.success('User deactivated successfully');
+      toast.success(t('common:toast.userDeactivated'));
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to deactivate user');
+      toast.error(t('common:errors.failedToDeactivateUser'));
     }
   };
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader size={6} text='Loading users' textPosition='bottom' />
+        <Loader size={6} text={t('workspace:user.loadingUsers')} textPosition='bottom' />
       </div>
     );
   }
@@ -77,7 +79,7 @@ export const UserSettingsTab: React.FC<UserSettingsTabProps> = () => {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <p className="text-red-600 mb-2">Error loading users</p>
+          <p className="text-red-600 mb-2">{t('workspace:user.errorLoadingUsers')}</p>
           <p className="text-sm text-secondary">{String(error)}</p>
         </div>
       </div>
@@ -103,7 +105,7 @@ export const UserSettingsTab: React.FC<UserSettingsTabProps> = () => {
             className="px-4 py-2 btn-primary flex items-center gap-1 transition font-medium whitespace-nowrap"
           >
             <Plus className="w-5 h-5" />
-            Add User
+            {t('workspace:addUser.title')}
           </button>
         }
       />
